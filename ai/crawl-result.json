@@ -1,0 +1,1556 @@
+{
+  "crawledAt": "2026-04-22T11:15:53.530Z",
+  "baseUrl": "https://aiv.test.oneaiv.com:8086/aiv/",
+  "totalSections": 33,
+  "sections": [
+    {
+      "name": "List View",
+      "url": "https://aiv.test.oneaiv.com:8086/aiv/Visualization/GridDashboard",
+      "heading": "Dashboard",
+      "pageTitle": "AIV",
+      "interactiveElements": [
+        {
+          "tag": "input",
+          "text": "Search files and folders in All sections",
+          "type": "text"
+        },
+        {
+          "tag": "div",
+          "text": "dropdown trigger",
+          "type": ""
+        },
+        {
+          "tag": "div",
+          "text": "All",
+          "type": ""
+        },
+        {
+          "tag": "div",
+          "text": "Current",
+          "type": ""
+        },
+        {
+          "tag": "button",
+          "text": "Home",
+          "type": "button"
+        },
+        {
+          "tag": "div",
+          "text": "1,120\nTotal files and folder",
+          "type": ""
+        },
+        {
+          "tag": "div",
+          "text": "671\nTotal items in current location",
+          "type": ""
+        },
+        {
+          "tag": "div",
+          "text": "18\nShared with me",
+          "type": ""
+        },
+        {
+          "tag": "div",
+          "text": "32\nShared by me",
+          "type": ""
+        }
+      ]
+    },
+    {
+      "name": "Open in new tab",
+      "url": "https://aiv.test.oneaiv.com:8086/aiv/Visualization/GridDashboard",
+      "heading": "Dashboard",
+      "pageTitle": "AIV",
+      "interactiveElements": [
+        {
+          "tag": "input",
+          "text": "Search files and folders in All sections",
+          "type": "text"
+        },
+        {
+          "tag": "div",
+          "text": "dropdown trigger",
+          "type": ""
+        },
+        {
+          "tag": "div",
+          "text": "All",
+          "type": ""
+        },
+        {
+          "tag": "div",
+          "text": "Current",
+          "type": ""
+        },
+        {
+          "tag": "button",
+          "text": "Home",
+          "type": "button"
+        },
+        {
+          "tag": "div",
+          "text": "1,120\nTotal files and folder",
+          "type": ""
+        },
+        {
+          "tag": "div",
+          "text": "671\nTotal items in current location",
+          "type": ""
+        },
+        {
+          "tag": "div",
+          "text": "18\nShared with me",
+          "type": ""
+        },
+        {
+          "tag": "div",
+          "text": "32\nShared by me",
+          "type": ""
+        }
+      ]
+    },
+    {
+      "name": "Reports",
+      "url": "https://aiv.test.oneaiv.com:8086/aiv/Documents/Reports",
+      "heading": "Dashboard",
+      "pageTitle": "AIV",
+      "interactiveElements": [
+        {
+          "tag": "input",
+          "text": "Search files and folders in All sections",
+          "type": "text"
+        },
+        {
+          "tag": "div",
+          "text": "dropdown trigger",
+          "type": ""
+        },
+        {
+          "tag": "div",
+          "text": "All",
+          "type": ""
+        },
+        {
+          "tag": "div",
+          "text": "Current",
+          "type": ""
+        },
+        {
+          "tag": "button",
+          "text": "Home",
+          "type": "button"
+        },
+        {
+          "tag": "div",
+          "text": "337\nTotal files and folder",
+          "type": ""
+        },
+        {
+          "tag": "div",
+          "text": "68\nTotal items in current location",
+          "type": ""
+        },
+        {
+          "tag": "div",
+          "text": "1\nShared with me",
+          "type": ""
+        },
+        {
+          "tag": "div",
+          "text": "7\nShared by me",
+          "type": ""
+        }
+      ]
+    },
+    {
+      "name": "Merge Reports",
+      "url": "https://aiv.test.oneaiv.com:8086/aiv/Documents/MergeReports",
+      "heading": "Dashboard",
+      "pageTitle": "AIV",
+      "interactiveElements": [
+        {
+          "tag": "input",
+          "text": "Search files and folders in All sections",
+          "type": "text"
+        },
+        {
+          "tag": "div",
+          "text": "dropdown trigger",
+          "type": ""
+        },
+        {
+          "tag": "div",
+          "text": "All",
+          "type": ""
+        },
+        {
+          "tag": "div",
+          "text": "Current",
+          "type": ""
+        },
+        {
+          "tag": "button",
+          "text": "Home",
+          "type": "button"
+        },
+        {
+          "tag": "div",
+          "text": "58\nTotal files and folder",
+          "type": ""
+        },
+        {
+          "tag": "div",
+          "text": "58\nTotal items in current location",
+          "type": ""
+        },
+        {
+          "tag": "div",
+          "text": "0\nShared with me",
+          "type": ""
+        },
+        {
+          "tag": "div",
+          "text": "1\nShared by me",
+          "type": ""
+        }
+      ]
+    },
+    {
+      "name": "Shared Resource",
+      "url": "https://aiv.test.oneaiv.com:8086/aiv/Documents/SharedResources",
+      "heading": "Dashboard",
+      "pageTitle": "AIV",
+      "interactiveElements": [
+        {
+          "tag": "input",
+          "text": "Search files and folders in All sections",
+          "type": "text"
+        },
+        {
+          "tag": "div",
+          "text": "dropdown trigger",
+          "type": ""
+        },
+        {
+          "tag": "div",
+          "text": "All",
+          "type": ""
+        },
+        {
+          "tag": "div",
+          "text": "Current",
+          "type": ""
+        },
+        {
+          "tag": "button",
+          "text": "Home",
+          "type": "button"
+        },
+        {
+          "tag": "div",
+          "text": "712\nTotal files and folder",
+          "type": ""
+        },
+        {
+          "tag": "div",
+          "text": "329\nTotal items in current location",
+          "type": ""
+        },
+        {
+          "tag": "div",
+          "text": "200\nShared with me",
+          "type": ""
+        },
+        {
+          "tag": "div",
+          "text": "124\nShared by me",
+          "type": ""
+        }
+      ]
+    },
+    {
+      "name": "Quick Run",
+      "url": "https://aiv.test.oneaiv.com:8086/aiv/Documents/QuickRun",
+      "heading": "Dashboard",
+      "pageTitle": "AIV",
+      "interactiveElements": [
+        {
+          "tag": "input",
+          "text": "Search files and folders in All sections",
+          "type": "text"
+        },
+        {
+          "tag": "div",
+          "text": "dropdown trigger",
+          "type": ""
+        },
+        {
+          "tag": "div",
+          "text": "All",
+          "type": ""
+        },
+        {
+          "tag": "div",
+          "text": "Current",
+          "type": ""
+        },
+        {
+          "tag": "button",
+          "text": "Home",
+          "type": "button"
+        },
+        {
+          "tag": "table",
+          "text": "File Name\n\t\nReport Name",
+          "type": ""
+        },
+        {
+          "tag": "table",
+          "text": "creditcard1\n\tcreditcard\n\n\t\nSave1\n\tCustomers detail",
+          "type": ""
+        },
+        {
+          "tag": "button",
+          "text": "Create",
+          "type": "button"
+        },
+        {
+          "tag": "button",
+          "text": "Delete",
+          "type": "button"
+        }
+      ]
+    },
+    {
+      "name": "Report Bursting",
+      "url": "https://aiv.test.oneaiv.com:8086/aiv/reportmap",
+      "heading": "Dashboard",
+      "pageTitle": "AIV",
+      "interactiveElements": [
+        {
+          "tag": "input",
+          "text": "Search files and folders in All sections",
+          "type": "text"
+        },
+        {
+          "tag": "div",
+          "text": "dropdown trigger",
+          "type": ""
+        },
+        {
+          "tag": "div",
+          "text": "All",
+          "type": ""
+        },
+        {
+          "tag": "div",
+          "text": "Current",
+          "type": ""
+        },
+        {
+          "tag": "div",
+          "text": "dropdown trigger",
+          "type": ""
+        },
+        {
+          "tag": "input",
+          "text": "Select Report Mapping",
+          "type": "text"
+        }
+      ]
+    },
+    {
+      "name": "Group Report",
+      "url": "https://aiv.test.oneaiv.com:8086/aiv/groupReport",
+      "heading": "Dashboard",
+      "pageTitle": "AIV",
+      "interactiveElements": [
+        {
+          "tag": "input",
+          "text": "Search files and folders in All sections",
+          "type": "text"
+        },
+        {
+          "tag": "div",
+          "text": "dropdown trigger",
+          "type": ""
+        },
+        {
+          "tag": "div",
+          "text": "All",
+          "type": ""
+        },
+        {
+          "tag": "div",
+          "text": "Current",
+          "type": ""
+        },
+        {
+          "tag": "div",
+          "text": "dropdown trigger",
+          "type": ""
+        },
+        {
+          "tag": "button",
+          "text": "Next",
+          "type": "button"
+        }
+      ]
+    },
+    {
+      "name": "Datasource",
+      "url": "https://aiv.test.oneaiv.com:8086/aiv/MasterData/Datasource",
+      "heading": "Dashboard",
+      "pageTitle": "AIV",
+      "interactiveElements": [
+        {
+          "tag": "input",
+          "text": "Search files and folders in All sections",
+          "type": "text"
+        },
+        {
+          "tag": "div",
+          "text": "dropdown trigger",
+          "type": ""
+        },
+        {
+          "tag": "div",
+          "text": "All",
+          "type": ""
+        },
+        {
+          "tag": "div",
+          "text": "Current",
+          "type": ""
+        },
+        {
+          "tag": "button",
+          "text": "Home",
+          "type": "button"
+        },
+        {
+          "tag": "table",
+          "text": "Name\n\t\nType\n\t\nSub Type\n\t\nJNDI\n\t\nUsername",
+          "type": ""
+        },
+        {
+          "tag": "table",
+          "text": "testing\n\tjdbc\tmysql\t0\t\n\n\t\nJira_aivhub3_atlassian_n",
+          "type": ""
+        },
+        {
+          "tag": "button",
+          "text": "Create",
+          "type": "button"
+        },
+        {
+          "tag": "button",
+          "text": "Create Dataset",
+          "type": "button"
+        }
+      ]
+    },
+    {
+      "name": "Datasets",
+      "url": "https://aiv.test.oneaiv.com:8086/aiv/MasterData/Datasets",
+      "heading": "Dashboard",
+      "pageTitle": "AIV",
+      "interactiveElements": [
+        {
+          "tag": "input",
+          "text": "Search files and folders in All sections",
+          "type": "text"
+        },
+        {
+          "tag": "div",
+          "text": "dropdown trigger",
+          "type": ""
+        },
+        {
+          "tag": "div",
+          "text": "All",
+          "type": ""
+        },
+        {
+          "tag": "div",
+          "text": "Current",
+          "type": ""
+        },
+        {
+          "tag": "button",
+          "text": "Home",
+          "type": "button"
+        },
+        {
+          "tag": "div",
+          "text": "4,647\nTotal files and folder",
+          "type": ""
+        },
+        {
+          "tag": "div",
+          "text": "1,506\nTotal items in current location",
+          "type": ""
+        },
+        {
+          "tag": "div",
+          "text": "9\nShared with me",
+          "type": ""
+        },
+        {
+          "tag": "div",
+          "text": "17\nShared by me",
+          "type": ""
+        }
+      ]
+    },
+    {
+      "name": "Group Dataset",
+      "url": "https://aiv.test.oneaiv.com:8086/aiv/groupDataset",
+      "heading": "Dashboard",
+      "pageTitle": "AIV",
+      "interactiveElements": [
+        {
+          "tag": "input",
+          "text": "Search files and folders in All sections",
+          "type": "text"
+        },
+        {
+          "tag": "div",
+          "text": "dropdown trigger",
+          "type": ""
+        },
+        {
+          "tag": "div",
+          "text": "All",
+          "type": ""
+        },
+        {
+          "tag": "div",
+          "text": "Current",
+          "type": ""
+        },
+        {
+          "tag": "div",
+          "text": "dropdown trigger",
+          "type": ""
+        },
+        {
+          "tag": "button",
+          "text": "Next",
+          "type": "button"
+        }
+      ]
+    },
+    {
+      "name": "Parameters",
+      "url": "https://aiv.test.oneaiv.com:8086/aiv/MasterData/Parameters",
+      "heading": "Dashboard",
+      "pageTitle": "AIV",
+      "interactiveElements": [
+        {
+          "tag": "input",
+          "text": "Search files and folders in All sections",
+          "type": "text"
+        },
+        {
+          "tag": "div",
+          "text": "dropdown trigger",
+          "type": ""
+        },
+        {
+          "tag": "div",
+          "text": "All",
+          "type": ""
+        },
+        {
+          "tag": "div",
+          "text": "Current",
+          "type": ""
+        },
+        {
+          "tag": "button",
+          "text": "Home",
+          "type": "button"
+        },
+        {
+          "tag": "table",
+          "text": "Name\n\t\nDisplay Type\n\t\nFormat\n\t\nHelpText\n\t\nRequired",
+          "type": ""
+        },
+        {
+          "tag": "table",
+          "text": "Card Brand\n\tRadio\tcustom\t\t0\n\n\t\nCopy_Para_Customers",
+          "type": ""
+        },
+        {
+          "tag": "button",
+          "text": "Create",
+          "type": "button"
+        },
+        {
+          "tag": "button",
+          "text": "Clone",
+          "type": "button"
+        }
+      ]
+    },
+    {
+      "name": "Webhook",
+      "url": "https://aiv.test.oneaiv.com:8086/aiv/MasterData/webhook",
+      "heading": "Dashboard",
+      "pageTitle": "AIV",
+      "interactiveElements": [
+        {
+          "tag": "input",
+          "text": "Search files and folders in All sections",
+          "type": "text"
+        },
+        {
+          "tag": "div",
+          "text": "dropdown trigger",
+          "type": ""
+        },
+        {
+          "tag": "div",
+          "text": "All",
+          "type": ""
+        },
+        {
+          "tag": "div",
+          "text": "Current",
+          "type": ""
+        },
+        {
+          "tag": "button",
+          "text": "Home",
+          "type": "button"
+        },
+        {
+          "tag": "table",
+          "text": "File Name\n\t\nType\n\t\nOwner\n\t\nLast Updated\n\t\nOptions",
+          "type": ""
+        },
+        {
+          "tag": "table",
+          "text": "slackUPDATe\nPath :: /\n\tjson\tAdmin\t2026-03-20 17:15",
+          "type": ""
+        },
+        {
+          "tag": "button",
+          "text": "Create Webhook",
+          "type": "button"
+        },
+        {
+          "tag": "button",
+          "text": "Delete",
+          "type": "button"
+        }
+      ]
+    },
+    {
+      "name": "Notifications",
+      "url": "https://aiv.test.oneaiv.com:8086/aiv/Request/Notifications",
+      "heading": "Dashboard",
+      "pageTitle": "AIV",
+      "interactiveElements": [
+        {
+          "tag": "input",
+          "text": "Search files and folders in All sections",
+          "type": "text"
+        },
+        {
+          "tag": "div",
+          "text": "dropdown trigger",
+          "type": ""
+        },
+        {
+          "tag": "div",
+          "text": "All",
+          "type": ""
+        },
+        {
+          "tag": "div",
+          "text": "Current",
+          "type": ""
+        },
+        {
+          "tag": "button",
+          "text": "Home",
+          "type": "button"
+        },
+        {
+          "tag": "table",
+          "text": "Sender\n\t\nMessage\n\t\nCreated On\n\t\nLast Updated\n\t\nAck",
+          "type": ""
+        },
+        {
+          "tag": "table",
+          "text": "System\tUSER:Admin requested you to approve the REP",
+          "type": ""
+        },
+        {
+          "tag": "button",
+          "text": "Delete",
+          "type": "button"
+        },
+        {
+          "tag": "button",
+          "text": "Approve",
+          "type": "button"
+        }
+      ]
+    },
+    {
+      "name": "Requests",
+      "url": "https://aiv.test.oneaiv.com:8086/aiv/Request/Request",
+      "heading": "Dashboard",
+      "pageTitle": "AIV",
+      "interactiveElements": [
+        {
+          "tag": "input",
+          "text": "Search files and folders in All sections",
+          "type": "text"
+        },
+        {
+          "tag": "div",
+          "text": "dropdown trigger",
+          "type": ""
+        },
+        {
+          "tag": "div",
+          "text": "All",
+          "type": ""
+        },
+        {
+          "tag": "div",
+          "text": "Current",
+          "type": ""
+        },
+        {
+          "tag": "button",
+          "text": "Filter",
+          "type": "button"
+        },
+        {
+          "tag": "input",
+          "text": "Press Space to toggle all rows selection (unchecked)",
+          "type": "checkbox"
+        },
+        {
+          "tag": "input",
+          "text": "Press Space to toggle all rows selection (unchecked)",
+          "type": "checkbox"
+        }
+      ]
+    },
+    {
+      "name": "Alerts",
+      "url": "https://aiv.test.oneaiv.com:8086/aiv/Request/Alerts",
+      "heading": "Dashboard",
+      "pageTitle": "AIV",
+      "interactiveElements": [
+        {
+          "tag": "input",
+          "text": "Search files and folders in All sections",
+          "type": "text"
+        },
+        {
+          "tag": "div",
+          "text": "dropdown trigger",
+          "type": ""
+        },
+        {
+          "tag": "div",
+          "text": "All",
+          "type": ""
+        },
+        {
+          "tag": "div",
+          "text": "Current",
+          "type": ""
+        },
+        {
+          "tag": "button",
+          "text": "Home",
+          "type": "button"
+        },
+        {
+          "tag": "div",
+          "text": "34\nTotal files and folder",
+          "type": ""
+        },
+        {
+          "tag": "div",
+          "text": "33\nTotal items in current location",
+          "type": ""
+        },
+        {
+          "tag": "div",
+          "text": "0\nShared with me",
+          "type": ""
+        },
+        {
+          "tag": "div",
+          "text": "0\nShared by me",
+          "type": ""
+        }
+      ]
+    },
+    {
+      "name": "Alert Reports",
+      "url": "https://aiv.test.oneaiv.com:8086/aiv/Request/AlertsX",
+      "heading": "Dashboard",
+      "pageTitle": "AIV",
+      "interactiveElements": [
+        {
+          "tag": "input",
+          "text": "Search files and folders in All sections",
+          "type": "text"
+        },
+        {
+          "tag": "div",
+          "text": "dropdown trigger",
+          "type": ""
+        },
+        {
+          "tag": "div",
+          "text": "All",
+          "type": ""
+        },
+        {
+          "tag": "div",
+          "text": "Current",
+          "type": ""
+        },
+        {
+          "tag": "button",
+          "text": "Home",
+          "type": "button"
+        },
+        {
+          "tag": "table",
+          "text": "Name\n\t\nStatus\n\t\nDate Executed\n\t\nExecuted By\n\t\nActu",
+          "type": ""
+        },
+        {
+          "tag": "table",
+          "text": "No records to display",
+          "type": ""
+        }
+      ]
+    },
+    {
+      "name": "Repository",
+      "url": "https://aiv.test.oneaiv.com:8086/aiv/Administration/Repository",
+      "heading": "Dashboard",
+      "pageTitle": "AIV",
+      "interactiveElements": [
+        {
+          "tag": "input",
+          "text": "Search files and folders in All sections",
+          "type": "text"
+        },
+        {
+          "tag": "div",
+          "text": "dropdown trigger",
+          "type": ""
+        },
+        {
+          "tag": "div",
+          "text": "All",
+          "type": ""
+        },
+        {
+          "tag": "div",
+          "text": "Current",
+          "type": ""
+        },
+        {
+          "tag": "button",
+          "text": "Home",
+          "type": "button"
+        },
+        {
+          "tag": "div",
+          "text": "dropdown trigger",
+          "type": ""
+        },
+        {
+          "tag": "div",
+          "text": "dropdown trigger",
+          "type": ""
+        },
+        {
+          "tag": "div",
+          "text": "337\nTotal files and folder",
+          "type": ""
+        },
+        {
+          "tag": "div",
+          "text": "68\nTotal items in current location",
+          "type": ""
+        }
+      ]
+    },
+    {
+      "name": "Departments",
+      "url": "https://aiv.test.oneaiv.com:8086/aiv/Administration/Department",
+      "heading": "Dashboard",
+      "pageTitle": "AIV",
+      "interactiveElements": [
+        {
+          "tag": "input",
+          "text": "Search files and folders in All sections",
+          "type": "text"
+        },
+        {
+          "tag": "div",
+          "text": "dropdown trigger",
+          "type": ""
+        },
+        {
+          "tag": "div",
+          "text": "All",
+          "type": ""
+        },
+        {
+          "tag": "div",
+          "text": "Current",
+          "type": ""
+        },
+        {
+          "tag": "button",
+          "text": "Home",
+          "type": "button"
+        },
+        {
+          "tag": "table",
+          "text": "Name\n\t\nDepartment Code\n\t\nAdmins\n\t\nDepartment Links",
+          "type": ""
+        },
+        {
+          "tag": "table",
+          "text": "Sales\tSales_d\tSales_Manager\t\n\n\t\n\tproducts\tprod\tpro",
+          "type": ""
+        },
+        {
+          "tag": "button",
+          "text": "Create",
+          "type": "button"
+        },
+        {
+          "tag": "button",
+          "text": "Delete",
+          "type": "button"
+        }
+      ]
+    },
+    {
+      "name": "Users",
+      "url": "https://aiv.test.oneaiv.com:8086/aiv/Administration/Users",
+      "heading": "Dashboard",
+      "pageTitle": "AIV",
+      "interactiveElements": [
+        {
+          "tag": "input",
+          "text": "Search files and folders in All sections",
+          "type": "text"
+        },
+        {
+          "tag": "div",
+          "text": "dropdown trigger",
+          "type": ""
+        },
+        {
+          "tag": "div",
+          "text": "All",
+          "type": ""
+        },
+        {
+          "tag": "div",
+          "text": "Current",
+          "type": ""
+        },
+        {
+          "tag": "button",
+          "text": "Home",
+          "type": "button"
+        },
+        {
+          "tag": "table",
+          "text": "Username\n\t\nStatus\n\t\nAdmin\n\t\nAdhoc\n\t\nAlerts\n\t\nAnnot",
+          "type": ""
+        },
+        {
+          "tag": "table",
+          "text": "vipuldemo\tActive\t\n\t\n\t\n\t\n\t\n\t\n\t\n\t\n\t\n\t\n\t\n\t\n\t\n\t\n\t\n\t\n\t\n",
+          "type": ""
+        },
+        {
+          "tag": "button",
+          "text": "Create User",
+          "type": "button"
+        },
+        {
+          "tag": "button",
+          "text": "Assign Role",
+          "type": "button"
+        }
+      ]
+    },
+    {
+      "name": "Roles",
+      "url": "https://aiv.test.oneaiv.com:8086/aiv/Administration/Roles",
+      "heading": "Dashboard",
+      "pageTitle": "AIV",
+      "interactiveElements": [
+        {
+          "tag": "input",
+          "text": "Search files and folders in All sections",
+          "type": "text"
+        },
+        {
+          "tag": "div",
+          "text": "dropdown trigger",
+          "type": ""
+        },
+        {
+          "tag": "div",
+          "text": "All",
+          "type": ""
+        },
+        {
+          "tag": "div",
+          "text": "Current",
+          "type": ""
+        },
+        {
+          "tag": "button",
+          "text": "Home",
+          "type": "button"
+        },
+        {
+          "tag": "table",
+          "text": "Role\n\t\nAdmin\n\t\nAdhoc\n\t\nAlerts\n\t\nAnnotations\n\t\nData",
+          "type": ""
+        },
+        {
+          "tag": "table",
+          "text": "product\t\n\t\n\t\n\t\n\t\n\t\n\t\n\t\n\t\n\t\n\t\n\t\n\t\n\t\n\t\n\t\n\t\n\n\n\t\n\tData",
+          "type": ""
+        },
+        {
+          "tag": "button",
+          "text": "Create",
+          "type": "button"
+        },
+        {
+          "tag": "button",
+          "text": "Delete",
+          "type": "button"
+        }
+      ]
+    },
+    {
+      "name": "Email Users",
+      "url": "https://aiv.test.oneaiv.com:8086/aiv/Administration/EmailUsers",
+      "heading": "Dashboard",
+      "pageTitle": "AIV",
+      "interactiveElements": [
+        {
+          "tag": "input",
+          "text": "Search files and folders in All sections",
+          "type": "text"
+        },
+        {
+          "tag": "div",
+          "text": "dropdown trigger",
+          "type": ""
+        },
+        {
+          "tag": "div",
+          "text": "All",
+          "type": ""
+        },
+        {
+          "tag": "div",
+          "text": "Current",
+          "type": ""
+        },
+        {
+          "tag": "button",
+          "text": "Home",
+          "type": "button"
+        },
+        {
+          "tag": "table",
+          "text": "Display Name\n\t\nEmail\n\t\nStatus",
+          "type": ""
+        },
+        {
+          "tag": "table",
+          "text": "AIVTEST\taivhub@gmail.com\tActive\n\n\t\n\tTest\taivhub8@g",
+          "type": ""
+        },
+        {
+          "tag": "button",
+          "text": "Upload",
+          "type": "button"
+        },
+        {
+          "tag": "button",
+          "text": "Create Email User",
+          "type": "button"
+        }
+      ]
+    },
+    {
+      "name": "File Types",
+      "url": "https://aiv.test.oneaiv.com:8086/aiv/Administration/FileTypes",
+      "heading": "Dashboard",
+      "pageTitle": "AIV",
+      "interactiveElements": [
+        {
+          "tag": "input",
+          "text": "Search files and folders in All sections",
+          "type": "text"
+        },
+        {
+          "tag": "div",
+          "text": "dropdown trigger",
+          "type": ""
+        },
+        {
+          "tag": "div",
+          "text": "All",
+          "type": ""
+        },
+        {
+          "tag": "div",
+          "text": "Current",
+          "type": ""
+        },
+        {
+          "tag": "button",
+          "text": "Home",
+          "type": "button"
+        },
+        {
+          "tag": "table",
+          "text": "File Types\n\t\nDescription\n\t\nOutput Type\n\t\nExecution",
+          "type": ""
+        },
+        {
+          "tag": "table",
+          "text": "aiv-xlsx\tAIV XLSX\t1\taiv-xlsx\n\n\t\n\tdash\tDashboard fi",
+          "type": ""
+        },
+        {
+          "tag": "button",
+          "text": "Create",
+          "type": "button"
+        },
+        {
+          "tag": "button",
+          "text": "Delete",
+          "type": "button"
+        }
+      ]
+    },
+    {
+      "name": "AIV Configuration",
+      "url": "https://aiv.test.oneaiv.com:8086/aiv/Administration/AivConfig",
+      "heading": "Dashboard",
+      "pageTitle": "AIV",
+      "interactiveElements": [
+        {
+          "tag": "input",
+          "text": "Search files and folders in All sections",
+          "type": "text"
+        },
+        {
+          "tag": "div",
+          "text": "dropdown trigger",
+          "type": ""
+        },
+        {
+          "tag": "div",
+          "text": "All",
+          "type": ""
+        },
+        {
+          "tag": "div",
+          "text": "Current",
+          "type": ""
+        },
+        {
+          "tag": "input",
+          "text": "Session timeout in minutes",
+          "type": "text"
+        }
+      ]
+    },
+    {
+      "name": "License",
+      "url": "https://aiv.test.oneaiv.com:8086/aiv/Administration/License",
+      "heading": "Dashboard",
+      "pageTitle": "AIV",
+      "interactiveElements": [
+        {
+          "tag": "input",
+          "text": "Search files and folders in All sections",
+          "type": "text"
+        },
+        {
+          "tag": "div",
+          "text": "dropdown trigger",
+          "type": ""
+        },
+        {
+          "tag": "div",
+          "text": "All",
+          "type": ""
+        },
+        {
+          "tag": "div",
+          "text": "Current",
+          "type": ""
+        },
+        {
+          "tag": "button",
+          "text": "New Licence",
+          "type": "button"
+        },
+        {
+          "tag": "button",
+          "text": "Legacy Licence",
+          "type": "button"
+        },
+        {
+          "tag": "div",
+          "text": "dropdown trigger",
+          "type": ""
+        },
+        {
+          "tag": "input",
+          "text": "Buyer Name",
+          "type": "text"
+        },
+        {
+          "tag": "input",
+          "text": "Buyer Email",
+          "type": "email"
+        }
+      ]
+    },
+    {
+      "name": "Dynamic Message",
+      "url": "https://aiv.test.oneaiv.com:8086/aiv/Documents/Messages",
+      "heading": "Dashboard",
+      "pageTitle": "AIV",
+      "interactiveElements": [
+        {
+          "tag": "input",
+          "text": "Search files and folders in All sections",
+          "type": "text"
+        },
+        {
+          "tag": "div",
+          "text": "dropdown trigger",
+          "type": ""
+        },
+        {
+          "tag": "div",
+          "text": "All",
+          "type": ""
+        },
+        {
+          "tag": "div",
+          "text": "Current",
+          "type": ""
+        },
+        {
+          "tag": "button",
+          "text": "Home",
+          "type": "button"
+        },
+        {
+          "tag": "table",
+          "text": "Type\n\t\nSubject\n\t\nValid From\n\t\nValid To",
+          "type": ""
+        },
+        {
+          "tag": "table",
+          "text": "MESSAGE\ttest\t2026-03-19 18:11:30\t2026-03-19 19:11:",
+          "type": ""
+        },
+        {
+          "tag": "button",
+          "text": "Create",
+          "type": "button"
+        },
+        {
+          "tag": "button",
+          "text": "Delete",
+          "type": "button"
+        }
+      ]
+    },
+    {
+      "name": "Annotations",
+      "url": "https://aiv.test.oneaiv.com:8086/aiv/Annotation",
+      "heading": "Dashboard",
+      "pageTitle": "AIV",
+      "interactiveElements": [
+        {
+          "tag": "input",
+          "text": "Search files and folders in All sections",
+          "type": "text"
+        },
+        {
+          "tag": "div",
+          "text": "dropdown trigger",
+          "type": ""
+        },
+        {
+          "tag": "div",
+          "text": "All",
+          "type": ""
+        },
+        {
+          "tag": "div",
+          "text": "Current",
+          "type": ""
+        },
+        {
+          "tag": "button",
+          "text": "toggle undefined",
+          "type": "button"
+        },
+        {
+          "tag": "button",
+          "text": "toggle undefined",
+          "type": "button"
+        },
+        {
+          "tag": "button",
+          "text": "toggle undefined",
+          "type": "button"
+        }
+      ]
+    },
+    {
+      "name": "Control Panel",
+      "url": "https://aiv.test.oneaiv.com:8086/aiv/controlpanel",
+      "heading": "Dashboard",
+      "pageTitle": "AIV",
+      "interactiveElements": [
+        {
+          "tag": "input",
+          "text": "Search files and folders in All sections",
+          "type": "text"
+        },
+        {
+          "tag": "div",
+          "text": "dropdown trigger",
+          "type": ""
+        },
+        {
+          "tag": "div",
+          "text": "All",
+          "type": ""
+        },
+        {
+          "tag": "div",
+          "text": "Current",
+          "type": ""
+        },
+        {
+          "tag": "div",
+          "text": "dropdown trigger",
+          "type": ""
+        }
+      ]
+    },
+    {
+      "name": "Dashboard Internationalization",
+      "url": "https://aiv.test.oneaiv.com:8086/aiv/internationalization",
+      "heading": "Dashboard",
+      "pageTitle": "AIV",
+      "interactiveElements": [
+        {
+          "tag": "input",
+          "text": "Search files and folders in All sections",
+          "type": "text"
+        },
+        {
+          "tag": "div",
+          "text": "dropdown trigger",
+          "type": ""
+        },
+        {
+          "tag": "div",
+          "text": "All",
+          "type": ""
+        },
+        {
+          "tag": "div",
+          "text": "Current",
+          "type": ""
+        },
+        {
+          "tag": "input",
+          "text": "Search",
+          "type": "text"
+        },
+        {
+          "tag": "table",
+          "text": "Language Key\n\t\nArabic (ar)\n\t\nBulgarian (bg)\n\t\nChin",
+          "type": ""
+        },
+        {
+          "tag": "table",
+          "text": "Tab2\tعلامة التبويب 2\t\t表 2\t\tTabblad 2\tTab2\tOnglet 2",
+          "type": ""
+        }
+      ]
+    },
+    {
+      "name": "External APP",
+      "url": "https://aiv.test.oneaiv.com:8086/aiv/Visualization/GridExternalApp",
+      "heading": "Dashboard",
+      "pageTitle": "AIV",
+      "interactiveElements": [
+        {
+          "tag": "input",
+          "text": "Search files and folders in All sections",
+          "type": "text"
+        },
+        {
+          "tag": "div",
+          "text": "dropdown trigger",
+          "type": ""
+        },
+        {
+          "tag": "div",
+          "text": "All",
+          "type": ""
+        },
+        {
+          "tag": "div",
+          "text": "Current",
+          "type": ""
+        },
+        {
+          "tag": "button",
+          "text": "Home",
+          "type": "button"
+        },
+        {
+          "tag": "table",
+          "text": "File Name\n\t\nType\n\t\nOwner\n\t\nLast Updated\n\t\nOptions",
+          "type": ""
+        },
+        {
+          "tag": "table",
+          "text": "aiv-google-map\nPath :: /\n\tapp\tAdmin\t2025-01-02 17:",
+          "type": ""
+        },
+        {
+          "tag": "button",
+          "text": "Upload",
+          "type": "button"
+        },
+        {
+          "tag": "button",
+          "text": "Delete",
+          "type": "button"
+        }
+      ]
+    },
+    {
+      "name": "Api Token",
+      "url": "https://aiv.test.oneaiv.com:8086/aiv/ApiTokens",
+      "heading": "Dashboard",
+      "pageTitle": "AIV",
+      "interactiveElements": [
+        {
+          "tag": "input",
+          "text": "Search files and folders in All sections",
+          "type": "text"
+        },
+        {
+          "tag": "div",
+          "text": "dropdown trigger",
+          "type": ""
+        },
+        {
+          "tag": "div",
+          "text": "All",
+          "type": ""
+        },
+        {
+          "tag": "div",
+          "text": "Current",
+          "type": ""
+        },
+        {
+          "tag": "button",
+          "text": "Create API token",
+          "type": "button"
+        },
+        {
+          "tag": "table",
+          "text": "Token name\tCreated\tLast accessed\tAction\nTest\t2025-",
+          "type": ""
+        },
+        {
+          "tag": "button",
+          "text": "Revoke",
+          "type": "button"
+        }
+      ]
+    },
+    {
+      "name": "Connected APPS",
+      "url": "https://aiv.test.oneaiv.com:8086/aiv/connected-app",
+      "heading": "Dashboard",
+      "pageTitle": "AIV",
+      "interactiveElements": [
+        {
+          "tag": "input",
+          "text": "Search files and folders in All sections",
+          "type": "text"
+        },
+        {
+          "tag": "div",
+          "text": "dropdown trigger",
+          "type": ""
+        },
+        {
+          "tag": "div",
+          "text": "All",
+          "type": ""
+        },
+        {
+          "tag": "div",
+          "text": "Current",
+          "type": ""
+        }
+      ]
+    },
+    {
+      "name": "AIVHUB Documentation",
+      "url": "https://v6.docs.aivhub.com/",
+      "heading": "AIV",
+      "pageTitle": "Welcome to AIV Documentation | AIV",
+      "interactiveElements": [
+        {
+          "tag": "button",
+          "text": "Search",
+          "type": "submit"
+        }
+      ]
+    }
+  ]
+}

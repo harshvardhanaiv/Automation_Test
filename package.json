@@ -1,0 +1,28 @@
+{
+  "name": "ai-playwright",
+  "version": "1.0.0",
+  "description": "AI-powered self-healing Playwright testing framework",
+  "main": "ai/runner.js",
+  "scripts": {
+    "test": "playwright test",
+    "test:explore": "playwright test tests/explore.spec.ts --reporter=list",
+    "test:users-roles": "playwright test tests/users-roles.spec.ts --reporter=list",
+    "test:users-roles:heal": "node ai/users-roles-runner.js",
+    "test:api-token": "playwright test tests/api-token.spec.ts --reporter=list",
+    "test:api-token:heal": "node ai/api-token-runner.js",
+    "test:reports": "playwright test tests/reports.spec.ts --reporter=list",
+    "test:reports:heal": "node ai/reports-runner.js",
+    "test:merge-reports": "playwright test tests/merge-reports.spec.ts --reporter=list",
+    "test:merge-reports:heal": "node ai/merge-reports-runner.js",
+    "ai-run": "node ai/runner.js",
+    "crawl": "node ai/crawl.js",
+    "generate:explore": "node ai/generateFromCrawl.js",
+    "explore": "node ai/explore-runner.js",
+    "explore:skip-crawl": "node ai/explore-runner.js --skip-crawl",
+    "explore:skip-generate": "node ai/explore-runner.js --skip-generate"
+  },
+  "dependencies": {
+    "@playwright/test": "^1.43.0",
+    "axios": "^1.6.8"
+  }
+}
