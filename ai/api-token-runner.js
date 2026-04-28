@@ -18,6 +18,7 @@ const fs   = require('fs');
 const path = require('path');
 const axios = require('axios');
 const config = require('./config');
+const { FIX_SYSTEM_PROMPT } = require('./systemPrompt');
 
 const TEST_FILE   = path.join(__dirname, '../tests/api-token.spec.ts');
 const REPORT_FILE = path.join(__dirname, '../test-results/api-token-report.json');
@@ -100,20 +101,6 @@ function parseFailures(reportPath) {
 async function askOllamaToFix(currentCode, testTitle, errorLog) {
   console.log(`\n🤖 Asking Ollama to fix: "${testTitle}"...`);
 
-  const systemPrompt = `You are an expert Playwright TypeScript automation engineer.
-You will receive a full test file and the error from one specific failing test.
-Your job is to fix ONLY the failing test function — do NOT change any other test, helper, or import.
-Return the COMPLETE fixed file as valid TypeScript. No explanations, no markdown fences.
-
-Known stable selectors for this AIV application:
-- Username input:   input[name='username']
-- Password input:   input[name='password']
-- Login button:     button:has-text('Login')
-- Search box:       input[placeholder='Search files and folders in All sections']
-- API Token page:   https://aiv.test.oneaiv.com:8086/aiv/ApiTokens
-- Token name input: #Name1
-- Revoke button:    getByRole('button', { name: 'Revoke' })  — PrimeNG button with p-button-label span`;
-
   const userPrompt = `The following test is failing:
 
 TEST TITLE: ${testTitle}
@@ -129,7 +116,7 @@ Fix only the failing test ("${testTitle}") and return the complete corrected Typ
   const response = await axios.post(OLLAMA_URL, {
     model: MODEL,
     messages: [
-      { role: 'system', content: systemPrompt },
+      { role: 'system', content: FIX_SYSTEM_PROMPT },
       { role: 'user',   content: userPrompt },
     ],
     stream: false,

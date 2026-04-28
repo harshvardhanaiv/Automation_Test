@@ -24,21 +24,46 @@ export default async function globalSetup(_config: FullConfig) {
 
     console.log('\n🔐 Global setup: logging in once to save session...');
 
-    const browser = await chromium.launch({ headless: true });
+    // Run headless:false so the full browser stack initialises (avoids SSL/CORS
+    // issues that sometimes block headless Chromium on self-signed certs).
+    const browser = await chromium.launch({ headless: false });
     const context = await browser.newContext({ ignoreHTTPSErrors: true });
     const page    = await context.newPage();
 
+    // ── Navigate to login page ────────────────────────────────────────────
     await page.goto(BASE_URL, { waitUntil: 'domcontentloaded', timeout: 90000 });
-    await page.waitForSelector("input[name='username']", { timeout: 30000 });
-    await page.fill("input[name='username']", USERNAME);
-    await page.fill("input[name='password']", PASSWORD);
-    await page.click("button:has-text('Login')");
-    await page.waitForSelector(
-        "input[placeholder='Search files and folders in All sections']",
-        { timeout: 60000 }
-    );
 
-    // Save session state
+    // Support both login form variants:
+    //   - placeholder="Your email"  (newer builds)
+    //   - name="username"           (older builds)
+    const usernameInput = page
+        .locator("input[placeholder='Your email'], input[name='username']")
+        .first();
+    await usernameInput.waitFor({ state: 'visible', timeout: 30000 });
+
+    await usernameInput.fill(USERNAME);
+    await page.locator("input[placeholder='Password'], input[name='password']").first().fill(PASSWORD);
+    await page.locator("button:has-text('Login')").click();
+
+    // ── Wait for the app shell to appear ──────────────────────────────────
+    // Give the Angular app up to 3 minutes — slow servers need this.
+    // We wait for either the search box OR the hamburger menu button,
+    // whichever appears first.
+    await Promise.race([
+        page.waitForSelector(
+            "input[placeholder='Search files and folders']",
+            { timeout: 180000 }
+        ),
+        page.waitForSelector(
+            "button.smenu_button, mat-toolbar button",
+            { timeout: 180000 }
+        ),
+    ]);
+
+    // Extra settle time for Angular to finish routing
+    await page.waitForTimeout(2000);
+
+    // ── Save session state ────────────────────────────────────────────────
     await context.storageState({ path: AUTH_FILE });
     await browser.close();
 

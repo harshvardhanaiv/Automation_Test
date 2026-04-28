@@ -42,29 +42,29 @@ const TEST_ROLE = {
 
 async function doLogin(page: Page) {
   await page.goto(BASE_URL, { waitUntil: 'domcontentloaded', timeout: 90000 });
-  await page.waitForSelector("input[name='username']", { timeout: 15000 });
-  await page.fill("input[name='username']", USERNAME);
-  await page.fill("input[name='password']", PASSWORD);
+  await page.waitForSelector("input[placeholder='Your email']", { timeout: 15000 });
+  await page.fill("input[placeholder='Your email']", USERNAME);
+  await page.fill("input[placeholder='Password']", PASSWORD);
   await page.click("button:has-text('Login')");
   await page.waitForSelector(
-    "input[placeholder='Search files and folders in All sections']",
+    "input[placeholder='Search files and folders']",
     { timeout: 90000 }
   );
 }
 
 async function ensureLoggedIn(page: Page) {
   // Only login if we're currently on the login page (not yet authenticated)
-  const onLoginPage = await page.locator("input[name='username']").isVisible({ timeout: 3000 }).catch(() => false);
+  const onLoginPage = await page.locator("input[placeholder='Your email']").isVisible({ timeout: 3000 }).catch(() => false);
   if (onLoginPage) await doLogin(page);
 }
 
 async function goTo(page: Page, url: string) {
-  const searchBox = page.getByPlaceholder('Search files and folders in All sections');
+  const searchBox = page.getByPlaceholder('Search files and folders');
 
   await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 60000 });
 
   // Check if we landed on the login page (session expired)
-  const isOnLoginPage = await page.locator("input[name='username']").isVisible({ timeout: 2000 }).catch(() => false);
+  const isOnLoginPage = await page.locator("input[placeholder='Your email']").isVisible({ timeout: 2000 }).catch(() => false);
   if (isOnLoginPage) {
     await doLogin(page);
     await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 60000 });

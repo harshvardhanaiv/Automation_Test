@@ -21,19 +21,19 @@ const PASSWORD    = 'Ganesh04';
 
 async function doLogin(page: Page) {
   await page.goto(BASE_URL, { waitUntil: 'domcontentloaded', timeout: 90000 });
-  await page.waitForSelector("input[name='username']", { timeout: 15000 });
-  await page.fill("input[name='username']", USERNAME);
-  await page.fill("input[name='password']", PASSWORD);
+  await page.waitForSelector("input[placeholder='Your email']", { timeout: 15000 });
+  await page.fill("input[placeholder='Your email']", USERNAME);
+  await page.fill("input[placeholder='Password']", PASSWORD);
   await page.click("button:has-text('Login')");
   await page.waitForSelector(
-    "input[placeholder='Search files and folders in All sections']",
+    "input[placeholder='Search files and folders']",
     { timeout: 90000 }
   );
 }
 
 async function ensureLoggedIn(page: Page) {
   const onLoginPage = await page
-    .locator("input[name='username']")
+    .locator("input[placeholder='Your email']")
     .isVisible({ timeout: 3000 })
     .catch(() => false);
   if (onLoginPage) await doLogin(page);
@@ -43,7 +43,7 @@ async function goTo(page: Page, url: string) {
   await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 120000 });
 
   const isOnLoginPage = await page
-    .locator("input[name='username']")
+    .locator("input[placeholder='Your email']")
     .isVisible({ timeout: 2000 })
     .catch(() => false);
   if (isOnLoginPage) {
@@ -53,7 +53,7 @@ async function goTo(page: Page, url: string) {
 
   // Wait for the app shell
   await Promise.race([
-    page.getByPlaceholder('Search files and folders in All sections').waitFor({ state: 'visible', timeout: 90000 }),
+    page.getByPlaceholder('Search files and folders').waitFor({ state: 'visible', timeout: 90000 }),
     page.locator('button.smenu_button').waitFor({ state: 'visible', timeout: 90000 }),
   ]);
   await page.waitForTimeout(1500);

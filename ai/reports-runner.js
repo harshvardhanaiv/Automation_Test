@@ -17,6 +17,7 @@ const fs   = require('fs');
 const path = require('path');
 const axios = require('axios');
 const config = require('./config');
+const { FIX_SYSTEM_PROMPT } = require('./systemPrompt');
 
 const TEST_FILE   = path.join(__dirname, '../tests/reports.spec.ts');
 const REPORT_FILE = path.join(__dirname, '../test-results/reports-report.json');
@@ -92,91 +93,6 @@ function parseFailures(reportPath) {
 async function askOllamaToFix(currentCode, testTitle, errorLog) {
   console.log(`\n🤖 Asking Ollama to fix: "${testTitle}"...`);
 
-  const systemPrompt = `You are an expert Playwright TypeScript automation engineer.
-You will receive a full test file and the error from one specific failing test.
-Your job is to fix ONLY the failing test function — do NOT change any other test, helper, class, or import.
-Return the COMPLETE fixed file as valid TypeScript. No explanations, no markdown fences.
-
-════════════════════════════════════════════════════════
-CONFIRMED WORKING SELECTORS — AIV application
-(verified by running tests against the live app)
-════════════════════════════════════════════════════════
-
-── Auth ──────────────────────────────────────────────
-- Username input:      input[name='username']
-- Password input:      input[name='password']
-- Login button:        button:has-text('Login')
-- App shell (ready):   input[placeholder='Search files and folders in All sections']
-                       OR button.smenu_button
-
-── Navigation ────────────────────────────────────────
-- Reports URL:         https://aiv.test.oneaiv.com:8086/aiv/Documents/Reports
-- Requests URL:        https://aiv.test.oneaiv.com:8086/aiv/Request/Request
-- goTo() waits for app shell with Promise.race on search box OR smenu_button
-- Navigation timeout:  120000ms for page.goto, 90000ms for app shell wait
-
-── File browser grid ─────────────────────────────────
-- Grid cells:          [role="gridcell"]
-- Cell text format:    "FilenamePath :: /" (name + path concatenated, no newline)
-- Finding an item:     locator('[role="gridcell"]').filter({ hasText: name }).first()
-- Items off-screen:    grid clips rows with overflow:hidden — use page.evaluate()
-                       to call target.scrollIntoView({ block:'center', behavior:'instant' })
-                       then waitFor({ state:'visible' }) AFTER scrolling
-- Opening an item:     waitFor('attached') → evaluate scrollIntoView → waitFor('visible') → dblclick()
-- DO NOT use:          waitFor('visible') before scrollIntoView — it will timeout
-
-── Scheduler dialog tabs ─────────────────────────────
-- Tab selector:        page.locator('[role="tab"]').filter({ hasText: /parameter|schedule|output|email/i }).first()
-- Parameter tab:       check isVisible first — some reports have no parameters
-- Fill empty inputs:   locator('input[type="text"]:visible:not([readonly]):not([disabled])')
-                       check inputValue() first, only fill if empty
-
-── Schedule tab ──────────────────────────────────────
-- Right Now option:    page.getByText('Right Now', { exact: false }).first()
-                       waitFor visible then click
-
-── Output tab ────────────────────────────────────────
-- Name input:          locator('input[name="soutputname"]')
-                       OR getByPlaceholder('Enter Static Name')
-                       (DO NOT use getByRole('textbox', { name: /name/i }) — matches multiple)
-- Format dropdown:     getByText('rptdocument', { exact: true }).first() → click to open
-- PDF option:          getByRole('option', { name: /^pdf$/i })
-                       OR locator('li').filter({ hasText: /^pdf$/i }).first()
-
-── Run button ────────────────────────────────────────
-- Run:                 getByRole('button', { name: /^run$/i })
-- Cancel:              getByRole('button', { name: /cancel/i })
-- After clicking Run:  waitForTimeout(3000)
-
-── Request section verification ──────────────────────
-- Navigate directly:   goTo(page, 'https://aiv.test.oneaiv.com:8086/aiv/Request/Request')
-- Find run by name:    page.getByText(runName, { exact: false })
-- Poll with reload:    reload({ waitUntil:'domcontentloaded', timeout:60000 })
-                       up to 12 attempts × 3s wait = ~60s total
-- Status values:       'Completed', 'Running', 'Failed', 'Scheduled'
-
-════════════════════════════════════════════════════════
-COMMON FAILURE PATTERNS AND FIXES
-════════════════════════════════════════════════════════
-
-1. "strict mode violation" on name input
-   → Replace getByRole('textbox', { name: /name/i }) with locator('input[name="soutputname"]')
-
-2. "element not visible" on gridcell
-   → Use waitFor('attached') then page.evaluate scrollIntoView, then waitFor('visible')
-
-3. "navigation to controlpanel" when using search box
-   → NEVER use the global search box to find report items — it navigates away
-   → Use the gridcell + scrollIntoView approach instead
-
-4. "timeout on domcontentloaded"
-   → Increase page.goto timeout to 120000ms
-   → Use Promise.race for app shell detection
-
-5. Format dropdown not found
-   → Check if 'rptdocument' text is visible first with isVisible({ timeout: 3000 })
-   → Only click if visible; skip format change if already correct`;
-
   const userPrompt = `The following test is failing:
 
 TEST TITLE: ${testTitle}
@@ -192,7 +108,7 @@ Fix only the failing test ("${testTitle}") and return the complete corrected Typ
   const response = await axios.post(OLLAMA_URL, {
     model: MODEL,
     messages: [
-      { role: 'system', content: systemPrompt },
+      { role: 'system', content: FIX_SYSTEM_PROMPT },
       { role: 'user',   content: userPrompt },
     ],
     stream: false,

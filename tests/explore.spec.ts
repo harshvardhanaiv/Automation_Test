@@ -19,17 +19,17 @@ test.describe('AIV Application - Full Feature Exploration', () => {
 
   test.beforeEach(async ({ page }) => {
     await page.goto(BASE_URL, { waitUntil: 'networkidle' });
-    await page.waitForSelector("input[name='username']", { timeout: 15000 });
-    await page.fill("input[name='username']", USERNAME);
-    await page.fill("input[name='password']", PASSWORD);
+    await page.waitForSelector("input[placeholder='Your email']", { timeout: 15000 });
+    await page.fill("input[placeholder='Your email']", USERNAME);
+    await page.fill("input[placeholder='Password']", PASSWORD);
     await page.click("button:has-text('Login')");
-    await page.waitForSelector("input[placeholder='Search files and folders in All sections']", { timeout: 30000 });
+    await page.waitForSelector("input[placeholder='Search files and folders']", { timeout: 30000 });
   });
 
   test('List View', async ({ page }) => {
     await page.goto('https://aiv.test.oneaiv.com:8086/aiv/Visualization/GridDashboard', { waitUntil: 'networkidle', timeout: 30000 });
     // Confirm app shell is loaded
-    await expect(page.getByPlaceholder('Search files and folders in All sections')).toBeVisible({ timeout: 15000 });
+    await expect(page.getByPlaceholder('Search files and folders')).toBeVisible({ timeout: 15000 });
     // Verify URL contains the dashboard path (this section is a view mode of the dashboard)
     await expect(page).toHaveURL(/GridDashboard/i);
     await page.screenshot({ path: 'screenshots/list-view.png', fullPage: true });
@@ -38,7 +38,7 @@ test.describe('AIV Application - Full Feature Exploration', () => {
   test('Open in new tab', async ({ page }) => {
     await page.goto('https://aiv.test.oneaiv.com:8086/aiv/Visualization/GridDashboard', { waitUntil: 'networkidle', timeout: 30000 });
     // Confirm app shell is loaded
-    await expect(page.getByPlaceholder('Search files and folders in All sections')).toBeVisible({ timeout: 15000 });
+    await expect(page.getByPlaceholder('Search files and folders')).toBeVisible({ timeout: 15000 });
     // This is a dashboard action, not a separate page — verify dashboard loaded
     await expect(page).toHaveURL(/GridDashboard/i);
     await page.screenshot({ path: 'screenshots/open-in-new-tab.png', fullPage: true });
@@ -47,7 +47,7 @@ test.describe('AIV Application - Full Feature Exploration', () => {
   test('Reports', async ({ page }) => {
     await page.goto('https://aiv.test.oneaiv.com:8086/aiv/Documents/Reports', { waitUntil: 'networkidle', timeout: 30000 });
     // Confirm app shell is loaded
-    await expect(page.getByPlaceholder('Search files and folders in All sections')).toBeVisible({ timeout: 15000 });
+    await expect(page.getByPlaceholder('Search files and folders')).toBeVisible({ timeout: 15000 });
     // No interactive elements detected — verify URL only
     await expect(page).toHaveURL(/reports/i);
     await page.screenshot({ path: 'screenshots/reports.png', fullPage: true });
@@ -56,7 +56,7 @@ test.describe('AIV Application - Full Feature Exploration', () => {
   test('Merge Reports', async ({ page }) => {
     await page.goto('https://aiv.test.oneaiv.com:8086/aiv/Documents/MergeReports', { waitUntil: 'networkidle', timeout: 30000 });
     // Confirm app shell is loaded
-    await expect(page.getByPlaceholder('Search files and folders in All sections')).toBeVisible({ timeout: 15000 });
+    await expect(page.getByPlaceholder('Search files and folders')).toBeVisible({ timeout: 15000 });
     // No interactive elements detected — verify URL only
     await expect(page).toHaveURL(/merge.*reports/i);
     await page.screenshot({ path: 'screenshots/merge-reports.png', fullPage: true });
@@ -65,7 +65,7 @@ test.describe('AIV Application - Full Feature Exploration', () => {
   test('Shared Resource', async ({ page }) => {
     await page.goto('https://aiv.test.oneaiv.com:8086/aiv/Documents/SharedResources', { waitUntil: 'networkidle', timeout: 30000 });
     // Confirm app shell is loaded
-    await expect(page.getByPlaceholder('Search files and folders in All sections')).toBeVisible({ timeout: 15000 });
+    await expect(page.getByPlaceholder('Search files and folders')).toBeVisible({ timeout: 15000 });
     // No interactive elements detected — verify URL only
     await expect(page).toHaveURL(/shared.*resource/i);
     await page.screenshot({ path: 'screenshots/shared-resource.png', fullPage: true });
@@ -74,7 +74,7 @@ test.describe('AIV Application - Full Feature Exploration', () => {
   test('Quick Run', async ({ page }) => {
     await page.goto('https://aiv.test.oneaiv.com:8086/aiv/Documents/QuickRun', { waitUntil: 'networkidle', timeout: 30000 });
     // Confirm app shell is loaded
-    await expect(page.getByPlaceholder('Search files and folders in All sections')).toBeVisible({ timeout: 15000 });
+    await expect(page.getByPlaceholder('Search files and folders')).toBeVisible({ timeout: 15000 });
     // Verify the 'Create' button is visible
     await expect(page.getByRole('button', { name: 'Create' })).toBeVisible({ timeout: 10000 });
     await page.screenshot({ path: 'screenshots/quick-run.png', fullPage: true });
@@ -83,7 +83,7 @@ test.describe('AIV Application - Full Feature Exploration', () => {
   test('Report Bursting', async ({ page }) => {
     await page.goto('https://aiv.test.oneaiv.com:8086/aiv/reportmap', { waitUntil: 'networkidle', timeout: 30000 });
     // Confirm app shell is loaded
-    await expect(page.getByPlaceholder('Search files and folders in All sections')).toBeVisible({ timeout: 15000 });
+    await expect(page.getByPlaceholder('Search files and folders')).toBeVisible({ timeout: 15000 });
     // Verify the 'Select Report Mapping' input is visible
     await expect(page.getByPlaceholder('Select Report Mapping')).toBeVisible({ timeout: 10000 });
     await page.screenshot({ path: 'screenshots/report-bursting.png', fullPage: true });
@@ -92,7 +92,7 @@ test.describe('AIV Application - Full Feature Exploration', () => {
   test('Group Report', async ({ page }) => {
     await page.goto('https://aiv.test.oneaiv.com:8086/aiv/groupReport', { waitUntil: 'networkidle', timeout: 30000 });
     // Confirm app shell is loaded
-    await expect(page.getByPlaceholder('Search files and folders in All sections')).toBeVisible({ timeout: 15000 });
+    await expect(page.getByPlaceholder('Search files and folders')).toBeVisible({ timeout: 15000 });
     // Verify the 'Next' button is visible
     await expect(page.getByRole('button', { name: 'Next' })).toBeVisible({ timeout: 10000 });
     await page.screenshot({ path: 'screenshots/group-report.png', fullPage: true });
@@ -101,7 +101,7 @@ test.describe('AIV Application - Full Feature Exploration', () => {
   test('Datasource', async ({ page }) => {
     await page.goto('https://aiv.test.oneaiv.com:8086/aiv/MasterData/Datasource', { waitUntil: 'networkidle', timeout: 30000 });
     // Confirm app shell is loaded
-    await expect(page.getByPlaceholder('Search files and folders in All sections')).toBeVisible({ timeout: 15000 });
+    await expect(page.getByPlaceholder('Search files and folders')).toBeVisible({ timeout: 15000 });
     // Verify the 'Create' button is visible — use exact:true to avoid strict mode violation
     await expect(page.getByRole('button', { name: 'Create', exact: true }).first()).toBeVisible({ timeout: 10000 });
     await page.screenshot({ path: 'screenshots/datasource.png', fullPage: true });
@@ -110,7 +110,7 @@ test.describe('AIV Application - Full Feature Exploration', () => {
   test('Datasets', async ({ page }) => {
     await page.goto('https://aiv.test.oneaiv.com:8086/aiv/MasterData/Datasets', { waitUntil: 'networkidle', timeout: 30000 });
     // Confirm app shell is loaded
-    await expect(page.getByPlaceholder('Search files and folders in All sections')).toBeVisible({ timeout: 15000 });
+    await expect(page.getByPlaceholder('Search files and folders')).toBeVisible({ timeout: 15000 });
     // No interactive elements detected — verify URL only
     await expect(page).toHaveURL(/datasets/i);
     await page.screenshot({ path: 'screenshots/datasets.png', fullPage: true });
@@ -119,7 +119,7 @@ test.describe('AIV Application - Full Feature Exploration', () => {
   test('Group Dataset', async ({ page }) => {
     await page.goto('https://aiv.test.oneaiv.com:8086/aiv/groupDataset', { waitUntil: 'networkidle', timeout: 30000 });
     // Confirm app shell is loaded
-    await expect(page.getByPlaceholder('Search files and folders in All sections')).toBeVisible({ timeout: 15000 });
+    await expect(page.getByPlaceholder('Search files and folders')).toBeVisible({ timeout: 15000 });
     // Verify the 'Next' button is visible
     await expect(page.getByRole('button', { name: 'Next' })).toBeVisible({ timeout: 10000 });
     await page.screenshot({ path: 'screenshots/group-dataset.png', fullPage: true });
@@ -128,7 +128,7 @@ test.describe('AIV Application - Full Feature Exploration', () => {
   test('Parameters', async ({ page }) => {
     await page.goto('https://aiv.test.oneaiv.com:8086/aiv/MasterData/Parameters', { waitUntil: 'networkidle', timeout: 30000 });
     // Confirm app shell is loaded
-    await expect(page.getByPlaceholder('Search files and folders in All sections')).toBeVisible({ timeout: 15000 });
+    await expect(page.getByPlaceholder('Search files and folders')).toBeVisible({ timeout: 15000 });
     // Verify the 'Create' button is visible
     await expect(page.getByRole('button', { name: 'Create' })).toBeVisible({ timeout: 10000 });
     await page.screenshot({ path: 'screenshots/parameters.png', fullPage: true });
@@ -137,7 +137,7 @@ test.describe('AIV Application - Full Feature Exploration', () => {
   test('Webhook', async ({ page }) => {
     await page.goto('https://aiv.test.oneaiv.com:8086/aiv/MasterData/webhook', { waitUntil: 'networkidle', timeout: 30000 });
     // Confirm app shell is loaded
-    await expect(page.getByPlaceholder('Search files and folders in All sections')).toBeVisible({ timeout: 15000 });
+    await expect(page.getByPlaceholder('Search files and folders')).toBeVisible({ timeout: 15000 });
     // Verify the 'Create Webhook' button is visible
     await expect(page.getByRole('button', { name: 'Create Webhook' })).toBeVisible({ timeout: 10000 });
     await page.screenshot({ path: 'screenshots/webhook.png', fullPage: true });
@@ -146,7 +146,7 @@ test.describe('AIV Application - Full Feature Exploration', () => {
   test('Notifications', async ({ page }) => {
     await page.goto('https://aiv.test.oneaiv.com:8086/aiv/Request/Notifications', { waitUntil: 'networkidle', timeout: 30000 });
     // Confirm app shell is loaded
-    await expect(page.getByPlaceholder('Search files and folders in All sections')).toBeVisible({ timeout: 15000 });
+    await expect(page.getByPlaceholder('Search files and folders')).toBeVisible({ timeout: 15000 });
     // Verify the 'Delete' button is visible
     await expect(page.getByRole('button', { name: 'Delete' })).toBeVisible({ timeout: 10000 });
     await page.screenshot({ path: 'screenshots/notifications.png', fullPage: true });
@@ -155,7 +155,7 @@ test.describe('AIV Application - Full Feature Exploration', () => {
   test('Requests', async ({ page }) => {
     await page.goto('https://aiv.test.oneaiv.com:8086/aiv/Request/Request', { waitUntil: 'networkidle', timeout: 30000 });
     // Confirm app shell is loaded
-    await expect(page.getByPlaceholder('Search files and folders in All sections')).toBeVisible({ timeout: 15000 });
+    await expect(page.getByPlaceholder('Search files and folders')).toBeVisible({ timeout: 15000 });
     // Verify the 'Filter' button is visible
     await expect(page.getByRole('button', { name: 'Filter' })).toBeVisible({ timeout: 10000 });
     await page.screenshot({ path: 'screenshots/requests.png', fullPage: true });
@@ -164,7 +164,7 @@ test.describe('AIV Application - Full Feature Exploration', () => {
   test('Alerts', async ({ page }) => {
     await page.goto('https://aiv.test.oneaiv.com:8086/aiv/Request/Alerts', { waitUntil: 'networkidle', timeout: 30000 });
     // Confirm app shell is loaded
-    await expect(page.getByPlaceholder('Search files and folders in All sections')).toBeVisible({ timeout: 15000 });
+    await expect(page.getByPlaceholder('Search files and folders')).toBeVisible({ timeout: 15000 });
     // No interactive elements detected — verify URL only
     await expect(page).toHaveURL(/alerts/i);
     await page.screenshot({ path: 'screenshots/alerts.png', fullPage: true });
@@ -173,7 +173,7 @@ test.describe('AIV Application - Full Feature Exploration', () => {
   test('Alert Reports', async ({ page }) => {
     await page.goto('https://aiv.test.oneaiv.com:8086/aiv/Request/AlertsX', { waitUntil: 'networkidle', timeout: 30000 });
     // Confirm app shell is loaded
-    await expect(page.getByPlaceholder('Search files and folders in All sections')).toBeVisible({ timeout: 15000 });
+    await expect(page.getByPlaceholder('Search files and folders')).toBeVisible({ timeout: 15000 });
     // Verify a data table is rendered
     await expect(page.locator('table').first()).toBeVisible({ timeout: 10000 });
     await page.screenshot({ path: 'screenshots/alert-reports.png', fullPage: true });
@@ -182,7 +182,7 @@ test.describe('AIV Application - Full Feature Exploration', () => {
   test('Repository', async ({ page }) => {
     await page.goto('https://aiv.test.oneaiv.com:8086/aiv/Administration/Repository', { waitUntil: 'networkidle', timeout: 30000 });
     // Confirm app shell is loaded
-    await expect(page.getByPlaceholder('Search files and folders in All sections')).toBeVisible({ timeout: 15000 });
+    await expect(page.getByPlaceholder('Search files and folders')).toBeVisible({ timeout: 15000 });
     // No interactive elements detected — verify URL only
     await expect(page).toHaveURL(/repository/i);
     await page.screenshot({ path: 'screenshots/repository.png', fullPage: true });
@@ -191,7 +191,7 @@ test.describe('AIV Application - Full Feature Exploration', () => {
   test('Departments', async ({ page }) => {
     await page.goto('https://aiv.test.oneaiv.com:8086/aiv/Administration/Department', { waitUntil: 'networkidle', timeout: 30000 });
     // Confirm app shell is loaded
-    await expect(page.getByPlaceholder('Search files and folders in All sections')).toBeVisible({ timeout: 15000 });
+    await expect(page.getByPlaceholder('Search files and folders')).toBeVisible({ timeout: 15000 });
     // Verify the 'Create' button is visible
     await expect(page.getByRole('button', { name: 'Create' })).toBeVisible({ timeout: 10000 });
     await page.screenshot({ path: 'screenshots/departments.png', fullPage: true });
@@ -200,7 +200,7 @@ test.describe('AIV Application - Full Feature Exploration', () => {
   test('Users', async ({ page }) => {
     await page.goto('https://aiv.test.oneaiv.com:8086/aiv/Administration/Users', { waitUntil: 'networkidle', timeout: 60000 });
     // Confirm app shell is loaded — extended timeout for slow page
-    await expect(page.getByPlaceholder('Search files and folders in All sections')).toBeVisible({ timeout: 30000 });
+    await expect(page.getByPlaceholder('Search files and folders')).toBeVisible({ timeout: 30000 });
     // Verify the 'Create User' button is visible
     await expect(page.getByRole('button', { name: 'Create User' })).toBeVisible({ timeout: 15000 });
     await page.screenshot({ path: 'screenshots/users.png', fullPage: true });
@@ -209,7 +209,7 @@ test.describe('AIV Application - Full Feature Exploration', () => {
   test('Roles', async ({ page }) => {
     await page.goto('https://aiv.test.oneaiv.com:8086/aiv/Administration/Roles', { waitUntil: 'domcontentloaded', timeout: 60000 });
     // Confirm app shell is loaded — extended timeout for slow page
-    await expect(page.getByPlaceholder('Search files and folders in All sections')).toBeVisible({ timeout: 30000 });
+    await expect(page.getByPlaceholder('Search files and folders')).toBeVisible({ timeout: 30000 });
     // Verify the 'Create' button is visible — use .first() to avoid strict mode violation
     await expect(page.getByRole('button', { name: 'Create', exact: true }).first()).toBeVisible({ timeout: 15000 });
     await page.screenshot({ path: 'screenshots/roles.png', fullPage: true });
@@ -218,7 +218,7 @@ test.describe('AIV Application - Full Feature Exploration', () => {
   test('Email Users', async ({ page }) => {
     await page.goto('https://aiv.test.oneaiv.com:8086/aiv/Administration/EmailUsers', { waitUntil: 'networkidle', timeout: 30000 });
     // Confirm app shell is loaded
-    await expect(page.getByPlaceholder('Search files and folders in All sections')).toBeVisible({ timeout: 15000 });
+    await expect(page.getByPlaceholder('Search files and folders')).toBeVisible({ timeout: 15000 });
     // Verify the 'Upload' button is visible
     await expect(page.getByRole('button', { name: 'Upload' })).toBeVisible({ timeout: 10000 });
     await page.screenshot({ path: 'screenshots/email-users.png', fullPage: true });
@@ -227,7 +227,7 @@ test.describe('AIV Application - Full Feature Exploration', () => {
   test('File Types', async ({ page }) => {
     await page.goto('https://aiv.test.oneaiv.com:8086/aiv/Administration/FileTypes', { waitUntil: 'networkidle', timeout: 30000 });
     // Confirm app shell is loaded
-    await expect(page.getByPlaceholder('Search files and folders in All sections')).toBeVisible({ timeout: 15000 });
+    await expect(page.getByPlaceholder('Search files and folders')).toBeVisible({ timeout: 15000 });
     // Verify the 'Create' button is visible
     await expect(page.getByRole('button', { name: 'Create' })).toBeVisible({ timeout: 10000 });
     await page.screenshot({ path: 'screenshots/file-types.png', fullPage: true });
@@ -236,7 +236,7 @@ test.describe('AIV Application - Full Feature Exploration', () => {
   test('AIV Configuration', async ({ page }) => {
     await page.goto('https://aiv.test.oneaiv.com:8086/aiv/Administration/AivConfig', { waitUntil: 'networkidle', timeout: 30000 });
     // Confirm app shell is loaded
-    await expect(page.getByPlaceholder('Search files and folders in All sections')).toBeVisible({ timeout: 15000 });
+    await expect(page.getByPlaceholder('Search files and folders')).toBeVisible({ timeout: 15000 });
     // Verify the 'Session timeout in minutes' input — use .first() to avoid strict mode violation (duplicate inputs)
     await expect(page.getByPlaceholder('Session timeout in minutes').first()).toBeVisible({ timeout: 10000 });
     await page.screenshot({ path: 'screenshots/aiv-configuration.png', fullPage: true });
@@ -245,7 +245,7 @@ test.describe('AIV Application - Full Feature Exploration', () => {
   test('License', async ({ page }) => {
     await page.goto('https://aiv.test.oneaiv.com:8086/aiv/Administration/License', { waitUntil: 'networkidle', timeout: 30000 });
     // Confirm app shell is loaded
-    await expect(page.getByPlaceholder('Search files and folders in All sections')).toBeVisible({ timeout: 15000 });
+    await expect(page.getByPlaceholder('Search files and folders')).toBeVisible({ timeout: 15000 });
     // Verify the 'New Licence' button is visible
     await expect(page.getByRole('button', { name: 'New Licence' })).toBeVisible({ timeout: 10000 });
     await page.screenshot({ path: 'screenshots/license.png', fullPage: true });
@@ -254,7 +254,7 @@ test.describe('AIV Application - Full Feature Exploration', () => {
   test('Dynamic Message', async ({ page }) => {
     await page.goto('https://aiv.test.oneaiv.com:8086/aiv/Documents/Messages', { waitUntil: 'networkidle', timeout: 30000 });
     // Confirm app shell is loaded
-    await expect(page.getByPlaceholder('Search files and folders in All sections')).toBeVisible({ timeout: 15000 });
+    await expect(page.getByPlaceholder('Search files and folders')).toBeVisible({ timeout: 15000 });
     // Verify the 'Create' button is visible
     await expect(page.getByRole('button', { name: 'Create' })).toBeVisible({ timeout: 10000 });
     await page.screenshot({ path: 'screenshots/dynamic-message.png', fullPage: true });
@@ -263,7 +263,7 @@ test.describe('AIV Application - Full Feature Exploration', () => {
   test('Annotations', async ({ page }) => {
     await page.goto('https://aiv.test.oneaiv.com:8086/aiv/Annotation', { waitUntil: 'networkidle', timeout: 30000 });
     // Confirm app shell is loaded
-    await expect(page.getByPlaceholder('Search files and folders in All sections')).toBeVisible({ timeout: 15000 });
+    await expect(page.getByPlaceholder('Search files and folders')).toBeVisible({ timeout: 15000 });
     // Verify the annotation tree is rendered (mat-tree is the annotations list)
     await expect(page.locator('mat-tree, mat-nested-tree-node').first()).toBeVisible({ timeout: 10000 });
     await page.screenshot({ path: 'screenshots/annotations.png', fullPage: true });
@@ -272,7 +272,7 @@ test.describe('AIV Application - Full Feature Exploration', () => {
   test('Control Panel', async ({ page }) => {
     await page.goto('https://aiv.test.oneaiv.com:8086/aiv/controlpanel', { waitUntil: 'networkidle', timeout: 30000 });
     // Confirm app shell is loaded
-    await expect(page.getByPlaceholder('Search files and folders in All sections')).toBeVisible({ timeout: 15000 });
+    await expect(page.getByPlaceholder('Search files and folders')).toBeVisible({ timeout: 15000 });
     // No interactive elements detected — verify URL only
     await expect(page).toHaveURL(/control.*panel/i);
     await page.screenshot({ path: 'screenshots/control-panel.png', fullPage: true });
@@ -281,7 +281,7 @@ test.describe('AIV Application - Full Feature Exploration', () => {
   test('Dashboard Internationalization', async ({ page }) => {
     await page.goto('https://aiv.test.oneaiv.com:8086/aiv/internationalization', { waitUntil: 'domcontentloaded', timeout: 60000 });
     // Confirm app shell is loaded — extended timeout, this page is slow after long test runs
-    await expect(page.getByPlaceholder('Search files and folders in All sections')).toBeVisible({ timeout: 30000 });
+    await expect(page.getByPlaceholder('Search files and folders')).toBeVisible({ timeout: 30000 });
     // Verify URL confirms we are on the internationalization page
     await expect(page).toHaveURL(/internationalization/i);
     await page.screenshot({ path: 'screenshots/dashboard-internationalization.png', fullPage: true });
@@ -290,7 +290,7 @@ test.describe('AIV Application - Full Feature Exploration', () => {
   test('External APP', async ({ page }) => {
     await page.goto('https://aiv.test.oneaiv.com:8086/aiv/Visualization/GridExternalApp', { waitUntil: 'networkidle', timeout: 30000 });
     // Confirm app shell is loaded
-    await expect(page.getByPlaceholder('Search files and folders in All sections')).toBeVisible({ timeout: 15000 });
+    await expect(page.getByPlaceholder('Search files and folders')).toBeVisible({ timeout: 15000 });
     // Verify the 'Upload' button is visible
     await expect(page.getByRole('button', { name: 'Upload' })).toBeVisible({ timeout: 10000 });
     await page.screenshot({ path: 'screenshots/external-app.png', fullPage: true });
@@ -299,7 +299,7 @@ test.describe('AIV Application - Full Feature Exploration', () => {
   test('Api Token', async ({ page }) => {
     await page.goto('https://aiv.test.oneaiv.com:8086/aiv/ApiTokens', { waitUntil: 'networkidle', timeout: 30000 });
     // Confirm app shell is loaded
-    await expect(page.getByPlaceholder('Search files and folders in All sections')).toBeVisible({ timeout: 15000 });
+    await expect(page.getByPlaceholder('Search files and folders')).toBeVisible({ timeout: 15000 });
     // Verify the 'Create API token' button is visible
     await expect(page.getByRole('button', { name: 'Create API token' })).toBeVisible({ timeout: 10000 });
     await page.screenshot({ path: 'screenshots/api-token.png', fullPage: true });
@@ -308,7 +308,7 @@ test.describe('AIV Application - Full Feature Exploration', () => {
   test('Connected APPS', async ({ page }) => {
     await page.goto('https://aiv.test.oneaiv.com:8086/aiv/connected-app', { waitUntil: 'networkidle', timeout: 30000 });
     // Confirm app shell is loaded
-    await expect(page.getByPlaceholder('Search files and folders in All sections')).toBeVisible({ timeout: 15000 });
+    await expect(page.getByPlaceholder('Search files and folders')).toBeVisible({ timeout: 15000 });
     // Verify URL — actual path is /connected-app (not /connected-apps)
     await expect(page).toHaveURL(/connected-app/i);
     await page.screenshot({ path: 'screenshots/connected-apps.png', fullPage: true });
