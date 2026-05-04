@@ -73,8 +73,8 @@ async function createVizAndOpenThemePanel(page: Page): Promise<string> {
   await page.getByRole('textbox').fill(vizName);
   await page.getByRole('button', { name: 'Create File' }).click();
   await page.waitForURL(/viz-edit/, { timeout: 120000 });
-  await page.waitForLoadState('networkidle', { timeout: 120000 });
-  await page.waitForTimeout(3000);
+  await page.waitForSelector('.action-bar-btn-save, .action-bar-btn-themes', { timeout: 60000 });
+  await page.waitForTimeout(2000);
   const dlg = page.locator('[role="dialog"]').first();
   if (await dlg.isVisible().catch(() => false)) {
     await page.keyboard.press('Escape');
@@ -201,7 +201,7 @@ test.describe.serial('Themes', () => {
 
   test('Theme panel opens and shows Create Theme button', async ({ page }) => {
     await page.goto(process.env._THEME_TEST_URL!, { waitUntil: 'domcontentloaded', timeout: 90000 });
-    await page.waitForLoadState('networkidle', { timeout: 60000 });
+    await page.waitForSelector('.action-bar-btn-save, .action-bar-btn-themes', { timeout: 30000 }).catch(() => {});
     await ensureThemePanelOpen(page);
     await expect(page.getByRole('button', { name: /create theme/i })).toBeVisible({ timeout: 10000 });
     await shot(page, 'theme-daily-01-panel.png');
@@ -209,7 +209,7 @@ test.describe.serial('Themes', () => {
 
   test('Saved Themes list is visible', async ({ page }) => {
     await page.goto(process.env._THEME_TEST_URL!, { waitUntil: 'domcontentloaded', timeout: 90000 });
-    await page.waitForLoadState('networkidle', { timeout: 60000 });
+    await page.waitForSelector('.action-bar-btn-save, .action-bar-btn-themes', { timeout: 30000 }).catch(() => {});
     await ensureThemePanelOpen(page);
     const savedThemes = page.locator('text=Saved Themes').first();
     const visible = await savedThemes.isVisible({ timeout: 5000 }).catch(() => false);
@@ -222,7 +222,7 @@ test.describe.serial('Themes', () => {
   test('Create theme — fill name and save', async ({ page }) => {
     const themeName = `theme_daily_create_${Date.now()}`;
     await page.goto(process.env._THEME_TEST_URL!, { waitUntil: 'domcontentloaded', timeout: 90000 });
-    await page.waitForLoadState('networkidle', { timeout: 60000 });
+    await page.waitForSelector('.action-bar-btn-save, .action-bar-btn-themes', { timeout: 30000 }).catch(() => {});
     await ensureThemePanelOpen(page);
     await page.getByRole('button', { name: /create theme/i }).click();
     await page.waitForTimeout(500);
@@ -241,7 +241,7 @@ test.describe.serial('Themes', () => {
 
   test('Create theme — cancel discards name', async ({ page }) => {
     await page.goto(process.env._THEME_TEST_URL!, { waitUntil: 'domcontentloaded', timeout: 90000 });
-    await page.waitForLoadState('networkidle', { timeout: 60000 });
+    await page.waitForSelector('.action-bar-btn-save, .action-bar-btn-themes', { timeout: 30000 }).catch(() => {});
     await ensureThemePanelOpen(page);
     await page.getByRole('button', { name: /create theme/i }).click();
     await page.waitForTimeout(500);
@@ -268,7 +268,7 @@ test.describe.serial('Themes', () => {
   test('Edit theme — Tabs Settings section accessible', async ({ page }) => {
     const themeName = `theme_tabs_${Date.now()}`;
     await page.goto(process.env._THEME_TEST_URL!, { waitUntil: 'domcontentloaded', timeout: 90000 });
-    await page.waitForLoadState('networkidle', { timeout: 60000 });
+    await page.waitForSelector('.action-bar-btn-save, .action-bar-btn-themes', { timeout: 30000 }).catch(() => {});
     await ensureThemePanelOpen(page);
     await createAndEditTheme(page, themeName);
     await clickSectionTab(page, 'Tabs Settings');
@@ -282,7 +282,7 @@ test.describe.serial('Themes', () => {
   test('Edit theme — Canvas Background section accessible', async ({ page }) => {
     const themeName = `theme_canvas_${Date.now()}`;
     await page.goto(process.env._THEME_TEST_URL!, { waitUntil: 'domcontentloaded', timeout: 90000 });
-    await page.waitForLoadState('networkidle', { timeout: 60000 });
+    await page.waitForSelector('.action-bar-btn-save, .action-bar-btn-themes', { timeout: 30000 }).catch(() => {});
     await ensureThemePanelOpen(page);
     await createAndEditTheme(page, themeName);
     await clickSectionTab(page, 'Canvas Background');
@@ -293,7 +293,7 @@ test.describe.serial('Themes', () => {
   test('Edit theme — Widget Background section accessible', async ({ page }) => {
     const themeName = `theme_widget_${Date.now()}`;
     await page.goto(process.env._THEME_TEST_URL!, { waitUntil: 'domcontentloaded', timeout: 90000 });
-    await page.waitForLoadState('networkidle', { timeout: 60000 });
+    await page.waitForSelector('.action-bar-btn-save, .action-bar-btn-themes', { timeout: 30000 }).catch(() => {});
     await ensureThemePanelOpen(page);
     await createAndEditTheme(page, themeName);
     await clickSectionTab(page, 'Widget Background');
@@ -304,7 +304,7 @@ test.describe.serial('Themes', () => {
   test('Edit theme — General section accessible', async ({ page }) => {
     const themeName = `theme_general_${Date.now()}`;
     await page.goto(process.env._THEME_TEST_URL!, { waitUntil: 'domcontentloaded', timeout: 90000 });
-    await page.waitForLoadState('networkidle', { timeout: 60000 });
+    await page.waitForSelector('.action-bar-btn-save, .action-bar-btn-themes', { timeout: 30000 }).catch(() => {});
     await ensureThemePanelOpen(page);
     await createAndEditTheme(page, themeName);
     await clickSectionTab(page, 'General');
@@ -315,7 +315,7 @@ test.describe.serial('Themes', () => {
   test('Edit theme — Title section accessible', async ({ page }) => {
     const themeName = `theme_title_${Date.now()}`;
     await page.goto(process.env._THEME_TEST_URL!, { waitUntil: 'domcontentloaded', timeout: 90000 });
-    await page.waitForLoadState('networkidle', { timeout: 60000 });
+    await page.waitForSelector('.action-bar-btn-save, .action-bar-btn-themes', { timeout: 30000 }).catch(() => {});
     await ensureThemePanelOpen(page);
     await createAndEditTheme(page, themeName);
     await clickSectionTab(page, 'Title');
@@ -326,7 +326,7 @@ test.describe.serial('Themes', () => {
   test('Edit theme — Subtitle Properties section accessible', async ({ page }) => {
     const themeName = `theme_subtitle_${Date.now()}`;
     await page.goto(process.env._THEME_TEST_URL!, { waitUntil: 'domcontentloaded', timeout: 90000 });
-    await page.waitForLoadState('networkidle', { timeout: 60000 });
+    await page.waitForSelector('.action-bar-btn-save, .action-bar-btn-themes', { timeout: 30000 }).catch(() => {});
     await ensureThemePanelOpen(page);
     await createAndEditTheme(page, themeName);
     await clickSectionTab(page, 'Subtitle Properties');
@@ -337,7 +337,7 @@ test.describe.serial('Themes', () => {
   test('Edit theme — Table section accessible', async ({ page }) => {
     const themeName = `theme_table_${Date.now()}`;
     await page.goto(process.env._THEME_TEST_URL!, { waitUntil: 'domcontentloaded', timeout: 90000 });
-    await page.waitForLoadState('networkidle', { timeout: 60000 });
+    await page.waitForSelector('.action-bar-btn-save, .action-bar-btn-themes', { timeout: 30000 }).catch(() => {});
     await ensureThemePanelOpen(page);
     await createAndEditTheme(page, themeName);
     await clickSectionTab(page, 'Table');
@@ -348,7 +348,7 @@ test.describe.serial('Themes', () => {
   test('Edit theme — Chart section accessible', async ({ page }) => {
     const themeName = `theme_chart_${Date.now()}`;
     await page.goto(process.env._THEME_TEST_URL!, { waitUntil: 'domcontentloaded', timeout: 90000 });
-    await page.waitForLoadState('networkidle', { timeout: 60000 });
+    await page.waitForSelector('.action-bar-btn-save, .action-bar-btn-themes', { timeout: 30000 }).catch(() => {});
     await ensureThemePanelOpen(page);
     await createAndEditTheme(page, themeName);
     await clickSectionTab(page, 'Chart');
@@ -359,7 +359,7 @@ test.describe.serial('Themes', () => {
   test('Edit theme — Map section accessible', async ({ page }) => {
     const themeName = `theme_map_${Date.now()}`;
     await page.goto(process.env._THEME_TEST_URL!, { waitUntil: 'domcontentloaded', timeout: 90000 });
-    await page.waitForLoadState('networkidle', { timeout: 60000 });
+    await page.waitForSelector('.action-bar-btn-save, .action-bar-btn-themes', { timeout: 30000 }).catch(() => {});
     await ensureThemePanelOpen(page);
     await createAndEditTheme(page, themeName);
     await clickSectionTab(page, 'Map');
@@ -370,7 +370,7 @@ test.describe.serial('Themes', () => {
   test('Edit theme — KPI / Cards section accessible', async ({ page }) => {
     const themeName = `theme_kpi_${Date.now()}`;
     await page.goto(process.env._THEME_TEST_URL!, { waitUntil: 'domcontentloaded', timeout: 90000 });
-    await page.waitForLoadState('networkidle', { timeout: 60000 });
+    await page.waitForSelector('.action-bar-btn-save, .action-bar-btn-themes', { timeout: 30000 }).catch(() => {});
     await ensureThemePanelOpen(page);
     await createAndEditTheme(page, themeName);
     await clickSectionTab(page, 'KPI / Cards');
@@ -383,7 +383,7 @@ test.describe.serial('Themes', () => {
   test('Delete theme removes it from list', async ({ page }) => {
     const themeName = `theme_delete_${Date.now()}`;
     await page.goto(process.env._THEME_TEST_URL!, { waitUntil: 'domcontentloaded', timeout: 90000 });
-    await page.waitForLoadState('networkidle', { timeout: 60000 });
+    await page.waitForSelector('.action-bar-btn-save, .action-bar-btn-themes', { timeout: 30000 }).catch(() => {});
     await ensureThemePanelOpen(page);
 
     // Create a theme to delete
@@ -433,3 +433,5 @@ test.describe.serial('Themes', () => {
   });
 
 });
+
+

@@ -70,8 +70,8 @@ async function createViz(page: Page): Promise<string> {
   await page.getByRole('textbox').fill(vizName);
   await page.getByRole('button', { name: 'Create File' }).click();
   await page.waitForURL(/viz-edit/, { timeout: 120000 });
-  await page.waitForLoadState('networkidle', { timeout: 120000 });
-  await page.waitForTimeout(3000);
+  await page.waitForSelector('.action-bar-btn-save', { timeout: 60000 });
+  await page.waitForTimeout(2000);
   // Dismiss any auto-opened dialog
   const dlg = page.locator('[role="dialog"]').first();
   if (await dlg.isVisible().catch(() => false)) {
@@ -462,3 +462,4 @@ test.describe.serial('Viz Widgets — Daily', () => {
   });
 
 });
+

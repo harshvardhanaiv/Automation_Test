@@ -241,7 +241,7 @@ test.describe.serial('Parameters', () => {
     await page.getByRole('button', { name: /^create$/i }).first().click();
     await page.waitForTimeout(1500);
     await shot(page, 'param-05-dialog.png');
-    const dialog = page.getByRole('dialog').or(page.locator('.p-dialog')).first();
+    const dialog = page.locator('.p-dialog').filter({ hasNot: page.locator('.e-contextmenu-wrapper') }).first();
     await expect(dialog).toBeVisible({ timeout: 10000 });
     await page.keyboard.press('Escape');
   });
@@ -250,7 +250,7 @@ test.describe.serial('Parameters', () => {
     await goTo(page, URLS.parameters);
     await page.getByRole('button', { name: /^create$/i }).first().click();
     await page.waitForTimeout(1500);
-    const dialog = page.getByRole('dialog').or(page.locator('.p-dialog')).first();
+    const dialog = page.locator('.p-dialog').filter({ hasNot: page.locator('.e-contextmenu-wrapper') }).first();
     await expect(dialog).toBeVisible({ timeout: 10000 });
     const nameInput = dialog.locator('input').first();
     await expect(nameInput).toBeVisible({ timeout: 5000 });
@@ -262,7 +262,7 @@ test.describe.serial('Parameters', () => {
     await goTo(page, URLS.parameters);
     await page.getByRole('button', { name: /^create$/i }).first().click();
     await page.waitForTimeout(1500);
-    const dialog = page.getByRole('dialog').or(page.locator('.p-dialog')).first();
+    const dialog = page.locator('.p-dialog').filter({ hasNot: page.locator('.e-contextmenu-wrapper') }).first();
     await expect(dialog).toBeVisible({ timeout: 10000 });
     const cancelName = 'auto_param_cancel_' + Date.now();
     await dialog.locator('input').first().fill(cancelName);
@@ -323,7 +323,7 @@ test.describe.serial('Webhook', () => {
     await btn.click();
     await page.waitForTimeout(1500);
     await shot(page, 'webhook-05-dialog.png');
-    const dialog = page.getByRole('dialog').or(page.locator('.p-dialog')).first();
+    const dialog = page.locator('.p-dialog').filter({ hasNot: page.locator('.e-contextmenu-wrapper') }).first();
     await expect(dialog).toBeVisible({ timeout: 10000 });
     // Webhook dialog should have a URL input
     const urlInput = dialog.locator('input[placeholder*="url" i], input[placeholder*="URL"]').first();
@@ -338,7 +338,7 @@ test.describe.serial('Webhook', () => {
       .or(page.getByRole('button', { name: /^create$/i })).first();
     await btn.click();
     await page.waitForTimeout(1500);
-    const dialog = page.getByRole('dialog').or(page.locator('.p-dialog')).first();
+    const dialog = page.locator('.p-dialog').filter({ hasNot: page.locator('.e-contextmenu-wrapper') }).first();
     await expect(dialog).toBeVisible({ timeout: 10000 });
     const cancelName = 'auto_wh_cancel_' + Date.now();
     await dialog.locator('input').first().fill(cancelName);

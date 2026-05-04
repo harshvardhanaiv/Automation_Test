@@ -59,8 +59,8 @@ async function createViz(page: Page): Promise<string> {
   await page.getByRole('textbox').fill(vizName);
   await page.getByRole('button', { name: 'Create File' }).click();
   await page.waitForURL(/viz-edit/, { timeout: 120000 });
-  await page.waitForLoadState('networkidle', { timeout: 120000 });
-  await page.waitForTimeout(3000);
+  await page.waitForSelector('.action-bar-btn-save', { timeout: 60000 });
+  await page.waitForTimeout(2000);
   const dlg = page.locator('[role="dialog"]').first();
   if (await dlg.isVisible().catch(() => false)) {
     await page.keyboard.press('Escape');
@@ -221,7 +221,7 @@ test.describe.serial('Widget Settings', () => {
 
   test('Widget Settings panel opens via gear icon on widget', async ({ page }) => {
     await page.goto(process.env._WS_TEST_URL!, { waitUntil: 'domcontentloaded', timeout: 90000 });
-    await page.waitForLoadState('networkidle', { timeout: 60000 });
+    await page.waitForSelector('.action-bar-btn-save', { timeout: 30000 }).catch(() => {});
     const opened = await addChartAndOpenWidgetSettings(page);
     await shot(page, 'ws-01-panel-open.png');
     if (!opened) { console.log('Widget Settings panel not opened — skipping'); return; }
@@ -236,7 +236,7 @@ test.describe.serial('Widget Settings', () => {
 
   test('Title — Hide toggle is present', async ({ page }) => {
     await page.goto(process.env._WS_TEST_URL!, { waitUntil: 'domcontentloaded', timeout: 90000 });
-    await page.waitForLoadState('networkidle', { timeout: 60000 });
+    await page.waitForSelector('.action-bar-btn-save', { timeout: 30000 }).catch(() => {});
     if (!await addChartAndOpenWidgetSettings(page)) { console.log('Skipping'); return; }
     // Hide toggle for the title
     const hideToggle = page.locator('p-inputswitch, mat-slide-toggle, input[type="checkbox"]').first();
@@ -247,7 +247,7 @@ test.describe.serial('Widget Settings', () => {
 
   test('Title — Widget Name input is present and editable', async ({ page }) => {
     await page.goto(process.env._WS_TEST_URL!, { waitUntil: 'domcontentloaded', timeout: 90000 });
-    await page.waitForLoadState('networkidle', { timeout: 60000 });
+    await page.waitForSelector('.action-bar-btn-save', { timeout: 30000 }).catch(() => {});
     if (!await addChartAndOpenWidgetSettings(page)) { console.log('Skipping'); return; }
     // Widget Name text field
     const nameInput = page.locator('input[placeholder*="name" i], input[placeholder*="title" i], input[type="text"]').first();
@@ -264,7 +264,7 @@ test.describe.serial('Widget Settings', () => {
 
   test('Title — Align dropdown is present', async ({ page }) => {
     await page.goto(process.env._WS_TEST_URL!, { waitUntil: 'domcontentloaded', timeout: 90000 });
-    await page.waitForLoadState('networkidle', { timeout: 60000 });
+    await page.waitForSelector('.action-bar-btn-save', { timeout: 30000 }).catch(() => {});
     if (!await addChartAndOpenWidgetSettings(page)) { console.log('Skipping'); return; }
     const alignDropdown = page.locator('p-dropdown').filter({ hasText: /left|center|right|align/i }).first();
     const visible = await alignDropdown.isVisible({ timeout: 5000 }).catch(() => false);
@@ -274,7 +274,7 @@ test.describe.serial('Widget Settings', () => {
 
   test('Title — Font Size input is present', async ({ page }) => {
     await page.goto(process.env._WS_TEST_URL!, { waitUntil: 'domcontentloaded', timeout: 90000 });
-    await page.waitForLoadState('networkidle', { timeout: 60000 });
+    await page.waitForSelector('.action-bar-btn-save', { timeout: 30000 }).catch(() => {});
     if (!await addChartAndOpenWidgetSettings(page)) { console.log('Skipping'); return; }
     const fontSizeInput = page.getByRole('spinbutton').first();
     const visible = await fontSizeInput.isVisible({ timeout: 5000 }).catch(() => false);
@@ -284,7 +284,7 @@ test.describe.serial('Widget Settings', () => {
 
   test('Title — Font Weight dropdown is present', async ({ page }) => {
     await page.goto(process.env._WS_TEST_URL!, { waitUntil: 'domcontentloaded', timeout: 90000 });
-    await page.waitForLoadState('networkidle', { timeout: 60000 });
+    await page.waitForSelector('.action-bar-btn-save', { timeout: 30000 }).catch(() => {});
     if (!await addChartAndOpenWidgetSettings(page)) { console.log('Skipping'); return; }
     const fontWeightDropdown = page.locator('p-dropdown').filter({ hasText: /normal|bold|weight/i }).first();
     const visible = await fontWeightDropdown.isVisible({ timeout: 5000 }).catch(() => false);
@@ -294,7 +294,7 @@ test.describe.serial('Widget Settings', () => {
 
   test('Title — Color picker is present', async ({ page }) => {
     await page.goto(process.env._WS_TEST_URL!, { waitUntil: 'domcontentloaded', timeout: 90000 });
-    await page.waitForLoadState('networkidle', { timeout: 60000 });
+    await page.waitForSelector('.action-bar-btn-save', { timeout: 30000 }).catch(() => {});
     if (!await addChartAndOpenWidgetSettings(page)) { console.log('Skipping'); return; }
     // Color inputs are text fields with hex values
     const colorInput = page.locator('input[type="text"]').filter({ hasText: /#[0-9a-fA-F]/ }).first()
@@ -308,7 +308,7 @@ test.describe.serial('Widget Settings', () => {
 
   test('Border — Enable Border toggle is present', async ({ page }) => {
     await page.goto(process.env._WS_TEST_URL!, { waitUntil: 'domcontentloaded', timeout: 90000 });
-    await page.waitForLoadState('networkidle', { timeout: 60000 });
+    await page.waitForSelector('.action-bar-btn-save', { timeout: 30000 }).catch(() => {});
     if (!await addChartAndOpenWidgetSettings(page)) { console.log('Skipping'); return; }
     // Scroll down to find border section
     const borderSection = page.getByText(/border/i).first();
@@ -324,7 +324,7 @@ test.describe.serial('Widget Settings', () => {
 
   test('Border — Border thickness spinners are present', async ({ page }) => {
     await page.goto(process.env._WS_TEST_URL!, { waitUntil: 'domcontentloaded', timeout: 90000 });
-    await page.waitForLoadState('networkidle', { timeout: 60000 });
+    await page.waitForSelector('.action-bar-btn-save', { timeout: 30000 }).catch(() => {});
     // Guard: verify we're actually on the viz-edit page before proceeding
     const onEditor = await page.url().includes('viz-edit');
     if (!onEditor) { console.log('Not on viz-edit page — skipping'); return; }
@@ -343,7 +343,7 @@ test.describe.serial('Widget Settings', () => {
 
   test('Border — Border Style dropdown is present', async ({ page }) => {
     await page.goto(process.env._WS_TEST_URL!, { waitUntil: 'domcontentloaded', timeout: 90000 });
-    await page.waitForLoadState('networkidle', { timeout: 60000 });
+    await page.waitForSelector('.action-bar-btn-save', { timeout: 30000 }).catch(() => {});
     if (!await addChartAndOpenWidgetSettings(page)) { console.log('Skipping'); return; }
     const borderStyleDropdown = page.locator('p-dropdown').filter({ hasText: /solid|dashed|dotted/i }).first();
     const visible = await borderStyleDropdown.isVisible({ timeout: 5000 }).catch(() => false);
@@ -355,7 +355,7 @@ test.describe.serial('Widget Settings', () => {
 
   test('Background — Background Color input is present', async ({ page }) => {
     await page.goto(process.env._WS_TEST_URL!, { waitUntil: 'domcontentloaded', timeout: 90000 });
-    await page.waitForLoadState('networkidle', { timeout: 60000 });
+    await page.waitForSelector('.action-bar-btn-save', { timeout: 30000 }).catch(() => {});
     if (!await addChartAndOpenWidgetSettings(page)) { console.log('Skipping'); return; }
     const bgSection = page.getByText(/background/i).first();
     if (await bgSection.isVisible({ timeout: 5000 }).catch(() => false)) {
@@ -369,7 +369,7 @@ test.describe.serial('Widget Settings', () => {
 
   test('Background — Use Background Image toggle is present', async ({ page }) => {
     await page.goto(process.env._WS_TEST_URL!, { waitUntil: 'domcontentloaded', timeout: 90000 });
-    await page.waitForLoadState('networkidle', { timeout: 60000 });
+    await page.waitForSelector('.action-bar-btn-save', { timeout: 30000 }).catch(() => {});
     if (!page.url().includes('viz-edit')) { console.log('Not on viz-edit — skipping'); return; }
     if (!await addChartAndOpenWidgetSettings(page)) { console.log('Skipping'); return; }
     const toggles = page.locator('p-inputswitch, mat-slide-toggle');
@@ -384,7 +384,7 @@ test.describe.serial('Widget Settings', () => {
 
   test('Widget Settings panel has multiple sections/tabs', async ({ page }) => {
     await page.goto(process.env._WS_TEST_URL!, { waitUntil: 'domcontentloaded', timeout: 90000 });
-    await page.waitForLoadState('networkidle', { timeout: 60000 });
+    await page.waitForSelector('.action-bar-btn-save', { timeout: 30000 }).catch(() => {});
     if (!await addChartAndOpenWidgetSettings(page)) { console.log('Skipping'); return; }
     // The panel should have sections like Title, Border, Background, Shadow, Labels, Refresh
     const sections = ['Title', 'Border', 'Background'];
@@ -434,7 +434,7 @@ test.describe.serial('Tab Settings', () => {
 
   test('Tab Settings panel opens via gear icon on Tab component', async ({ page }) => {
     await page.goto(process.env._TS_TEST_URL!, { waitUntil: 'domcontentloaded', timeout: 90000 });
-    await page.waitForLoadState('networkidle', { timeout: 60000 });
+    await page.waitForSelector('.action-bar-btn-save', { timeout: 30000 }).catch(() => {});
     const opened = await openTabSettings(page);
     await shot(page, 'ts-01-panel-open.png');
     console.log(`Tab Settings panel opened: ${opened}`);
@@ -445,7 +445,7 @@ test.describe.serial('Tab Settings', () => {
 
   test('Tab Settings — Font Size input is present', async ({ page }) => {
     await page.goto(process.env._TS_TEST_URL!, { waitUntil: 'domcontentloaded', timeout: 90000 });
-    await page.waitForLoadState('networkidle', { timeout: 60000 });
+    await page.waitForSelector('.action-bar-btn-save', { timeout: 30000 }).catch(() => {});
     await openTabSettings(page);
     const fontSizeInput = page.getByRole('spinbutton').first();
     const visible = await fontSizeInput.isVisible({ timeout: 5000 }).catch(() => false);
@@ -455,7 +455,7 @@ test.describe.serial('Tab Settings', () => {
 
   test('Tab Settings — Width input is present', async ({ page }) => {
     await page.goto(process.env._TS_TEST_URL!, { waitUntil: 'domcontentloaded', timeout: 90000 });
-    await page.waitForLoadState('networkidle', { timeout: 60000 });
+    await page.waitForSelector('.action-bar-btn-save', { timeout: 30000 }).catch(() => {});
     await openTabSettings(page);
     const spinners = page.getByRole('spinbutton');
     const count = await spinners.count();
@@ -466,7 +466,7 @@ test.describe.serial('Tab Settings', () => {
 
   test('Tab Settings — Font Weight dropdown is present', async ({ page }) => {
     await page.goto(process.env._TS_TEST_URL!, { waitUntil: 'domcontentloaded', timeout: 90000 });
-    await page.waitForLoadState('networkidle', { timeout: 60000 });
+    await page.waitForSelector('.action-bar-btn-save', { timeout: 30000 }).catch(() => {});
     await openTabSettings(page);
     const fontWeightDropdown = page.locator('p-dropdown').first();
     const visible = await fontWeightDropdown.isVisible({ timeout: 5000 }).catch(() => false);
@@ -476,7 +476,7 @@ test.describe.serial('Tab Settings', () => {
 
   test('Tab Settings — Font Style dropdown is present', async ({ page }) => {
     await page.goto(process.env._TS_TEST_URL!, { waitUntil: 'domcontentloaded', timeout: 90000 });
-    await page.waitForLoadState('networkidle', { timeout: 60000 });
+    await page.waitForSelector('.action-bar-btn-save', { timeout: 30000 }).catch(() => {});
     await openTabSettings(page);
     const dropdowns = page.locator('p-dropdown');
     const count = await dropdowns.count();
@@ -488,7 +488,7 @@ test.describe.serial('Tab Settings', () => {
 
   test('Tab Settings — Inactive Font Color picker is present', async ({ page }) => {
     await page.goto(process.env._TS_TEST_URL!, { waitUntil: 'domcontentloaded', timeout: 90000 });
-    await page.waitForLoadState('networkidle', { timeout: 60000 });
+    await page.waitForSelector('.action-bar-btn-save', { timeout: 30000 }).catch(() => {});
     await openTabSettings(page);
     // Color inputs are hex text fields
     const colorInputs = page.locator('input[type="text"], p-colorpicker');
@@ -499,7 +499,7 @@ test.describe.serial('Tab Settings', () => {
 
   test('Tab Settings — Tab Background color picker is present', async ({ page }) => {
     await page.goto(process.env._TS_TEST_URL!, { waitUntil: 'domcontentloaded', timeout: 90000 });
-    await page.waitForLoadState('networkidle', { timeout: 60000 });
+    await page.waitForSelector('.action-bar-btn-save', { timeout: 30000 }).catch(() => {});
     await openTabSettings(page);
     const bgText = page.getByText(/tab background|background/i).first();
     const visible = await bgText.isVisible({ timeout: 5000 }).catch(() => false);
@@ -509,7 +509,7 @@ test.describe.serial('Tab Settings', () => {
 
   test('Tab Settings — Active Tab Color picker is present', async ({ page }) => {
     await page.goto(process.env._TS_TEST_URL!, { waitUntil: 'domcontentloaded', timeout: 90000 });
-    await page.waitForLoadState('networkidle', { timeout: 60000 });
+    await page.waitForSelector('.action-bar-btn-save', { timeout: 30000 }).catch(() => {});
     await openTabSettings(page);
     const activeTabText = page.getByText(/active tab color|active tab/i).first();
     const visible = await activeTabText.isVisible({ timeout: 5000 }).catch(() => false);
@@ -519,7 +519,7 @@ test.describe.serial('Tab Settings', () => {
 
   test('Tab Settings — Active Tab Background Color picker is present', async ({ page }) => {
     await page.goto(process.env._TS_TEST_URL!, { waitUntil: 'domcontentloaded', timeout: 90000 });
-    await page.waitForLoadState('networkidle', { timeout: 60000 });
+    await page.waitForSelector('.action-bar-btn-save', { timeout: 30000 }).catch(() => {});
     await openTabSettings(page);
     const activeBgText = page.getByText(/active tab background|active background/i).first();
     const visible = await activeBgText.isVisible({ timeout: 5000 }).catch(() => false);
@@ -531,7 +531,7 @@ test.describe.serial('Tab Settings', () => {
 
   test('Canvas Background — Background Color input is present', async ({ page }) => {
     await page.goto(process.env._TS_TEST_URL!, { waitUntil: 'domcontentloaded', timeout: 90000 });
-    await page.waitForLoadState('networkidle', { timeout: 60000 });
+    await page.waitForSelector('.action-bar-btn-save', { timeout: 30000 }).catch(() => {});
     await openTabSettings(page);
     const canvasBgText = page.getByText(/canvas background/i).first();
     if (await canvasBgText.isVisible({ timeout: 5000 }).catch(() => false)) {
@@ -545,7 +545,7 @@ test.describe.serial('Tab Settings', () => {
 
   test('Canvas Background — Use Background Image toggle is present', async ({ page }) => {
     await page.goto(process.env._TS_TEST_URL!, { waitUntil: 'domcontentloaded', timeout: 90000 });
-    await page.waitForLoadState('networkidle', { timeout: 60000 });
+    await page.waitForSelector('.action-bar-btn-save', { timeout: 30000 }).catch(() => {});
     await openTabSettings(page);
     const toggles = page.locator('p-inputswitch, mat-slide-toggle');
     const count = await toggles.count();
@@ -555,7 +555,7 @@ test.describe.serial('Tab Settings', () => {
 
   test('Canvas Background — Background Position dropdown is present', async ({ page }) => {
     await page.goto(process.env._TS_TEST_URL!, { waitUntil: 'domcontentloaded', timeout: 90000 });
-    await page.waitForLoadState('networkidle', { timeout: 60000 });
+    await page.waitForSelector('.action-bar-btn-save', { timeout: 30000 }).catch(() => {});
     await openTabSettings(page);
     const positionLabel = page.getByText(/background position|position/i).first();
     const visible = await positionLabel.isVisible({ timeout: 5000 }).catch(() => false);
@@ -565,7 +565,7 @@ test.describe.serial('Tab Settings', () => {
 
   test('Canvas Background — Background Size dropdown is present', async ({ page }) => {
     await page.goto(process.env._TS_TEST_URL!, { waitUntil: 'domcontentloaded', timeout: 90000 });
-    await page.waitForLoadState('networkidle', { timeout: 60000 });
+    await page.waitForSelector('.action-bar-btn-save', { timeout: 30000 }).catch(() => {});
     await openTabSettings(page);
     const sizeLabel = page.getByText(/background size|size/i).first();
     const visible = await sizeLabel.isVisible({ timeout: 5000 }).catch(() => false);
@@ -575,7 +575,7 @@ test.describe.serial('Tab Settings', () => {
 
   test('Canvas Background — Background Repeat dropdown is present', async ({ page }) => {
     await page.goto(process.env._TS_TEST_URL!, { waitUntil: 'domcontentloaded', timeout: 90000 });
-    await page.waitForLoadState('networkidle', { timeout: 60000 });
+    await page.waitForSelector('.action-bar-btn-save', { timeout: 30000 }).catch(() => {});
     await openTabSettings(page);
     const repeatLabel = page.getByText(/background repeat|repeat/i).first();
     const visible = await repeatLabel.isVisible({ timeout: 5000 }).catch(() => false);
@@ -585,7 +585,7 @@ test.describe.serial('Tab Settings', () => {
 
   test('Canvas Background — Background Opacity slider is present', async ({ page }) => {
     await page.goto(process.env._TS_TEST_URL!, { waitUntil: 'domcontentloaded', timeout: 90000 });
-    await page.waitForLoadState('networkidle', { timeout: 60000 });
+    await page.waitForSelector('.action-bar-btn-save', { timeout: 30000 }).catch(() => {});
     await openTabSettings(page);
     const opacityLabel = page.getByText(/opacity/i).first();
     const visible = await opacityLabel.isVisible({ timeout: 5000 }).catch(() => false);
@@ -601,7 +601,7 @@ test.describe.serial('Tab Settings', () => {
 
   test('Tab component — Tab 1 is visible on canvas', async ({ page }) => {
     await page.goto(process.env._TS_TEST_URL!, { waitUntil: 'domcontentloaded', timeout: 90000 });
-    await page.waitForLoadState('networkidle', { timeout: 60000 });
+    await page.waitForSelector('.action-bar-btn-save', { timeout: 30000 }).catch(() => {});
     await expect(page).toHaveURL(/viz-edit/i, { timeout: 10000 });
     // Tab labels may be "Tab 1"/"Tab 2" or custom names — check for any tab-like element
     const tab1 = page.getByText('Tab 1', { exact: true }).first();
@@ -613,7 +613,7 @@ test.describe.serial('Tab Settings', () => {
 
   test('Tab component — Tab 2 is visible on canvas', async ({ page }) => {
     await page.goto(process.env._TS_TEST_URL!, { waitUntil: 'domcontentloaded', timeout: 90000 });
-    await page.waitForLoadState('networkidle', { timeout: 60000 });
+    await page.waitForSelector('.action-bar-btn-save', { timeout: 30000 }).catch(() => {});
     await expect(page).toHaveURL(/viz-edit/i, { timeout: 10000 });
     const tab2 = page.getByText('Tab 2', { exact: true }).first();
     const visible = await tab2.isVisible({ timeout: 10000 }).catch(() => false);
@@ -627,7 +627,7 @@ test.describe.serial('Tab Settings', () => {
 
   test('Tab component — clicking Tab 2 switches the active tab', async ({ page }) => {
     await page.goto(process.env._TS_TEST_URL!, { waitUntil: 'domcontentloaded', timeout: 90000 });
-    await page.waitForLoadState('networkidle', { timeout: 60000 });
+    await page.waitForSelector('.action-bar-btn-save', { timeout: 30000 }).catch(() => {});
     const tab2 = page.getByText('Tab 2', { exact: true }).first();
     if (await tab2.isVisible({ timeout: 5000 }).catch(() => false)) {
       await tab2.click();
@@ -640,3 +640,5 @@ test.describe.serial('Tab Settings', () => {
   });
 
 });
+
+
