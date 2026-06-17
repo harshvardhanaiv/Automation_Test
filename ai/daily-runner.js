@@ -32,6 +32,7 @@ const { FIX_SYSTEM_PROMPT } = require('./systemPrompt');
 const args      = process.argv.slice(2);
 const fileArg   = args.includes('--file')    ? args[args.indexOf('--file') + 1]    : null;
 const workersArg= args.includes('--workers') ? args[args.indexOf('--workers') + 1] : '4';
+const projectArg = args.includes('--project') ? args[args.indexOf('--project') + 1] : null;
 const dryRun    = args.includes('--dry-run');
 
 // ── Config ────────────────────────────────────────────────────────────────────
@@ -66,9 +67,10 @@ function runTests(pattern) {
     'npx playwright test',
     pattern,
     `--workers=${workersArg}`,
+    projectArg ? `--project=${projectArg}` : '',
     '--reporter=json',
     `--output="${path.relative(process.cwd(), dir)}"`,
-  ].join(' ');
+  ].filter(Boolean).join(' ');
 
   console.log(`\n▶  ${cmd}\n`);
 
@@ -197,6 +199,7 @@ async function main() {
   console.log('╚══════════════════════════════════════════════════════════╝');
   console.log(`   Target  : ${pattern}`);
   console.log(`   Workers : ${workersArg}`);
+  console.log(`   Project : ${projectArg || 'all'}`);
   console.log(`   Model   : ${MODEL}`);
   console.log(`   Retries : ${MAX_RETRIES}`);
   console.log(`   Dry run : ${dryRun}`);

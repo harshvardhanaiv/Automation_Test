@@ -43,6 +43,7 @@
     "daily:viz-widgets": "playwright test tests/daily/15-viz-widgets.spec.ts --reporter=list",
     "daily:widget-settings": "playwright test tests/daily/16-widget-settings.spec.ts --reporter=list",
     "daily:viz-widgets-extended": "playwright test tests/daily/17-viz-widgets-extended.spec.ts --reporter=list",
+    "daily:sqlbuddy": "playwright test tests/daily/19-sqlbuddy.spec.ts --reporter=list",
 
     "ai-run": "node ai/runner.js",
     "crawl": "node ai/crawl.js",
