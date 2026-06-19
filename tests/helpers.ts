@@ -5,7 +5,9 @@
  * Import from here — do NOT duplicate these in individual spec files.
  */
 
-import { Page, expect } from '@playwright/test';
+import { Page, expect, test } from '@playwright/test';
+import * as path from 'path';
+import * as fs from 'fs';
 
 export const BASE_URL          = 'https://aiv.test.oneaiv.com:8086/aiv/';
 export const USERNAME          = 'Admin';
@@ -102,7 +104,58 @@ export async function goTo(page: Page, url: string) {
 // ── Screenshot helper ─────────────────────────────────────────────────────────
 
 export async function shot(page: Page, name: string) {
-  await page.screenshot({ path: `screenshots/${name}`, timeout: 10000 }).catch(() => {});
+  let subDir = '';
+  let testName = '';
+  try {
+    const info = test.info();
+    if (info) {
+      testName = info.title;
+      if (info.file) {
+        const testsDir = path.join(process.cwd(), 'tests');
+        const relativePath = path.relative(testsDir, info.file);
+        const dirPart = path.dirname(relativePath);
+        const baseName = path.basename(relativePath, '.spec.ts');
+        subDir = path.join(dirPart, baseName);
+      }
+    }
+  } catch (e) {
+    // fallback if test.info() is not available (e.g. called outside of test context)
+  }
+
+  const finalDir = path.join('screenshots', subDir);
+  const finalPath = path.join(finalDir, name);
+  
+  // Ensure the directory exists so step logging can write step-log.json even if screenshot fails
+  try {
+    if (!fs.existsSync(finalDir)) {
+      fs.mkdirSync(finalDir, { recursive: true });
+    }
+  } catch (e) {
+    console.error(`Failed to create directory ${finalDir}:`, e);
+  }
+
+  // Playwright screenshot() automatically creates parent directories
+  await page.screenshot({ path: finalPath, timeout: 15000 }).catch((err) => {
+    console.error(`Failed to capture screenshot at ${finalPath}:`, err);
+  });
+
+  // Append step to log file
+  try {
+    const logFilePath = path.join(finalDir, 'step-log.json');
+    let logs = [];
+    if (fs.existsSync(logFilePath)) {
+      logs = JSON.parse(fs.readFileSync(logFilePath, 'utf8'));
+    }
+    logs.push({
+      timestamp: new Date().toISOString(),
+      testCase: testName,
+      screenshot: name,
+      screenshotPath: finalPath.replace(/\\/g, '/') // standard Unix slashes
+    });
+    fs.writeFileSync(logFilePath, JSON.stringify(logs, null, 2));
+  } catch (e) {
+    console.error('Failed to log step:', e);
+  }
 }
 
 // ── Dialog helpers ────────────────────────────────────────────────────────────

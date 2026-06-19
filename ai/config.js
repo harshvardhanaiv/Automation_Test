@@ -13,7 +13,7 @@ const config = {
 
     // Ollama LLM
     ollamaUrl: 'http://localhost:11434/api/chat',
-    model: 'qwen2.5-coder',
+    model: 'llama3.1:8b',
 
     // Paths
     crawlResultPath: require('path').join(__dirname, 'crawl-result.json'),

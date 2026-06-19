@@ -5,7 +5,6 @@
   "main": "ai/runner.js",
   "scripts": {
     "test": "playwright test",
-
     "test:explore": "playwright test tests/explore.spec.ts --reporter=list",
     "test:users-roles": "playwright test tests/users-roles.spec.ts --reporter=list",
     "test:users-roles:heal": "node ai/users-roles-runner.js",
@@ -15,7 +14,6 @@
     "test:reports:heal": "node ai/reports-runner.js",
     "test:merge-reports": "playwright test tests/merge-reports.spec.ts --reporter=list",
     "test:merge-reports:heal": "node ai/merge-reports-runner.js",
-
     "daily": "playwright test tests/daily/ --workers=4 --reporter=html",
     "daily:heal": "node ai/daily-runner.js",
     "daily:heal:fast": "node ai/daily-runner.js --workers 10",
@@ -44,7 +42,6 @@
     "daily:widget-settings": "playwright test tests/daily/16-widget-settings.spec.ts --reporter=list",
     "daily:viz-widgets-extended": "playwright test tests/daily/17-viz-widgets-extended.spec.ts --reporter=list",
     "daily:sqlbuddy": "playwright test tests/daily/19-sqlbuddy.spec.ts --reporter=list",
-
     "ai-run": "node ai/runner.js",
     "crawl": "node ai/crawl.js",
     "generate:explore": "node ai/generateFromCrawl.js",
@@ -54,6 +51,10 @@
   },
   "dependencies": {
     "@playwright/test": "^1.43.0",
-    "axios": "^1.6.8"
+    "axios": "^1.6.8",
+    "turndown": "^7.2.4"
+  },
+  "devDependencies": {
+    "@types/node": "^25.9.3"
   }
 }
