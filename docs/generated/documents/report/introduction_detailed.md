@@ -1,56 +1,51 @@
-**Introduction to AIV Reports**
-==============================
+# AIV Reports
 
-The Reports section in AIV serves as a central repository for all your reports, providing an efficient way to manage and share data visualizations.
+The AIV Reports section is a central place where you can upload, view, manage, schedule, and share reports related to data visualizations within the AIV platform. 
 
-### Prerequisites
------------------
+Reports are used as data visualizations that provide an overview of information from various sources. Each report includes different visual elements such as charts, graphs, and maps. Reports in AIV can be single or multi-page documents.
 
-None
+### Objectives & Use Cases
+
+The main objectives of this feature include:
+
+* Efficiently managing reports within the platform
+* Scheduling reports at intervals (e.g., hourly, daily, weekly, monthly, yearly)
+* Generating and exporting reports in various file formats
+* Sharing reports using email or directly with available users
+
+Use cases for the AIV Reports section include:
+
+* Centralized storage and management of reports related to company operations
+* Scheduling regular reports on sales, profits, customer interactions, etc.
+* Distributing key performance indicators (KPIs) among team members
+* Visualizing complex data in an easy-to-understand format
 
 ### Accessing the Reports Section
----------------------------------
 
-1. **Step 1: Open the Reports Section**
-	* Action: Click on the "Reports" tab in the top navigation menu.
-	* Details: This will open the Reports section in the same tab.
-	* Visual Reference:
-	  ![Reports Tab](../../../../screenshots/documents/reports/reports-section-opened.png)
-2. **Step 2: Open the Reports Section in a New Tab**
-	* Action: Click on the "New Tab" icon next to the Reports section.
-	* Details: This will open the Reports section in a new tab.
-	* Visual Reference:
-	  ![Create / Manage Events Icon](../../../../screenshots/documents/reports/new-tab-icon.png)
+To navigate to the Reports section, click on **Reports** within the sidebar navigation menu as shown below:
 
-### Report Overview
--------------------
+![Accessing the Reports section from the sidebar navigation menu](../../../../screenshots/documents/reports/reports-navigation-menu.png)
 
-The Reports section allows you to upload, view, copy, share, delete, download, embed, and save reports as quick links.
+### The Reports Listing Grid
 
-### Generating and Exporting Reports
--------------------------------------
+Upon entering the Reports page, you will see a file browser interface where all uploaded reports are listed. This grid displays various statistics and counters related to your reports.
 
-1. **Step 3: Select the Output Format**
-	* Action: Click on the "Output Format" dropdown menu.
-	* Details: Choose from various file formats such as RPT documents, Excel files (.xlsx), HTML, PDF, PowerPoint presentations (.pptx), AIV-specific Excel files (.aiv_xlsx), or QRUN files.
-	* Visual Reference:
-	  ![Output Format Dropdown](../../../../screenshots/documents/reports/output-format-dropdown.png)
-2. **Step 4: Generate and Export the Report**
-	* Action: Click on the "Run" button to generate the report.
-	* Details: The system will process your request, and you can download or share the generated report in your chosen format.
-	* Visual Reference:
-	  ![Run Button](../../../../screenshots/documents/reports/run-button.png)
+The main elements of this grid include:
 
-### Scheduling Reports
-----------------------
+* A search box at the top that allows filtering by report name or description
+* Counters for the total number of reports, published reports, etc.
+* Filter buttons (e.g., date range, status) within the stats toolbar
 
-1. **Step 5: Schedule a Report**
-	* Action: Right-click on the report you want to schedule and select "Schedule" from the context menu.
-	* Details: Choose the desired schedule interval, such as hourly, daily, weekly, monthly, or yearly.
-	* Visual Reference:
-	  ![Context Menu](../../../../screenshots/documents/reports/context-menu.png)
+![Reports page loads with file browser](../../../../screenshots/documents/reports/reports-daily-01-page.png)
 
-### Managing Reports
---------------------
+### Quick Filter Stats Toolbar
 
-The Reports section provides various tools for managing your reports, including uploading, viewing, copying, sharing, deleting, downloading, embedding, and saving as quick links.
+At the top of the grid, you will notice a stats counters toolbar displaying various counters and filter buttons. This toolbar includes options such as filtering by date range or report status.
+
+![Reports page shows stats counters toolbar](../../../../screenshots/documents/reports/reports-daily-02-stats.png)
+
+### Right-Click Action Menu
+
+To perform actions on specific reports, right-click on a row within the grid. This opens a context menu with various options.
+
+![Right-click on report shows context menu](../../../../screenshots/documents/reports/reports-daily-08-context-menu.png)

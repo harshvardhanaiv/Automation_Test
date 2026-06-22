@@ -1,56 +1,35 @@
-**Parameter Tab User Guide**
-===========================
+# Parameter Tab
+===============
 
-**Prerequisites**
----------------
+## Introduction
 
-For this example, we will be using the **Order details.rptdesign** report.
+The **Parameter Tab** is a helpful tool in AIV Reports that lets you create dynamic reports. You can filter or customize what's shown in your report by entering specific values. 
 
-*   Download the required sample files from [parameter.zip](https://aivhub.com/vinit/v6_docs_zipfiles/Report.zip).
-*   Upload **Order details.rptdesign** to the **Report Section** under the **Root** folder.
-    *   For detailed steps on uploading files, refer to the link provided in the zip file.
+## Objectives & Use Cases
 
-**Step 1: Navigate to the Report**
-------------------------------
+**Objective:** Learn how to enter parameter values before running a report.
 
-### **Step 1.1: Select the Report**
+**Use Case:** Imagine you want to see a report filtered for a particular **Order Number**, a specific **Date Range**, or just data from a certain **Region**. The Parameter Tab lets you do this without changing the report's underlying design.
 
-From the **Hamburger menu**, navigate to **Documents -> Reports**.
+## Step-by-Step Guide
 
-![Navigate to Documents -> Reports](../../../../screenshots/documents/reports/parameter.1d5ac685_9wEnk.png)
+### Step 1: Finding the Reports Section
+![Accessing the Reports section](../../../../screenshots/documents/reports/reports-navigation-menu.png)
 
-### **Step 1.2: Choose a Report with Parameters**
+* From the **Hamburger menu**, go to **Documents -> Reports**.
 
-Select any report that uses parameters, for this example we are using the **Order details report**.
+### Step 2: Choosing a Report with Parameters
+![Selecting a report with parameters](../../../../screenshots/documents/reports/reports-daily-10-scheduler.png)
 
-### **Step 1.3: Access the Parameter Tab**
+* Select any report that uses parameters. For this example, we're using the **Order details report**.
 
-Click on the **Order details report**, it will open in the report viewer. Click on the **Parameter Tab**.
+### Step 3: Entering Values in the Parameter Tab
+![Parameter Tab showing input fields](../../../../screenshots/documents/reports/reports-parameter-tab.png)
 
-**Step 2: Configure Parameters**
----------------------------
+* In the **Parameter Tab**, enter the values needed to create your report.  Parameters marked with an asterisk (\*) are required and must be filled in before running the report.
 
-### **Step 2.1: Enter Input Values**
+### Step 4: Filling in the Order Number
+![Filling in the OrderNumber field](../../../../screenshots/documents/reports/reports-daily-12-param-tab.png)
 
-In the **Parameter Tab**, specify the input values required to generate the report. Mandatory parameters are marked with an asterisk (\*) and must be filled before proceeding.
-
-| Parameter Name | Description | Example Value |
-| --- | --- | --- |
-| OrderNumber\*   | Unique identifier for the order whose details you want to view.      | 10100 |
-
-![Enter Input Values](../../../../screenshots/documents/reports/parameter1.9c5afa08_iAvwu.png)
-
-### **Step 2.2: Fill Mandatory Fields**
-
-Ensure all mandatory fields (marked with \*) are filled before proceeding.
-
-**Note:** Reports with parameters require users to provide input values before execution.
-
-**Step 3: Proceed to Next Tab**
-------------------------------
-
-After entering all required parameters, proceed with the next tab:
-
-*   [**Schedule Tab**](.././schedule)
-*   [**Output Tab**](.././output)
-*   [**Email Tab**](.././email)
+* Enter a unique identifier for the order you want to see details about in the **OrderNumber\*** field.
+    Example: `10100`
