@@ -103,7 +103,28 @@ Report scheduler tabs:
  MANDATORY HELPERS — always import from tests/helpers.ts
 ════════════════════════════════════════════════════════════
 
-import { goTo, ensureLoggedIn, shot, rightClickFirstRow, assertPageLoaded } from '../helpers';
+import { URLS, goTo, ensureLoggedIn, shot, rightClickFirstRow, assertPageLoaded } from '../helpers';
+
+URLS object keys:
+  - URLS.reports
+  - URLS.mergeReports
+  - URLS.sharedResources
+  - URLS.quickRun
+  - URLS.messages
+  - URLS.reportBursting
+  - URLS.groupReport
+  - URLS.datasource
+  - URLS.datasets
+  - URLS.parameters
+  - URLS.webhook
+  - URLS.groupDataset
+  - URLS.notifications
+  - URLS.requests
+  - URLS.alerts
+  - URLS.alertReports
+  - URLS.viz
+  - URLS.apiTokens
+  - URLS.annotations
 
 goTo(page, url)
   - Navigates to url, re-logs in if session expired, waits for app shell.
@@ -131,22 +152,36 @@ assertPageLoaded(page, 'urlFragment')
    Tests use globalSetup (.auth/session.json). Do NOT call doLogin() in beforeEach.
    Use ensureLoggedIn(page) instead — it only logs in if the session expired.
 
-2. VIRTUAL-SCROLL ROWS (most important)
+2. RADIO BUTTONS & LABELS
+   Never filter self-closing input tags like input[type="radio"] by text (e.g. page.locator('input[type="radio"]').filter({ hasText: /right now/i }) will always return empty).
+   Always select radio options by clicking the label/text directly:
+     await page.getByText('Right Now', { exact: false }).first().click();
+
+3. PRIMENG DROPDOWNS
+   PrimeNG dropdowns (like output format selection) are not standard HTML select elements.
+   Click the current value (e.g. 'rptdocument') to open the list overlay, then click the option:
+     const currentFormat = page.getByText('rptdocument', { exact: true }).first();
+     if (await currentFormat.isVisible({ timeout: 3000 }).catch(() => false)) {
+       await currentFormat.click();
+       await page.locator('li, [role="option"]').filter({ hasText: /^pdf$/i }).first().click();
+     }
+
+4. VIRTUAL-SCROLL ROWS (most important)
    Grid rows are clipped by overflow:hidden. NEVER use:
      rows.first().click({ button: 'right' })         ← times out
      rows.first().click({ button: 'right', force: true }) ← still fails
    ALWAYS use rightClickFirstRow(page) from helpers.ts.
 
-3. MATERIAL DIALOGS
+5. MATERIAL DIALOGS
    mat-dialog-container does NOT close on Escape.
    Always click the Cancel button explicitly:
      await dialog.getByRole('button', { name: /cancel/i }).click();
 
-4. STRICT MODE VIOLATIONS
+6. STRICT MODE VIOLATIONS
    Never use .or() on locators that might both be present simultaneously.
    Use .first() on specific locators instead.
 
-5. STATS TOOLBAR
+7. STATS TOOLBAR
    Stats are NOT plain text elements. They are buttons inside:
      getByRole('toolbar', { name: /folder quick filters/i })
    Do NOT use getByText('All') or getByText('Current') — those are in the search dropdown.
@@ -172,6 +207,15 @@ assertPageLoaded(page, 'urlFragment')
     Is aria-disabled="true" when already at root. Check before clicking:
       const isDisabled = await homeBtn.getAttribute('aria-disabled');
       if (isDisabled !== 'true') await homeBtn.click({ force: true });
+
+11. SINGLE TEST BLOCK FOR MULTI-STEP WORKFLOWS
+    Always write sequential multi-step user scenarios (like opening a scheduler, filling parameters, configuring schedule/output tabs, running the report, and verifying requests) inside a SINGLE \`test()\` block.
+    Do NOT split different steps of a single prompt workflow into multiple separate \`test()\` blocks (or describe blocks) because each test block will reload the page, close the dialog, and lose the state, causing extreme flakiness and 3-minute timeouts. Keep it as one continuous flow.
+    To show progress in the dashboard console in real-time, ALWAYS print console.log statements before each step (e.g. \`console.log('👉 Step 1: Navigating to Reports...');\`). This helps users track execution progress live.
+
+12. SCOPE INPUTS TO THE DIALOG CONTAINER
+    When filling inputs inside a dialog or modal (such as parameter fields, schedule configurations, or output options), ALWAYS scope the locator to the dialog container (e.g., \`const dialog = page.getByRole('dialog').first(); const input = dialog.locator('input...');\`). 
+    Never use page-wide input locators (like \`page.locator('input...')\` or \`page.getByPlaceholder(...)\`) because they will target the top header search box, side navigation filters, or hidden background inputs instead, causing test failures.
 
 ════════════════════════════════════════════════════════════
  STANDARD TEST STRUCTURE

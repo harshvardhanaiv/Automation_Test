@@ -59,7 +59,7 @@ async function exploreRunner() {
     // ── Step 3: Run + Self-Heal ───────────────────────────────────────────────
     console.log('\n── Step 3/3: Running tests (with self-healing) ─────');
 
-    const relativePath = path.relative(process.cwd(), config.exploreTestPath);
+    const relativePath = path.relative(process.cwd(), config.exploreTestPath).replace(/\\/g, '/');
     let currentTry = 0;
     let passed = false;
 

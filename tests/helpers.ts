@@ -115,7 +115,22 @@ export async function shot(page: Page, name: string) {
         const relativePath = path.relative(testsDir, info.file);
         const dirPart = path.dirname(relativePath);
         const baseName = path.basename(relativePath, '.spec.ts');
-        subDir = path.join(dirPart, baseName);
+        
+        if (dirPart === '.' || dirPart === '') {
+          let category = baseName;
+          if (baseName.includes('reports') || baseName.includes('report')) {
+            category = 'reports';
+          } else if (baseName.includes('login')) {
+            category = 'login';
+          } else if (baseName.includes('document')) {
+            category = 'documents';
+          } else if (baseName.includes('request')) {
+            category = 'requests';
+          }
+          subDir = path.join('testing_w_deepseek', category);
+        } else {
+          subDir = path.join(dirPart, baseName);
+        }
       }
     }
   } catch (e) {

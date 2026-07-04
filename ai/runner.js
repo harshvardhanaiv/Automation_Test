@@ -1,4 +1,4 @@
-const { execSync } = require('child_process');
+const { spawn } = require('child_process');
 const fs = require('fs');
 const path = require('path');
 const generateTest = require('./generateTest');
@@ -6,6 +6,37 @@ const fixTest = require('./fixTest');
 
 const MAX_RETRIES = 3;
 const TEST_PATH = path.join(__dirname, '../tests/generated.spec.ts');
+
+function runCommandLive(command, cwd) {
+    return new Promise((resolve, reject) => {
+        const child = spawn(command, { cwd, shell: true });
+        let stdout = '';
+        let stderr = '';
+
+        child.stdout.on('data', chunk => {
+            const str = chunk.toString();
+            stdout += str;
+            process.stdout.write(str);
+        });
+
+        child.stderr.on('data', chunk => {
+            const str = chunk.toString();
+            stderr += str;
+            process.stderr.write(str);
+        });
+
+        child.on('close', code => {
+            if (code === 0) {
+                resolve(stdout);
+            } else {
+                const error = new Error(`Command failed with code ${code}`);
+                error.stdout = stdout;
+                error.stderr = stderr;
+                reject(error);
+            }
+        });
+    });
+}
 
 async function runLoop(prompt, testFilePath = null) {
     const finalTestPath = testFilePath || path.join(__dirname, '../tests/generated.spec.ts');
@@ -24,14 +55,11 @@ async function runLoop(prompt, testFilePath = null) {
         try {
             // Run Playwright test
             // Using relative path and quoting for Windows compatibility
-            const relativePath = path.relative(process.cwd(), finalTestPath);
-            const command = `npx playwright test "${relativePath}" --reporter=list`;
+            const relativePath = path.relative(process.cwd(), finalTestPath).replace(/\\/g, '/');
+            const command = `npx playwright test "${relativePath}" --project=chromium --reporter=list`;
             console.log(`\n🛠️  Executing: ${command}`);
 
-            const output = execSync(command, {
-                encoding: 'utf-8',
-                stdio: 'pipe'
-            });
+            const output = await runCommandLive(command, process.cwd());
 
             console.log(output);
             console.log(`\n🎉 Success! Test passed on try #${currentTry}.`);

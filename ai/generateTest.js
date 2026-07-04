@@ -1,29 +1,25 @@
-const axios = require('axios');
 const fs = require('fs');
 const path = require('path');
-const config = require('./config');
 const { SYSTEM_PROMPT } = require('./systemPrompt');
-
-const OLLAMA_URL = config.ollamaUrl;
-const MODEL = config.model;
+const { callLLM } = require('./llmHelper');
 
 async function generateTest(prompt, testFilePath = null) {
     console.log(`\n🤖 Generating test for: "${prompt}"...`);
 
     try {
-        const response = await axios.post(OLLAMA_URL, {
-            model: MODEL,
-            messages: [
-                { role: 'system', content: SYSTEM_PROMPT },
-                { role: 'user', content: `Generate a Playwright test script for: ${prompt}. Use async/await and standard Playwright assertions. Import helpers from '../helpers'.` }
-            ],
-            stream: false
-        });
-
-        let code = response.data.message.content;
-        code = code.replace(/^```(?:typescript|ts)?\n?/m, '').replace(/\n?```\s*$/m, '').trim();
-
         const finalTestPath = testFilePath || path.join(__dirname, '../tests/generated.spec.ts');
+        const helpersPath = path.join(__dirname, '../tests/helpers');
+        let relativeHelpersPath = path.relative(path.dirname(finalTestPath), helpersPath).replace(/\\/g, '/');
+        if (!relativeHelpersPath.startsWith('.')) {
+            relativeHelpersPath = './' + relativeHelpersPath;
+        }
+
+        const adjustedSystemPrompt = SYSTEM_PROMPT.replace(/\.\.\/helpers/g, relativeHelpersPath);
+
+        const userPrompt = `Generate a Playwright test script for: ${prompt}. Use async/await and standard Playwright assertions. Import helpers from '${relativeHelpersPath}'.`;
+        let code = await callLLM(adjustedSystemPrompt, userPrompt);
+        
+        code = code.replace(/^```(?:typescript|ts)?\n?/m, '').replace(/\n?```\s*$/m, '').trim();
 
         const testsDir = path.dirname(finalTestPath);
         if (!fs.existsSync(testsDir)) fs.mkdirSync(testsDir, { recursive: true });
@@ -33,7 +29,6 @@ async function generateTest(prompt, testFilePath = null) {
         return finalTestPath;
     } catch (error) {
         console.error('❌ Error generating test:', error.message);
-        if (error.response) console.error('Data:', error.response.data);
         process.exit(1);
     }
 }
@@ -45,3 +40,4 @@ if (require.main === module) {
 }
 
 module.exports = generateTest;
+
