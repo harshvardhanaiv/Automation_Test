@@ -27,28 +27,31 @@ export default defineConfig({
     // ── Playwright-bundled Chromium (default, no install needed) ──────────
     {
       name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
+      use: {
+        ...devices['Desktop Chrome'],
+        viewport: { width: 1600, height: 900 },
+      },
     },
 
     // ── System Google Chrome ──────────────────────────────────────────────
-    {
-      name: 'chrome',
-      use: {
-        ...devices['Desktop Chrome'],
-        channel: 'chrome',                                          // uses installed Chrome
-        executablePath: 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe',
-      },
-    },
+    // {
+    //   name: 'chrome',
+    //   use: {
+    //     ...devices['Desktop Chrome'],
+    //     channel: 'chrome',                                          // uses installed Chrome
+    //     executablePath: 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe',
+    //   },
+    // },
 
     // ── Microsoft Edge ────────────────────────────────────────────────────
-    {
-      name: 'edge',
-      use: {
-        ...devices['Desktop Edge'],
-        channel: 'msedge',                                          // uses installed Edge
-        executablePath: 'C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe',
-      },
-    },
+    // {
+    //   name: 'edge',
+    //   use: {
+    //     ...devices['Desktop Edge'],
+    //     channel: 'msedge',                                          // uses installed Edge
+    //     executablePath: 'C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe',
+    //   },
+    // },
 
     // ── Firefox (requires: npx playwright install firefox) ───────────────
     // Uncomment once Firefox is installed on this machine
@@ -58,9 +61,9 @@ export default defineConfig({
     // },
 
     // ── Mobile viewports ──────────────────────────────────────────────────
-    {
-      name: 'mobile-chrome',
-      use: { ...devices['Pixel 5'] },
-    },
+    // {
+    //   name: 'mobile-chrome',
+    //   use: { ...devices['Pixel 5'] },
+    // },
   ],
 });

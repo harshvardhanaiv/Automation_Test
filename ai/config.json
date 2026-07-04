@@ -1,0 +1,7 @@
+{
+  "provider": "deepseek",
+  "maxRetries": 3,
+  "deepseekUrl": "https://api.deepseek.com/chat/completions",
+  "deepseekModel": "deepseek-chat",
+  "deepseekApiKey": ""
+}

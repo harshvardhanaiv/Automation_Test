@@ -1,14 +1,19 @@
-const axios = require('axios');
 const fs = require('fs');
 const path = require('path');
-const config = require('./config');
 const { FIX_SYSTEM_PROMPT } = require('./systemPrompt');
-
-const OLLAMA_URL = config.ollamaUrl;
-const MODEL = config.model;
+const { callLLM } = require('./llmHelper');
 
 async function fixTest(errorLogs, currentCode, testFilePath = null) {
     console.log(`\n🩹 Attempting to fix the failing test...`);
+
+    const finalTestPath = testFilePath || path.join(__dirname, '../tests/generated.spec.ts');
+    const helpersPath = path.join(__dirname, '../tests/helpers');
+    let relativeHelpersPath = path.relative(path.dirname(finalTestPath), helpersPath).replace(/\\/g, '/');
+    if (!relativeHelpersPath.startsWith('.')) {
+        relativeHelpersPath = './' + relativeHelpersPath;
+    }
+
+    const adjustedSystemPrompt = FIX_SYSTEM_PROMPT.replace(/\.\.\/helpers/g, relativeHelpersPath);
 
     const userPrompt = `The following Playwright test failed.
 
@@ -18,22 +23,12 @@ ${currentCode}
 ERROR LOGS:
 ${errorLogs}
 
-Fix the test. Return ONLY the complete corrected TypeScript file.`;
+Fix the test. Return ONLY the complete corrected TypeScript file. Import helpers from '${relativeHelpersPath}'.`;
 
     try {
-        const response = await axios.post(OLLAMA_URL, {
-            model: MODEL,
-            messages: [
-                { role: 'system', content: FIX_SYSTEM_PROMPT },
-                { role: 'user', content: userPrompt }
-            ],
-            stream: false
-        });
-
-        let code = response.data.message.content;
+        let code = await callLLM(adjustedSystemPrompt, userPrompt);
         code = code.replace(/^```(?:typescript|ts)?\n?/m, '').replace(/\n?```\s*$/m, '').trim();
 
-        const finalTestPath = testFilePath || path.join(__dirname, '../tests/generated.spec.ts');
         fs.writeFileSync(finalTestPath, code);
 
         console.log(`✅ Test fixed and saved at: ${finalTestPath}`);
@@ -45,3 +40,4 @@ Fix the test. Return ONLY the complete corrected TypeScript file.`;
 }
 
 module.exports = fixTest;
+

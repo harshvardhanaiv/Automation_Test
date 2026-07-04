@@ -1,0 +1,1483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Playwright AI Test Dashboard</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --bg-main: #060913;
+            --bg-card: #0f1524;
+            --bg-card-hover: #172036;
+            --border-color: #222d47;
+            --text-main: #f3f4f6;
+            --text-muted: #9ca3af;
+            --primary: #a855f7;
+            --primary-glow: rgba(168, 85, 247, 0.4);
+            --secondary: #06b6d4;
+            --secondary-glow: rgba(6, 182, 212, 0.4);
+            --success: #10b981;
+            --success-glow: rgba(16, 185, 129, 0.4);
+            --danger: #ef4444;
+            --danger-glow: rgba(239, 68, 68, 0.4);
+            --warning: #f59e0b;
+            --font-outfit: 'Outfit', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: var(--font-outfit);
+            min-height: 100vh;
+            display: flex;
+            overflow-x: hidden;
+        }
+
+        /* Sidebar */
+        aside {
+            width: 280px;
+            background: linear-gradient(180deg, #090e1b 0%, #060913 100%);
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            padding: 2rem 1.5rem;
+            position: fixed;
+            height: 100vh;
+            left: 0;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 3rem;
+        }
+
+        .logo i {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: initial;
+            -webkit-text-fill-color: initial;
+            color: white;
+            padding: 0.5rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 0 15px var(--primary-glow);
+        }
+
+        nav {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            flex-grow: 1;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.85rem 1.25rem;
+            color: var(--text-muted);
+            text-decoration: none;
+            border-radius: 0.75rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        .nav-item:hover, .nav-item.active {
+            background-color: var(--bg-card);
+            color: var(--text-main);
+        }
+
+        .nav-item.active {
+            border-left: 3px solid var(--primary);
+            box-shadow: inset 5px 0 15px rgba(168, 85, 247, 0.15);
+        }
+
+        .nav-item i {
+            font-size: 1.2rem;
+            transition: transform 0.3s ease;
+        }
+
+        .nav-item:hover i {
+            transform: scale(1.1);
+        }
+
+        .nav-footer {
+            margin-top: auto;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1rem;
+            background-color: rgba(22, 27, 34, 0.4);
+            border: 1px solid var(--border-color);
+            border-radius: 0.75rem;
+            font-size: 0.85rem;
+        }
+
+        .nav-footer .status-dot {
+            width: 10px;
+            height: 10px;
+            background-color: var(--success);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--success);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 8px rgba(16, 185, 129, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+        }
+
+        /* Main Workspace */
+        main {
+            margin-left: 280px;
+            flex-grow: 1;
+            padding: 2.5rem;
+            max-width: 1400px;
+            width: calc(100% - 280px);
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2.5rem;
+        }
+
+        h1 {
+            font-size: 2rem;
+            font-weight: 700;
+        }
+
+        header p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-top: 0.25rem;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 1rem;
+        }
+
+        /* Common Elements */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.65rem 1.25rem;
+            border-radius: 0.75rem;
+            font-family: var(--font-outfit);
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, #7e22ce 100%);
+            color: white;
+            box-shadow: 0 4px 15px var(--primary-glow);
+        }
+
+        .btn-primary:hover {
+            box-shadow: 0 6px 20px rgba(168, 85, 247, 0.6);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background-color: var(--bg-card);
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--bg-card-hover);
+            transform: translateY(-2px);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, var(--success) 0%, #047857 100%);
+            color: white;
+            box-shadow: 0 4px 15px var(--success-glow);
+        }
+
+        .btn-success:hover {
+            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.6);
+            transform: translateY(-2px);
+        }
+
+        .btn-outline {
+            border: 1px solid var(--border-color);
+            background: transparent;
+            color: var(--text-muted);
+        }
+
+        .btn-outline:hover {
+            border-color: var(--text-muted);
+            color: var(--text-main);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, var(--danger) 0%, #b91c1c 100%);
+            color: white;
+            box-shadow: 0 4px 15px var(--danger-glow);
+        }
+
+        .btn-danger:hover {
+            box-shadow: 0 6px 20px rgba(239, 68, 68, 0.6);
+            transform: translateY(-2px);
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.25rem 0.6rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .badge-idle {
+            background-color: rgba(156, 163, 175, 0.15);
+            color: var(--text-muted);
+            border: 1px solid rgba(156, 163, 175, 0.3);
+        }
+
+        .badge-running {
+            background-color: rgba(6, 182, 212, 0.15);
+            color: var(--secondary);
+            border: 1px solid rgba(6, 182, 212, 0.3);
+        }
+
+        .badge-success {
+            background-color: rgba(16, 185, 129, 0.15);
+            color: var(--success);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        .badge-danger {
+            background-color: rgba(239, 68, 68, 0.15);
+            color: var(--danger);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+
+        /* View Panels */
+        .view-panel {
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .view-panel.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Panel Cards Layout */
+        .card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: border-color 0.3s ease;
+        }
+
+        .card:hover {
+            border-color: rgba(168, 85, 247, 0.3);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.25rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.75rem;
+        }
+
+        .card-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Test Runner Grid */
+        .test-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .test-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .test-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(6, 182, 212, 0.3);
+            background-color: var(--bg-card-hover);
+        }
+
+        .test-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .test-card:hover::before {
+            opacity: 1;
+        }
+
+        .test-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .test-name {
+            font-weight: 600;
+            font-size: 1.05rem;
+            color: var(--text-main);
+            word-break: break-all;
+        }
+
+        .test-suite {
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            margin-top: 0.25rem;
+        }
+
+        .test-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: auto;
+        }
+
+        .test-actions button {
+            flex: 1;
+            font-size: 0.8rem;
+            padding: 0.5rem 0.75rem;
+            border-radius: 0.5rem;
+        }
+
+        /* Live Terminal Logs */
+        .terminal-container {
+            background-color: #020612;
+            border: 1px solid var(--border-color);
+            border-radius: 1rem;
+            padding: 1.25rem;
+            position: relative;
+            box-shadow: inset 0 2px 8px rgba(0,0,0,0.8);
+            margin-bottom: 2rem;
+        }
+
+        .terminal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.75rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid #111b2d;
+        }
+
+        .terminal-dots {
+            display: flex;
+            gap: 0.35rem;
+        }
+
+        .terminal-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+        .dot-red { background-color: var(--danger); }
+        .dot-yellow { background-color: var(--warning); }
+        .dot-green { background-color: var(--success); }
+
+        .terminal-title {
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .terminal-body {
+            height: 380px;
+            overflow-y: auto;
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            line-height: 1.5;
+            color: #d1d5db;
+            white-space: pre-wrap;
+            word-break: break-all;
+            padding-right: 0.5rem;
+        }
+
+        .terminal-body::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .terminal-body::-webkit-scrollbar-track {
+            background: #020612;
+        }
+
+        .terminal-body::-webkit-scrollbar-thumb {
+            background: #1f2937;
+            border-radius: 4px;
+        }
+
+        .terminal-body::-webkit-scrollbar-thumb:hover {
+            background: #374151;
+        }
+
+        /* Form Configuration Styling */
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .form-group-full {
+            grid-column: span 2;
+        }
+
+        @media (max-width: 768px) {
+            .form-group-full {
+                grid-column: span 1;
+            }
+        }
+
+        label {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        input[type="text"], input[type="password"], select, textarea {
+            background-color: #0b101c;
+            border: 1px solid var(--border-color);
+            border-radius: 0.75rem;
+            padding: 0.75rem 1rem;
+            color: var(--text-main);
+            font-family: var(--font-outfit);
+            font-size: 0.95rem;
+            outline: none;
+            transition: all 0.2s ease;
+            width: 100%;
+        }
+
+        input[type="text"]:focus, input[type="password"]:focus, select:focus, textarea:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 10px rgba(168, 85, 247, 0.2);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .input-with-icon {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .input-with-icon input {
+            padding-right: 3rem;
+        }
+
+        .input-with-icon .toggle-password {
+            position: absolute;
+            right: 1rem;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+
+        .input-with-icon .toggle-password:hover {
+            color: var(--text-main);
+        }
+
+        /* Config Toggles */
+        .provider-toggle-container {
+            display: flex;
+            background-color: #0b101c;
+            border: 1px solid var(--border-color);
+            border-radius: 0.75rem;
+            padding: 0.35rem;
+            gap: 0.25rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .provider-btn {
+            flex: 1;
+            padding: 0.65rem;
+            border-radius: 0.5rem;
+            text-align: center;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: var(--text-muted);
+        }
+
+        .provider-btn.active {
+            background: linear-gradient(135deg, var(--primary) 0%, #7e22ce 100%);
+            color: white;
+            box-shadow: 0 4px 10px var(--primary-glow);
+        }
+
+        /* Prompt Section */
+        .prompt-card {
+            background: linear-gradient(135deg, #110e24 0%, #060913 100%);
+            border: 1px solid rgba(168, 85, 247, 0.2);
+        }
+
+        /* Breadcrumbs styling */
+        .breadcrumbs-container {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+        .breadcrumb-item {
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+        .breadcrumb-item:hover {
+            color: var(--primary);
+        }
+        .breadcrumb-item.active {
+            color: var(--text-main);
+            font-weight: 600;
+            cursor: default;
+        }
+        .breadcrumb-separator {
+            color: var(--border-color);
+        }
+
+        /* Folder cards styling */
+        .folder-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            transition: all 0.2s ease;
+        }
+        .folder-card:hover {
+            border-color: var(--primary);
+            box-shadow: 0 4px 15px var(--primary-glow);
+            transform: translateY(-2px);
+        }
+        .folder-icon {
+            font-size: 2.2rem;
+            color: #eab308; /* vibrant folder gold */
+        }
+        .folder-name {
+            font-weight: 600;
+            color: var(--text-main);
+        }
+        .folder-count {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        /* Screenshot Gallery */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .gallery-item {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 1rem;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .gallery-item:hover {
+            transform: scale(1.02);
+            border-color: var(--primary);
+        }
+
+        .gallery-img-container {
+            height: 180px;
+            background-color: #050811;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .gallery-img-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .gallery-info {
+            padding: 1rem;
+        }
+
+        .gallery-name {
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--text-main);
+            margin-bottom: 0.25rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .gallery-date {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        /* Overlay Lightbox */
+        .lightbox {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(2, 4, 8, 0.95);
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .lightbox.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .lightbox-content {
+            max-width: 90%;
+            max-height: 85%;
+            position: relative;
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+        }
+
+        .lightbox.active .lightbox-content {
+            transform: scale(1);
+        }
+
+        .lightbox-img {
+            max-width: 100%;
+            max-height: 80vh;
+            border-radius: 0.5rem;
+            box-shadow: 0 0 30px rgba(0,0,0,0.8);
+            border: 2px solid var(--border-color);
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: -2.5rem;
+            right: 0;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+
+        .lightbox-close:hover {
+            color: var(--primary);
+        }
+
+        .lightbox-title {
+            color: var(--text-main);
+            text-align: center;
+            margin-top: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .no-data {
+            text-align: center;
+            padding: 3rem;
+            color: var(--text-muted);
+        }
+
+        .no-data i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: var(--border-color);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Sidebar Navigation -->
+    <aside>
+        <div class="logo">
+            <i class="fa-solid fa-wand-magic-sparkles"></i>
+            <span>AIV Playwright AI</span>
+        </div>
+
+        <nav>
+            <div class="nav-item active" onclick="switchView('runner', this)">
+                <i class="fa-solid fa-play"></i>
+                <span>Test Runner</span>
+            </div>
+            <div class="nav-item" onclick="switchView('generator', this)">
+                <i class="fa-solid fa-brain"></i>
+                <span>AI Generator</span>
+            </div>
+            <div class="nav-item" onclick="switchView('config', this)">
+                <i class="fa-solid fa-gears"></i>
+                <span>LLM Configuration</span>
+            </div>
+            <div class="nav-item" onclick="switchView('gallery', this)">
+                <i class="fa-solid fa-images"></i>
+                <span>Screenshots</span>
+            </div>
+        </nav>
+
+        <div class="nav-footer">
+            <div class="status-dot"></div>
+            <span>Self-Healing Engine Active</span>
+        </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main>
+        
+        <!-- Header -->
+        <header>
+            <div>
+                <h1 id="page-title">Test Runner Dashboard</h1>
+                <p id="page-subtitle">Execute regression suites with self-healing AI diagnostics</p>
+            </div>
+            <div class="header-actions">
+                <button class="btn btn-secondary" onclick="reloadDashboard()"><i class="fa-solid fa-rotate"></i> Refresh</button>
+            </div>
+        </header>
+
+        <!-- Live Terminal logs (Stays at the bottom or top of execution views) -->
+        <div id="live-console" class="terminal-container" style="display: none;">
+            <div class="terminal-header">
+                <div class="terminal-dots">
+                    <div class="terminal-dot dot-red"></div>
+                    <div class="terminal-dot dot-yellow"></div>
+                    <div class="terminal-dot dot-green"></div>
+                </div>
+                <div class="terminal-title" id="terminal-title">CONSOLE OUTPUT - IDLE</div>
+                <div style="display: flex; gap: 0.5rem; align-items: center;">
+                    <button id="btn-stop-task" class="btn btn-danger" style="padding: 0.25rem 0.5rem; font-size: 0.75rem; display: none;" onclick="stopCurrentTask()"><i class="fa-solid fa-circle-stop"></i> Stop Test</button>
+                    <button class="btn btn-outline" style="padding: 0.25rem 0.5rem; font-size: 0.75rem;" onclick="copyLogs()"><i class="fa-solid fa-copy"></i> Copy Logs</button>
+                    <button class="btn btn-outline" style="padding: 0.25rem 0.5rem; font-size: 0.75rem;" onclick="clearConsole()"><i class="fa-solid fa-trash"></i> Clear</button>
+                </div>
+            </div>
+            <div class="terminal-body" id="console-logs">Select a test or trigger AI generation to see logs...</div>
+        </div>
+
+        <!-- VIEW: Test Runner -->
+        <section id="view-runner" class="view-panel active">
+            <div class="test-grid" id="tests-list-grid">
+                <!-- Loaded dynamically -->
+                <div class="no-data">Loading tests suite files...</div>
+            </div>
+        </section>
+
+        <!-- VIEW: AI Generator -->
+        <section id="view-generator" class="view-panel">
+            <div class="card prompt-card">
+                <div class="card-title"><i class="fa-solid fa-compass-drafting" style="color: var(--primary)"></i> Create New Test Script via Prompt</div>
+                <div style="margin-top: 1rem;">
+                    <div class="form-group">
+                        <label for="prompt-desc">Prompt / Instruction Description</label>
+                        <textarea id="prompt-desc" placeholder="e.g. Navigate to Administration page, look for the 'Create New User' button, click it and input 'john.doe@aiv.com' in email textbox. Verify that validation triggers."></textarea>
+                    </div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="prompt-target-file">Target Script File Path</label>
+                            <input type="text" id="prompt-target-file" value="tests/generated.spec.ts">
+                        </div>
+                        <div class="form-group" style="justify-content: flex-end;">
+                            <button class="btn btn-primary" id="btn-generate-ai" onclick="generateAiTest()"><i class="fa-solid fa-gears"></i> Generate & Execute Test Suite</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- VIEW: LLM Configuration -->
+        <section id="view-config" class="view-panel">
+            <div class="card">
+                <div class="card-title"><i class="fa-solid fa-sliders" style="color: var(--secondary)"></i> Configuration Manager</div>
+                <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1.5rem;">Select your preferred LLM engine and update endpoints and authentication keys.</p>
+
+                <label>Select Active LLM Provider</label>
+                <div class="provider-toggle-container">
+                    <div class="provider-btn" id="provider-ollama" onclick="setProvider('ollama')">Local Ollama (Offline)</div>
+                    <div class="provider-btn" id="provider-deepseek" onclick="setProvider('deepseek')">DeepSeek Chat API (Cloud)</div>
+                </div>
+
+                <div id="settings-fields">
+                    <div class="form-grid">
+                        <div class="form-group" id="group-url">
+                            <label id="label-url">API Endpoint URL</label>
+                            <input type="text" id="config-url" value="">
+                        </div>
+                        <div class="form-group" id="group-model">
+                            <label id="label-model">Model Name</label>
+                            <input type="text" id="config-model" value="">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group" id="group-key">
+                        <label>DeepSeek API Token</label>
+                        <div class="input-with-icon">
+                            <input type="password" id="config-key" placeholder="Enter sk-... API Key" value="">
+                            <i class="fa-solid fa-eye-slash toggle-password" onclick="toggleApiKeyVisibility()"></i>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="config-retries">Max Self-Healing Retry Loops</label>
+                        <select id="config-retries" style="width: 150px;">
+                            <option value="1">1 Attempt</option>
+                            <option value="2">2 Attempts</option>
+                            <option value="3" selected>3 Attempts</option>
+                            <option value="4">4 Attempts</option>
+                            <option value="5">5 Attempts</option>
+                        </select>
+                    </div>
+
+                    <div style="margin-top: 1.5rem; text-align: right;">
+                        <button class="btn btn-success" onclick="saveConfiguration()"><i class="fa-solid fa-floppy-disk"></i> Save Settings</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- VIEW: Screenshots Gallery -->
+        <section id="view-gallery" class="view-panel">
+            <div id="gallery-breadcrumbs" class="breadcrumbs-container" style="margin-bottom: 1.5rem; padding: 0.75rem 1rem; background-color: #0b101c; border: 1px solid var(--border-color); border-radius: 0.75rem; display: none;"></div>
+            <div class="gallery-grid" id="screenshots-grid">
+                <!-- Loaded dynamically -->
+                <div class="no-data"><i class="fa-regular fa-image"></i><p>No screenshots taken yet</p></div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Overlay Lightbox -->
+    <div id="gallery-lightbox" class="lightbox" onclick="closeLightbox()">
+        <div class="lightbox-content" onclick="event.stopPropagation()">
+            <span class="lightbox-close" onclick="closeLightbox()">&times;</span>
+            <img class="lightbox-img" id="lightbox-img" src="" alt="Test Result">
+            <div class="lightbox-title" id="lightbox-title">Screenshot View</div>
+        </div>
+    </div>
+
+    <!-- Script Logic -->
+    <script>
+        const API_BASE = '';
+        let activeProvider = 'deepseek';
+        let currentTaskId = null;
+        let pollInterval = null;
+
+        // View Titles
+        const viewHeaders = {
+            'runner': { title: 'Test Runner Dashboard', subtitle: 'Execute regression suites with self-healing AI diagnostics' },
+            'generator': { title: 'AI Test Generator', subtitle: 'Describe user interactions to generate and automatically heal new test scripts' },
+            'config': { title: 'LLM Configuration', subtitle: 'Configure URLs, models, and credentials for Ollama and DeepSeek' },
+            'gallery': { title: 'Regression Screenshots', subtitle: 'Inspect UI checkpoints and failure captures saved during execution' }
+        };
+
+        // Switch View Panels
+        function switchView(viewId, element) {
+            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+            document.querySelectorAll('.view-panel').forEach(panel => panel.classList.remove('active'));
+            
+            element.classList.add('active');
+            document.getElementById(`view-${viewId}`).classList.add('active');
+
+            // Header titles
+            document.getElementById('page-title').innerText = viewHeaders[viewId].title;
+            document.getElementById('page-subtitle').innerText = viewHeaders[viewId].subtitle;
+
+            if (viewId === 'runner') {
+                loadTests();
+            } else if (viewId === 'config') {
+                loadConfig();
+            } else if (viewId === 'gallery') {
+                loadScreenshots();
+            }
+        }
+
+        // Switch Provider Configuration UI
+        function setProvider(provider) {
+            activeProvider = provider;
+            document.getElementById('provider-ollama').classList.remove('active');
+            document.getElementById('provider-deepseek').classList.remove('active');
+            document.getElementById(`provider-${provider}`).classList.add('active');
+
+            const groupKey = document.getElementById('group-key');
+            if (provider === 'deepseek') {
+                groupKey.style.display = 'flex';
+                document.getElementById('label-url').innerText = 'DeepSeek Base URL';
+                document.getElementById('label-model').innerText = 'DeepSeek Model';
+                document.getElementById('config-url').value = configData.deepseekUrl || 'https://api.deepseek.com/chat/completions';
+                document.getElementById('config-model').value = configData.deepseekModel || 'deepseek-chat';
+            } else {
+                groupKey.style.display = 'none';
+                document.getElementById('label-url').innerText = 'Ollama Endpoint URL';
+                document.getElementById('label-model').innerText = 'Ollama Model';
+                document.getElementById('config-url').value = configData.ollamaUrl || 'http://localhost:11434/api/chat';
+                document.getElementById('config-model').value = configData.model || 'qwen2.5-coder';
+            }
+        }
+
+        // Toggle Password visibility
+        function toggleApiKeyVisibility() {
+            const keyInput = document.getElementById('config-key');
+            const eyeIcon = keyInput.nextElementSibling;
+            if (keyInput.type === 'password') {
+                keyInput.type = 'text';
+                eyeIcon.classList.remove('fa-eye-slash');
+                eyeIcon.classList.add('fa-eye');
+            } else {
+                keyInput.type = 'password';
+                eyeIcon.classList.remove('fa-eye');
+                eyeIcon.classList.add('fa-eye-slash');
+            }
+        }
+
+        // Refresh Data
+        function reloadDashboard() {
+            const activeNav = document.querySelector('.nav-item.active span').innerText.toLowerCase();
+            if (activeNav.includes('runner')) loadTests();
+            else if (activeNav.includes('config')) loadConfig();
+            else if (activeNav.includes('screenshot')) loadScreenshots();
+        }
+
+        // Load Configuration
+        let configData = {};
+        function loadConfig() {
+            fetch(`${API_BASE}/api/config`)
+                .then(res => res.json())
+                .then(data => {
+                    configData = data;
+                    activeProvider = data.provider || 'deepseek';
+                    
+                    document.getElementById('config-key').value = data.deepseekApiKey || '';
+                    document.getElementById('config-retries').value = data.maxRetries !== undefined ? data.maxRetries : '3';
+                    
+                    setProvider(activeProvider);
+                })
+                .catch(err => {
+                    console.error('Error fetching config:', err);
+                    alert('Failed to load LLM config details.');
+                });
+        }
+
+        // Save Configuration
+        function saveConfiguration() {
+            const url = document.getElementById('config-url').value.trim();
+            const model = document.getElementById('config-model').value.trim();
+            const key = document.getElementById('config-key').value.trim();
+            const retries = parseInt(document.getElementById('config-retries').value);
+
+            const updatedConfig = { ...configData };
+            updatedConfig.provider = activeProvider;
+            updatedConfig.maxRetries = retries;
+
+            if (activeProvider === 'deepseek') {
+                updatedConfig.deepseekUrl = url;
+                updatedConfig.deepseekModel = model;
+                updatedConfig.deepseekApiKey = key;
+            } else {
+                updatedConfig.ollamaUrl = url;
+                updatedConfig.model = model;
+            }
+
+            fetch(`${API_BASE}/api/config`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(updatedConfig)
+            })
+            .then(res => res.json())
+            .then(res => {
+                if (res.success) {
+                    alert('Configuration saved successfully!');
+                    configData = updatedConfig;
+                } else {
+                    alert('Failed to save settings: ' + res.error);
+                }
+            })
+            .catch(err => {
+                console.error(err);
+                alert('Connection error while saving configuration.');
+            });
+        }
+
+        // Load Spec Tests
+        function loadTests() {
+            const grid = document.getElementById('tests-list-grid');
+            grid.innerHTML = '<div class="no-data"><i class="fa-solid fa-spinner fa-spin"></i><p>Loading test suites...</p></div>';
+
+            fetch(`${API_BASE}/api/tests`)
+                .then(res => res.json())
+                .then(tests => {
+                    if (tests.length === 0) {
+                        grid.innerHTML = '<div class="no-data"><i class="fa-regular fa-folder-open"></i><p>No spec tests found</p></div>';
+                        return;
+                    }
+
+                    grid.innerHTML = '';
+                    tests.forEach(test => {
+                        const card = document.createElement('div');
+                        card.className = 'test-card';
+                        card.id = `test-card-${test.name.replace(/\./g, '_')}`;
+                        
+                        card.innerHTML = `
+                            <div class="test-meta">
+                                <div>
+                                    <div class="test-name">${test.name}</div>
+                                    <div class="test-suite">
+                                        <i class="fa-regular fa-file-code"></i>
+                                        <span>${test.path}</span>
+                                    </div>
+                                </div>
+                                <span class="badge badge-idle" id="badge-${test.name.replace(/\./g, '_')}">Idle</span>
+                            </div>
+                            <div class="test-actions">
+                                <button class="btn btn-secondary" onclick="runTestFile('${test.path}', '${test.name}', 'normal')">
+                                    <i class="fa-solid fa-play"></i> Run
+                                </button>
+                                <button class="btn btn-primary" onclick="runTestFile('${test.path}', '${test.name}', 'heal')">
+                                    <i class="fa-solid fa-wand-magic-sparkles"></i> Run & Heal
+                                </button>
+                            </div>
+                        `;
+                        grid.appendChild(card);
+                    });
+                })
+                .catch(err => {
+                    grid.innerHTML = '<div class="no-data"><i class="fa-solid fa-triangle-exclamation"></i><p>Failed to load spec files</p></div>';
+                });
+        }
+
+        // Run Test File
+        function runTestFile(filePath, filename, mode) {
+            showConsole();
+            const badgeId = `badge-${filename.replace(/\./g, '_')}`;
+            const badge = document.getElementById(badgeId);
+            if (badge) {
+                badge.className = 'badge badge-running';
+                badge.innerText = 'Running';
+            }
+
+            document.getElementById('terminal-title').innerText = `EXECUTING TEST: ${filename} (${mode.toUpperCase()} MODE)`;
+            document.getElementById('console-logs').innerHTML = `⏳ Requesting task to execute test file...\n\n`;
+
+            fetch(`${API_BASE}/api/run-test`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ file: filePath, mode })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.taskId) {
+                    startPollingLogs(data.taskId, filename, badgeId);
+                } else {
+                    document.getElementById('console-logs').innerHTML += `❌ Error: Failed to retrieve task ID.\n`;
+                    if (badge) {
+                        badge.className = 'badge badge-danger';
+                        badge.innerText = 'Failed';
+                    }
+                }
+            })
+            .catch(err => {
+                document.getElementById('console-logs').innerHTML += `❌ Server connection failed.\n`;
+                if (badge) {
+                    badge.className = 'badge badge-danger';
+                    badge.innerText = 'Failed';
+                }
+            });
+        }
+
+        // Generate AI Test
+        function generateAiTest() {
+            const prompt = document.getElementById('prompt-desc').value.trim();
+            const path = document.getElementById('prompt-target-file').value.trim();
+
+            if (!prompt) {
+                alert('Please describe what your test script should accomplish.');
+                return;
+            }
+
+            showConsole();
+            document.getElementById('terminal-title').innerText = `AI GENERATION LOOP ACTIVE`;
+            document.getElementById('console-logs').innerHTML = `⏳ Sending user instructions to AI self-healing loop...\n\n`;
+
+            document.getElementById('btn-generate-ai').disabled = true;
+
+            fetch(`${API_BASE}/api/generate`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ prompt, path })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.taskId) {
+                    startPollingLogs(data.taskId, 'AI Generation', null, () => {
+                        document.getElementById('btn-generate-ai').disabled = false;
+                    });
+                } else {
+                    document.getElementById('console-logs').innerHTML += `❌ Error: Server failed to initiate AI process.\n`;
+                    document.getElementById('btn-generate-ai').disabled = false;
+                }
+            })
+            .catch(err => {
+                document.getElementById('console-logs').innerHTML += `❌ Server connection failed.\n`;
+                document.getElementById('btn-generate-ai').disabled = false;
+            });
+        }
+
+        function stripAnsi(text) {
+            return text.replace(/[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g, '');
+        }
+
+        function copyLogs() {
+            const logsText = document.getElementById('console-logs').innerText;
+            navigator.clipboard.writeText(logsText)
+                .then(() => {
+                    const btn = document.querySelector('button[onclick="copyLogs()"]');
+                    if (btn) {
+                        const originalHTML = btn.innerHTML;
+                        btn.innerHTML = '<i class="fa-solid fa-check"></i> Copied!';
+                        setTimeout(() => {
+                            btn.innerHTML = originalHTML;
+                        }, 2000);
+                    }
+                })
+                .catch(err => {
+                    console.error('Failed to copy logs:', err);
+                    alert('Failed to copy logs to clipboard.');
+                });
+        }
+
+        // Log Poller
+        function startPollingLogs(taskId, title, badgeId, onFinishCallback) {
+            if (pollInterval) clearInterval(pollInterval);
+            currentTaskId = taskId;
+
+            // Show the Stop button
+            const stopBtn = document.getElementById('btn-stop-task');
+            if (stopBtn) stopBtn.style.display = 'inline-flex';
+
+            const consoleLogs = document.getElementById('console-logs');
+
+            pollInterval = setInterval(() => {
+                fetch(`${API_BASE}/api/task?id=${taskId}`)
+                    .then(res => res.json())
+                    .then(task => {
+                        // Render log lines
+                        const isAtBottom = (consoleLogs.scrollHeight - consoleLogs.clientHeight - consoleLogs.scrollTop) < 80;
+                        consoleLogs.innerHTML = escapeHtml(stripAnsi(task.logs));
+                        if (isAtBottom) {
+                            consoleLogs.scrollTop = consoleLogs.scrollHeight; // Auto scroll only if user is at the bottom
+                        }
+
+                        if (task.status !== 'running') {
+                            clearInterval(pollInterval);
+                            pollInterval = null;
+                            
+                            // Hide the Stop button
+                            if (stopBtn) stopBtn.style.display = 'none';
+
+                            document.getElementById('terminal-title').innerText = `CONSOLE - FINISHED (${task.status.toUpperCase()})`;
+                            
+                            if (badgeId) {
+                                const badge = document.getElementById(badgeId);
+                                if (badge) {
+                                    badge.className = `badge badge-${task.status === 'success' ? 'success' : 'danger'}`;
+                                    badge.innerText = task.status === 'success' ? 'Passed' : 'Failed';
+                                }
+                            }
+
+                            if (onFinishCallback) onFinishCallback();
+                        }
+                    })
+                    .catch(err => {
+                        console.error('Error polling logs:', err);
+                        clearInterval(pollInterval);
+                        pollInterval = null;
+                        if (stopBtn) stopBtn.style.display = 'none';
+                        if (onFinishCallback) onFinishCallback();
+                    });
+            }, 1000);
+        }
+
+        function stopCurrentTask() {
+            if (!currentTaskId) return;
+
+            const stopBtn = document.getElementById('btn-stop-task');
+            if (stopBtn) {
+                stopBtn.disabled = true;
+                stopBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Stopping...';
+            }
+
+            fetch(`${API_BASE}/api/stop-task`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ taskId: currentTaskId })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (stopBtn) {
+                    stopBtn.disabled = false;
+                    stopBtn.innerHTML = '<i class="fa-solid fa-circle-stop"></i> Stop Test';
+                    stopBtn.style.display = 'none';
+                }
+            })
+            .catch(err => {
+                console.error('Failed to stop task:', err);
+                if (stopBtn) {
+                    stopBtn.disabled = false;
+                    stopBtn.innerHTML = '<i class="fa-solid fa-circle-stop"></i> Stop Test';
+                }
+                alert('Failed to stop the running test task.');
+            });
+        }
+
+        // Utilities
+        function showConsole() {
+            document.getElementById('live-console').style.display = 'block';
+        }
+
+        function clearConsole() {
+            document.getElementById('console-logs').innerHTML = 'Terminal cleared. Select a task...';
+        }
+
+        function escapeHtml(text) {
+            return text
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+
+        // Load Screenshots Gallery
+        let allScreenshots = [];
+        let currentFolder = "";
+
+        function loadScreenshots() {
+            const grid = document.getElementById('screenshots-grid');
+            grid.innerHTML = '<div class="no-data"><i class="fa-solid fa-spinner fa-spin"></i><p>Scanning checkpoints...</p></div>';
+
+            fetch(`${API_BASE}/api/screenshots`)
+                .then(res => res.json())
+                .then(images => {
+                    allScreenshots = images;
+                    renderFolderView();
+                })
+                .catch(err => {
+                    grid.innerHTML = '<div class="no-data"><i class="fa-solid fa-triangle-exclamation"></i><p>Failed to retrieve gallery images</p></div>';
+                });
+        }
+
+        function renderFolderView() {
+            const grid = document.getElementById('screenshots-grid');
+            const breadcrumbs = document.getElementById('gallery-breadcrumbs');
+            grid.innerHTML = '';
+
+            // Update breadcrumbs
+            if (currentFolder === "") {
+                breadcrumbs.style.display = 'none';
+            } else {
+                breadcrumbs.style.display = 'flex';
+                let html = `<span class="breadcrumb-item" onclick="navigateToFolder('')"><i class="fa-solid fa-house"></i> Screenshots</span>`;
+                const parts = currentFolder.split('/');
+                let cumulativePath = '';
+                parts.forEach((part, index) => {
+                    cumulativePath += (index === 0 ? '' : '/') + part;
+                    if (index === parts.length - 1) {
+                        html += ` <span class="breadcrumb-separator">/</span> <span class="breadcrumb-item active">${part}</span>`;
+                    } else {
+                        const localPath = cumulativePath;
+                        html += ` <span class="breadcrumb-separator">/</span> <span class="breadcrumb-item" onclick="navigateToFolder('${localPath}')">${part}</span>`;
+                    }
+                });
+                breadcrumbs.innerHTML = html;
+            }
+
+            // Filter items under the current folder
+            const folders = new Set();
+            const files = [];
+
+            allScreenshots.forEach(img => {
+                const rel = img.relativePath;
+                if (currentFolder === "") {
+                    // Root level
+                    if (rel.includes('/')) {
+                        folders.add(rel.split('/')[0]);
+                    } else {
+                        files.push(img);
+                    }
+                } else {
+                    // Inside some folder
+                    if (rel.startsWith(currentFolder + '/')) {
+                        const subPart = rel.substring(currentFolder.length + 1);
+                        if (subPart.includes('/')) {
+                            folders.add(subPart.split('/')[0]);
+                        } else {
+                            files.push(img);
+                        }
+                    }
+                }
+            });
+
+            if (folders.size === 0 && files.length === 0) {
+                grid.innerHTML = '<div class="no-data"><i class="fa-regular fa-folder-open"></i><p>This directory is empty</p></div>';
+                return;
+            }
+
+            // Render Folders first
+            folders.forEach(folderName => {
+                const folderPath = currentFolder === "" ? folderName : currentFolder + '/' + folderName;
+                
+                // Count items inside this folder recursively
+                const count = allScreenshots.filter(img => img.relativePath.startsWith(folderPath + '/')).length;
+
+                const card = document.createElement('div');
+                card.className = 'folder-card';
+                card.onclick = () => navigateToFolder(folderPath);
+                card.innerHTML = `
+                    <i class="fa-solid fa-folder folder-icon"></i>
+                    <div>
+                        <div class="folder-name">${folderName}</div>
+                        <div class="folder-count">${count} image${count === 1 ? '' : 's'}</div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+
+            // Render Files
+            files.forEach(img => {
+                const item = document.createElement('div');
+                item.className = 'gallery-item';
+                item.onclick = () => openLightbox(img.url, img.name);
+                const date = new Date(img.mtime).toLocaleString();
+
+                item.innerHTML = `
+                    <div class="gallery-img-container">
+                        <img src="${img.url}" alt="${img.name}">
+                    </div>
+                    <div class="gallery-info">
+                        <div class="gallery-name" title="${img.name}">${img.name}</div>
+                        <div class="gallery-date">${date}</div>
+                    </div>
+                `;
+                grid.appendChild(item);
+            });
+        }
+
+        function navigateToFolder(folderPath) {
+            currentFolder = folderPath;
+            renderFolderView();
+        }
+
+        // Lightbox Functions
+        function openLightbox(src, title) {
+            const lightbox = document.getElementById('gallery-lightbox');
+            document.getElementById('lightbox-img').src = src;
+            document.getElementById('lightbox-title').innerText = title;
+            lightbox.classList.add('active');
+        }
+
+        function closeLightbox() {
+            document.getElementById('gallery-lightbox').classList.remove('active');
+        }
+
+        // Initial setup
+        window.onload = () => {
+            loadTests();
+        };
+    </script>
+</body>
+</html>
