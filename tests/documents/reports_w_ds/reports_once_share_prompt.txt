@@ -1,0 +1,17 @@
+Write a Playwright test script for AIV Reports. Follow these steps:
+1. Navigate directly to the Reports section: 'https://aiv.test.oneaiv.com:8086/aiv/Documents/Reports'. Capture a screenshot named '02-reports-page.png'.
+2. In the reports listing grid, find the cell containing 'Order details AutoTest' and double-click it to open the scheduler dialog. Capture a screenshot named '03-scheduler-open.png'.
+3. Scope to the scheduler dialog container. Click on the 'Schedule' tab. Under Frequency options, click the label containing 'Once' directly to select the 'Once' radio option.
+4. Locate the 'Start Time *' calendar text input inside the dialog. Clear its existing value and fill it with a date-time string exactly 2 minutes in the future, formatted as 'DD/MM/YYYY HH:mm:ss' (handling hour and minute rollovers if minute is >= 58). Capture a screenshot named '04-schedule-once.png'.
+5. Locate the 'Share' checkbox label or input inside the dialog, and check/click it. Locate the 'Users' radio option label under Share inside the dialog, and click it. Locate the 'Visibility' dropdown under Share inside the dialog, click it, and select 'Public' from the options overlay list. Capture a screenshot named '05-share-setup.png'.
+6. Inside the 'Available Users' search input box in the dialog, type 'Demo' sequentially (letter-by-letter with a 100ms keypress delay) to trigger Angular's filter. Locate the visible cell containing exactly 'Demo', find its parent row, and click the checkbox wrapper/frame (.e-frame, .e-checkbox-wrapper, or .p-checkbox-box) inside it. Wait 5 seconds for AIV to register the selection. Capture a screenshot named '06-user-selected.png'.
+7. Switch to the 'Output' tab inside the dialog. Locate the input field for the output name (input[name="soutputname"]) inside the dialog, clear it, and type 'OD AutoTest'. Ensure format is 'rptdocument'. Capture a screenshot named '07-output-setup.png'.
+8. Click the 'Run' button inside the dialog. Wait for the scheduler dialog to close, and capture a screenshot named '08-run-clicked.png'.
+9. Navigate directly to the Requests section: 'https://aiv.test.oneaiv.com:8086/aiv/Request/Request'. Click the 'Schedule' tab. Poll the grid (refreshing via button every 3 seconds up to 5 times) until the scheduled report 'OD AutoTest' appears. Capture a screenshot named '09-scheduled-list.png'.
+10. Wait for 2.5 minutes (150 seconds) in the test code to let the schedule trigger and run.
+11. Click on the top-right profile button and click the 'Logout' menu option. Clear all cookies, localStorage, and sessionStorage to isolate the session.
+12. On the login screen, fill the email/username input field with 'Demo', fill the password input field with 'password', and click the 'Login' button.
+13. Navigate to the Reports section via the sidebar menu UI (clicking the hamburger menu, selecting 'Documents', then clicking 'Reports') to ensure proper routing.
+14. Search for 'OD AutoTest' in the reports grid. Poll (with grid refreshes and 3-second delays up to 10 attempts) until the file 'OD AutoTest' appears.
+15. Double-click the file 'OD AutoTest' to open it in a new tab.
+16. Wait for the new browser tab that opens for the report. Wait for 60 seconds (1 minute) for the report to fully load and render in the new tab. Take a screenshot in the new tab named '10-demo-report-loaded.png' to verify successful loading, then close the tab.
