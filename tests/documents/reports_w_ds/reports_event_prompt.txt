@@ -1,0 +1,44 @@
+Write a Playwright test script for AIV Reports. Follow these steps:
+
+--- Part 1 ---
+1. Navigate directly to the Reports section: 'https://aiv.test.oneaiv.com:8086/aiv/Documents/Reports'. Capture a screenshot named '02-reports-page.png'.
+2. In the reports listing grid, find the cell containing 'Order details AutoTest' and double-click it to open the scheduler dialog. Capture a screenshot named '03-scheduler-open.png'.
+3. Scope to the scheduler dialog container. Click on the 'Schedule' tab. Click on the 'Schedule Type' dropdown and select 'Event'. Capture a screenshot named '04-event-schedule-type.png'.
+4. Locate the blue '+' icon button next to 'Trigger On Events' inside the dialog (this is an anchor link element with class 'tg_event_icon_add'), and click it. A dialog box named 'Create Manage Event' appears.
+5. In the 'Create Manage Event' dialog:
+   - Generate a unique Event Number based on '0707' followed by 4 random digits (e.g. 07073074) to prevent duplicate name validation errors.
+   - Fill 'Event Number' with this unique number.
+   - Fill 'Event Type' with 'Event Report'.
+   - Clear the 'Event Description' field to keep it empty.
+   - Capture a screenshot named '05-create-event-dialog.png'.
+6. Check the 'Event Mail' checkbox. Once expanded, click the 'Users' multiselect dropdown. Type 'Demo' and check its box. Clear the search, type 'Neel', and check its box. Press Escape to close the multiselect. In the 'Enter email' field (which is inside a p-chips tag input), type 'neel@aivhub.com' and press Enter. Capture a screenshot named '06-users-emails-configured.png'.
+7. Click the 'Email Template' dropdown, and select 'Success'. Capture a screenshot named '07-email-template-selected.png'.
+8. Wait for 8 seconds, then click the 'Submit' button inside the event dialog.
+9. Wait for 10 seconds to allow the event creation transaction to persist on the server.
+10. Now back at the Schedule tab, click the 'Trigger On Events' dropdown (which is a p-dropdown element with name='based'), scroll to the bottom of the list, find the option matching our dynamically generated unique Event Number, and select/scroll to it. Capture a screenshot named '08-event-created-in-dropdown.png'.
+
+--- Part 2 ---
+11. Click on the located unique event option inside the 'Trigger On Events' dropdown to select it. Capture a screenshot named '09-event-selected-in-dropdown.png'.
+12. Click on the 'Output' tab inside the scheduler dialog.
+13. In the Name input field (input name='soutputname'), clear the existing name and fill it with 'OD Event AutoTest'. Capture a screenshot named '10-output-tab-configured.png'.
+14. Click the 'Run' button in the scheduler dialog, and wait for the dialog to close.
+15. Navigate to the Requests section: 'https://aiv.test.oneaiv.com:8086/aiv/Request/Request'.
+16. Click the 'Waiting For Event' tab.
+17. Find the row matching 'OD Event AutoTest' in the list, and click on it. Capture a screenshot named '11-waiting-for-event-clicked.png'.
+
+--- Part 3 ---
+18. Go back to the Reports section: 'https://aiv.test.oneaiv.com:8086/aiv/Documents/Reports'.
+19. Search for 'Top 5 customers for Event' in the grid search input. Capture a screenshot named '12-search-report.png'.
+20. Double-click the 'Top 5 customers for Event' row in the list to open the scheduler dialog. Capture a screenshot named '13-scheduler-open-top5.png'.
+21. Switch to the 'Schedule' tab. Capture a screenshot named '14-schedule-tab-top5.png'.
+22. Select the 'Once' radio button. Click the calendar icon to open the time picker. Increment the minutes picker by 2 minutes to ensure a future execution start time. Select the active day to close the time picker. Capture a screenshot named '15-start-time-set.png'.
+23. Switch to the 'Output' tab. Clear the existing Output name and fill it with 'Customers for Event'. Capture a screenshot named '16-customers-for-event-output.png'.
+24. Click the 'Event on Success' dropdown (p-dropdown name='successid'), scroll to the bottom, locate our dynamically generated unique Event Number, and click to select it. Capture a screenshot named '17-success-event-selected.png'.
+25. Repeat the same selection flow for the 'Event on Fail' dropdown (p-dropdown name='failid'), selecting the same unique Event Number. Capture a screenshot named '18-fail-event-selected.png'.
+26. Wait for 5 seconds, then click the 'Run' button.
+27. Navigate to the Requests section: 'https://aiv.test.oneaiv.com:8086/aiv/Request/Request'.
+28. Click the 'Schedule' tab. Apply a date filter range like '2026-07-05 - 2026-07-08' to handle server timezone offsets. Capture a screenshot named '19-schedule-requests.png'.
+29. Wait for 1.3 minutes (78 seconds) for the schedule to trigger.
+30. Click the Refresh button in the top navigation bar. Capture a screenshot named '20-refreshed-requests.png'.
+31. Click the 'Completed' tab. Scroll to the bottom of the list and wait for 5 seconds. Capture a screenshot named '21-completed-list-bottom.png'.
+32. Verify that both 'OD Event AutoTest' and 'Customers for Event' rows are visible in the completed list. Click/select each row to show details. Capture a screenshot named '22-events-completed-verification.png'.
