@@ -1,0 +1,19 @@
+Write a Playwright test script for AIV Reports format html. Follow these steps:
+
+1. Navigate directly to the Reports section: 'https://aiv.test.oneaiv.com:8086/aiv/Documents/Reports'.
+2. In the reports listing grid, find the cell containing 'Order details AutoTest' and double-click it to open the scheduler dialog.
+3. Switch to the 'Output' tab (keeping Schedule tab at default).
+4. Clear the existing Output name and fill it with 'Order Details html'. Capture a screenshot named '03-output-name-html.png'.
+5. Click the Format dropdown (p-dropdown name="outputformat") and select the 'html' option. Wait for 3 seconds. Capture a screenshot named '04-format-selected-html.png'.
+6. Click the Home icon next to the Path input box. Wait for 5 seconds for the 'Select Folder' dialog to appear. Capture a screenshot named '05-select-folder-dialog.png'.
+7. In the 'Search files and folders' input inside the Select Folder dialog, search for 'Reports Format'.
+8. The tree will filter. Expand the 'Root' folder first.
+9. Inside the expanded tree, find the folder named 'Reports Format'. Click on it once to select it. Capture a screenshot named '06-reports-format-folder-selected.png'.
+10. Click the 'Submit' button inside the Select Folder dialog. Wait for 3 seconds. Capture a screenshot named '07-folder-dialog-submitted.png'.
+11. Click the 'Run' button in the scheduler dialog, and wait for a new tab to open.
+12. Once the new tab opens, wait for 15 seconds for the HTML report to load completely in the new tab. Capture a screenshot of the loaded HTML report in that new tab named '08-html-report-executed.png'. Then close that new tab to return focus to the main tab.
+13. Go back to the Reports section: 'https://aiv.test.oneaiv.com:8086/aiv/Documents/Reports'.
+14. Search for 'Reports Format' folder using the search input. Capture a screenshot named '09-reports-format-folder-searched.png'.
+15. Double-click the 'Reports Format' folder cell to open it.
+16. Clear the search input inside Reports Format folder to show all contents. Capture a screenshot named '10-reports-format-folder-opened.png'.
+17. Verify that our report 'Order Details html' is present in the list. Click on it to select/highlight. Capture a screenshot named '12-html-file-verified.png'.

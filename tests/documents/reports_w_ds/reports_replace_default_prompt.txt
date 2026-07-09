@@ -1,0 +1,42 @@
+Write a Playwright test script for AIV Reports Replace Default. Follow these steps:
+
+1. Navigate directly to the Reports section: 'https://aiv.test.oneaiv.com:8086/aiv/Documents/Reports'.
+2. In the reports listing grid, find the cell containing 'Order details AutoTest' (ensure type is 'rptdesign') and double-click it to open the scheduler dialog.
+3. Switch to the 'Parameter' tab. Wait for 4 seconds. Capture a screenshot named '03-parameter-tab.png'.
+4. Switch to the 'Schedule' tab. Capture a screenshot named '04-schedule-tab.png'.
+5. Switch to the 'Output' tab (keeping Replace Default checked, and all other parameters at default).
+6. Click the Home icon next to the Path input box. Wait for 5 seconds for the 'Select Folder' dialog to appear.
+7. In the 'Search files and folders' input inside the Select Folder dialog, search for 'Reports Version'.
+8. The tree will filter. Expand the 'Root' folder first, then expand the 'Neel' folder.
+9. Inside the expanded tree under Neel, find the folder named 'Reports Version'. Click on it once to select it. Capture a screenshot named '05-reports-version-selected.png'.
+10. Click the 'Submit' button inside the Select Folder dialog. Wait for 3 seconds. Capture a screenshot named '06-path-configured.png'.
+11. Click the 'Run' button in the scheduler dialog, and wait for a new tab to open.
+12. Once the new tab opens, wait for 15 seconds. Capture a screenshot of the page named '07-new-tab-opened.png'. Then close that new tab to return focus to the main tab.
+13. Go back to the Reports section: 'https://aiv.test.oneaiv.com:8086/aiv/Documents/Reports'.
+14. Search for the 'Neel' folder using the search input. Double-click the 'Neel' folder cell to open it.
+15. Search for the 'Reports Version' folder using the search input. Double-click the 'Reports Version' folder cell to open it.
+16. Verify that our report 'Order details AutoTest' (rptdocument) is present in the list. Click on it to select/highlight. Capture a screenshot named '08-replace-default-verified.png'.
+17. Right-click on the 'Order details AutoTest' report file (rptdocument) in the current folder. Wait for 1.5 seconds. Capture a screenshot named '09-context-menu-open.png'.
+18. Click the 'Version' option in the context menu. Wait 3 seconds for the Version dialog to open.
+19. Verify that the Version dialog is visible. Capture a screenshot named '10-version-dialog-default.png'.
+20. Scroll the table inside the Version dialog horizontally. Wait 2 seconds. Capture a screenshot named '11-version-dialog-scrolled.png'.
+21. Click the Cancel button to close the Version dialog.
+22. Go back to the root Reports section.
+23. Find 'Order details AutoTest' (rptdesign) and double-click it to open the scheduler dialog.
+24. Switch to the 'Parameter' tab. Wait for 3 seconds. Click the parameter input field, clear existing value, and enter '10101'. Capture a screenshot named '12-parameter-10101.png'.
+25. Switch to the 'Schedule' tab. Capture a screenshot named '13-schedule-default.png'.
+26. Switch to the 'Output' tab. Click the Home icon, search and select the 'Reports Version' folder (under Root -> Neel), and click Submit. Capture screenshots '14-reports-version-folder-selected.png' and '15-path-configured.png'.
+27. Locate the 'Replace Default' checkbox. It will be checked by default. Uncheck it. Wait 2 seconds. Capture a screenshot named '16-replace-default-unchecked.png'.
+28. Click the 'Run' button. Wait for the new tab to open.
+29. In the new tab, wait 15 seconds. Capture a screenshot named '17-new-tab-opened.png'. Close the new tab.
+30. Go back to our tab, navigate to 'Neel' -> 'Reports Version' folder, refresh the file listing, and capture a screenshot named '18-reports-version-folder-verified.png'.
+31. Right-click on the 'Order details AutoTest' report file (rptdocument). Select 'Version' from context menu.
+32. Verify that two version entries are present in the dialog. Capture a screenshot named '19-two-versions-default.png'.
+33. Scroll horizontally. Capture a screenshot named '20-two-versions-scrolled.png'. Click Cancel to close.
+34. Double-click the 'Order details AutoTest' file (rptdocument). Wait for the new tab to open.
+35. Wait 15 seconds for the report to compile. Verify it displays 'Order Number: 10101'. Capture a screenshot named '21-order-10101-rendered.png'. Close the new tab.
+36. Right-click the 'Order details AutoTest' file (rptdocument) again, select 'Version'.
+37. Select/highlight the first version row by clicking its checkbox under the 'Default Version' column. Capture a screenshot named '22-first-version-selected.png'.
+38. Click the 'Submit' button inside the dialog. Wait 2 seconds.
+39. Double-click the 'Order details AutoTest' file (rptdocument) again. Wait for the new tab to open.
+40. Wait 15 seconds for the report to compile. Verify it displays 'Order Number: 10100'. Capture a screenshot named '23-order-10100-rendered.png'. Close the new tab.
