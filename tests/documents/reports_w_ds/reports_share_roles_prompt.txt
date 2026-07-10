@@ -1,0 +1,25 @@
+Write a Playwright test script for AIV Reports Share with Roles. Follow these steps:
+
+1. Navigate directly to the Reports section: 'https://aiv.test.oneaiv.com:8086/aiv/Documents/Reports'.
+2. In the reports listing grid, find the cell containing 'Order details AutoTest' (ensure type is 'rptdesign') and double-click it to open the scheduler dialog.
+3. Switch to the 'Parameter' tab. Wait for 2 seconds.
+4. Switch to the 'Schedule' tab. Select the 'Once' radio button. In Start Time select after 1.5 min (90 seconds) from now. Capture a screenshot named '03-schedule-once.png'.
+5. Check the 'Share' checkbox. Wait for 2 seconds.
+6. Select the 'Roles' radio button. Wait for 2 seconds. Capture a screenshot named '04-roles-selected.png'.
+7. Open the 'Visibility' dropdown and select the 'Public' option. Wait for 2 seconds. Capture a screenshot named '05-visibility-public.png'.
+8. In the 'Available Roles' search input, search for 'Automation Tester'. Click the checkbox next to the 'Automation Tester' role entry. Wait for 2 seconds. Capture a screenshot named '06-role-assigned.png'.
+9. Switch to the 'Output' tab.
+10. Clear the existing Output name and fill it with 'Order detail Roles'. Capture a screenshot named '07-output-name-roles.png'.
+11. Click the Home icon next to the Path input box. Wait for 5 seconds for the 'Select Folder' dialog to appear.
+12. Search for 'Report with Roles' in the search box.
+13. Expand the 'Root' folder. Select the 'Report with Roles' folder entry. Capture a screenshot named '08-report-with-roles-selected.png'.
+14. Click the 'Submit' button inside the Select Folder dialog. Wait for 2 seconds. Capture a screenshot named '09-folder-submitted.png'.
+15. Click the 'Run' button in the scheduler dialog.
+16. Navigate directly to the Requests section: 'https://aiv.test.oneaiv.com:8086/aiv/Request/Request'.
+17. Select the 'Schedule' tab. Capture a screenshot named '10-schedule-requests.png'.
+18. Wait for 2 minutes (120 seconds) for the scheduled execution to compile.
+19. Click the profile button at the top-right and click the 'Logout' option. Clear session/local storage and cookies to isolate session. Capture a screenshot of the login page named '11-logged-out.png'.
+20. Fill username with 'neel' and password with 'password', and click Login. Capture a screenshot named '12-logged-in-neel.png'.
+21. Navigate directly to the Reports section.
+22. Search for 'Report with Roles' folder and double-click to open it.
+23. Verify that the file 'Order detail Roles' is present in the list. Capture a screenshot named '13-report-with-roles-folder-opened.png'.
