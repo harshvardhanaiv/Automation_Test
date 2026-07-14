@@ -1,0 +1,20 @@
+Write a Playwright test script for AIV Merge Reports. Follow these steps:
+
+1. Navigate directly to the Merge Reports section: 'https://aiv.test.oneaiv.com:8086/aiv/Documents/MergeReports'.
+2. Wait for the page and grid to load. Click the 'Create' button present at the bottom of the grid toolbar. Capture a screenshot named '01-create-button-clicked.png'.
+3. Wait for 5 seconds for the Parameter dialog to load. Capture a screenshot named '02-parameter-tab-opened.png'.
+4. Clear the existing text in the Name input and type 'Merge AutoTest'. Capture a screenshot named '03-name-entered.png'.
+5. In the 'Search files and folders' input box, search for 'Order details AutoTest'.
+6. In the left tree list, click the 'Order details AutoTest' file node. Capture a screenshot named '04-report-selected.png'.
+7. Click the '>' (move right) icon to add the report. Capture a screenshot named '05-report-moved-right.png'.
+8. Wait for 5 seconds. Scroll down inside the dialog content area to make the Parameters section visible. Capture a screenshot named '06-parameters-visible.png'.
+9. Change the parameter value from '10100' to '10101'. Capture a screenshot named '07-parameter-changed.png'.
+10. Scroll back up to the search files and folders input. Search for 'vinit'.
+11. Click on the 'excel_auto_col_widths' file node. Capture a screenshot named '08-second-report-selected.png'.
+12. Click the '>' (move right) icon to add the second report. Capture a screenshot named '09-second-report-moved-right.png'.
+13. Scroll down to make both parameters visible. One should have '10101' and the second should show 'No parameters found'. Capture a screenshot named '10-both-parameters-visible.png'.
+14. Switch to the 'Schedule' tab. Wait for 2 seconds. Capture a screenshot named '11-schedule-tab.png'.
+15. Click the 'Save & Merge' button.
+16. Wait for the new tab to open, then wait 15 seconds for the PDF report to load.
+17. Capture a screenshot of the first page of the PDF named '12-pdf-page1.png'.
+18. Go to the second page of the PDF (via clicking thumbnail '2' or scrolling). Capture a screenshot named '13-pdf-page2.png'.

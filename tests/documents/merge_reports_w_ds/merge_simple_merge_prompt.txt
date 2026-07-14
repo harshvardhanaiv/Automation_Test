@@ -1,0 +1,19 @@
+Write a Playwright test script for AIV Merge Reports - Simple Merge workflow. Follow these steps:
+
+1. Navigate directly to the Merge Reports section: 'https://aiv.test.oneaiv.com:8086/aiv/Documents/MergeReports'.
+2. Wait for the page and grid to load. Click the 'Create' button present at the bottom of the grid toolbar.
+3. Wait for 5 seconds for the Parameter dialog to load.
+4. Clear the existing text in the Name input and type 'Simple Merge AutoTest'.
+5. In the 'Search files and folders' input box, search for 'Order details AutoTest'. Click on its tree node and click the '>' (move right) button.
+6. In the search box, search for 'Orders Payment AutoTest'. Click on its tree node and click the '>' (move right) button. Capture a screenshot named '01-reports-selected.png'.
+7. Scroll down inside the dialog content area to make the Parameters section visible.
+8. Click on the 'Schedule' tab. Keep everything as it is (default). Capture a screenshot named '02-schedule-tab.png'.
+9. Click on the 'Output' tab. Keep everything as it is (default). Capture a screenshot named '03-output-tab.png'.
+10. Click the 'Merge' button (next to 'Save & Merge').
+11. Wait for a new tab to open, then wait 10 seconds for the PDF to load. Capture a screenshot named '04-pdf-opened.png'.
+12. Go back to the main AIV tab, click the 'Cancel' button to close the scheduler dialog.
+13. In the Merge Reports grid search bar, search for 'Simple Merge AutoTest'. Verify that no definition row is found, and capture a screenshot named '05-no-file-found.png'.
+14. Clear the search bar.
+15. Navigate directly to the Reports section: 'https://aiv.test.oneaiv.com:8086/aiv/Documents/Reports'.
+16. In the grid search bar, search for 'Simple Merge AutoTest'.
+17. Verify that the output report file with the date-time suffix is present in the grid, and capture a screenshot named '06-report-file-found.png'.

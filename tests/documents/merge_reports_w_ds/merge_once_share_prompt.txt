@@ -1,0 +1,30 @@
+Write a Playwright test script for AIV Merge Reports - Schedule Once Share workflow. Follow these steps:
+
+1. Navigate directly to the Merge Reports section: 'https://aiv.test.oneaiv.com:8086/aiv/Documents/MergeReports'.
+2. Wait for the page and grid to load. Click the 'Create' button present at the bottom of the grid toolbar.
+3. Wait for 5 seconds for the Parameter dialog to load.
+4. Clear the existing text in the Name input and type 'Merge AutoTest share'.
+5. In the 'Search files and folders' input box, search for 'Order details AutoTest'. Click on its tree node and click the '>' (move right) button.
+6. In the search box, search for 'Orders Payment AutoTest'. Click on its tree node and click the '>' (move right) button. Capture a screenshot named '01-reports-selected.png'.
+7. Scroll down inside the dialog content area to make the Parameters section visible.
+8. Click on the 'Schedule' tab.
+9. Under Frequency, select the 'Once' radio button. Set the Start Time to 1 minute in the future. Capture a screenshot named '02-schedule-tab.png'.
+10. Check the 'Share' checkbox. Wait for 2 seconds.
+11. Click the 'Users' radio button option under Share.
+12. Click the 'Visibility' dropdown and select the 'Public' option from the dropdown overlay list. Capture a screenshot named '03-visibility-public.png'.
+13. In the 'Available Users' search input box in the dialog, search for 'Neel'.
+14. Locate the row containing 'Neel', and check the checkbox. Capture a screenshot named '04-neel-shared.png'.
+15. Switch to the 'Output' tab.
+16. Click the 'Home' (path selection) icon to open the Select Folder dialog. Wait 3 seconds.
+17. Search for 'Neel' folder, expand the Root node, and select 'Merge Reports' folder. Capture a screenshot named '05-output-path-selected.png'. Click Submit.
+18. Wait for 2 seconds. Click the 'Save & Merge' button.
+19. Navigate directly to the Requests page: 'https://aiv.test.oneaiv.com:8086/aiv/Request/Request'.
+20. Switch to the 'Schedule' tab. Locate our file 'Merge AutoTest share' in the scheduled list. Capture a screenshot named '06-requests-scheduled.png'.
+21. Wait for 1 minute.
+22. Click the profile button at the top-right and click the 'Logout' option. Clear all cookies, localStorage, and sessionStorage to isolate the session.
+23. Login with username 'Neel' and password 'password'. Capture a screenshot named '07-neel-logged-in.png'.
+24. Navigate to the Reports section: 'https://aiv.test.oneaiv.com:8086/aiv/Documents/Reports'.
+25. Search for 'Merge AutoTest share' in the grid.
+26. Wait/Poll until the shared report (with suffix) appears in the grid. Capture a screenshot named '08-shared-report-visible.png'.
+27. Double-click the report row cell.
+28. Wait for a new tab to open, then wait 10 seconds for the PDF to load. Capture a screenshot named '09-pdf-opened.png'.
