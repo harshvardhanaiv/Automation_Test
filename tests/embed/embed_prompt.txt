@@ -1,0 +1,17 @@
+Write a Playwright test script for AIV Embed - Part 1 and Part 2 Workflow. Follow these steps:
+
+Part 1:
+1. Log in to AIV and navigate to the dashboard.
+2. Click the grid icon (List View) next to Dashboard in the sidebar menu (capture screenshot: '02-dashboard-list.png').
+3. Search for 'AutoTest' in the search bar (capture screenshot: '03-search-autotest.png').
+4. Locate the 'AutoTest Viz' file row and right-click on it to show the context menu (capture screenshot: '04-context-menu.png').
+5. Click on 'Embed' option from the context menu.
+6. Verify that the 'Embed' dialog screen appears (capture screenshot: '05-embed-screen.png').
+
+Part 2:
+7. Click the 'Generate' button (capture screenshot: '06-generate-clicked.png').
+8. Scroll down inside the dialog to reveal the 'External Embed' section (capture screenshot: '07-external-embed-visible.png').
+9. Click the copy button next to the External Embed link.
+10. Open a new tab, paste the copied link, and load the URL (capture screenshot: '08-new-tab-pasted.png').
+11. Wait for 1 minute for the viz to open completely (capture screenshot: '09-embed-viz-loaded.png').
+

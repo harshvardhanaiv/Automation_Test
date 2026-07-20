@@ -1,0 +1,11 @@
+Write a Playwright test script for AIV Embed - Generate with selected key workflow. Follow these steps:
+
+1. Log in to AIV and navigate to the dashboard.
+2. Click the grid icon (List View) next to Dashboard in the sidebar menu.
+3. Search for 'AutoTest Viz' in the search bar (capture screenshot: 'selected_key_01-search-autotest-viz.png').
+4. Locate the 'AutoTest Viz' file row and right-click on it to show the context menu (capture screenshot: 'selected_key_02-context-menu.png').
+5. Click on 'Embed' option from the context menu.
+6. When the 'Embed' dialog screen appears, wait for 5 seconds to let all the IDs load (capture screenshot: 'selected_key_03-embed-dialog-loaded.png').
+7. Click on the checkbox of the first ID row in the table (capture screenshot: 'selected_key_04-checkbox-selected.png').
+8. Click on the 'Generate with selected key' button (capture screenshot: 'selected_key_05-generate-clicked.png').
+9. Verify that the 'External Embed' link is generated (capture screenshot: 'selected_key_06-external-embed-generated.png').
