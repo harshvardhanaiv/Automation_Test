@@ -106,7 +106,7 @@ test.describe.serial('Notifications', () => {
     await messagesTab.waitFor({ state: 'visible', timeout: 15000 });
     await messagesTab.click();
     await page.waitForTimeout(1000);
-    const hasGrid  = await page.locator('[role="grid"]').first().isVisible({ timeout: 10000 }).catch(() => false);
+    const hasGrid = await page.locator('[role="grid"]').first().isVisible({ timeout: 10000 }).catch(() => false);
     const hasEmpty = await page.getByText(/no.*record|no.*data|empty/i).isVisible({ timeout: 3000 }).catch(() => false);
     expect(hasGrid || hasEmpty).toBe(true);
     await shot(page, 'notif-daily-06-messages-grid.png');
@@ -169,7 +169,7 @@ test.describe.serial('Requests', () => {
   test('Delete button is present', async ({ page }) => {
     await goTo(page, URLS.requests);
     const deleteBtn = page.getByRole('button', { name: /delete/i }).first();
-    const visible   = await deleteBtn.isVisible({ timeout: 5000 }).catch(() => false);
+    const visible = await deleteBtn.isVisible({ timeout: 5000 }).catch(() => false);
     console.log(`Delete button visible: ${visible}`);
     await shot(page, 'req-daily-03-delete-btn.png');
   });
@@ -188,7 +188,7 @@ test.describe.serial('Requests', () => {
   test('Running tab is accessible and shows grid', async ({ page }) => {
     await goTo(page, URLS.requests);
     await clickTab(page, 'Running');
-    const hasGrid  = await page.locator('[role="grid"], [role="treegrid"], table').first().isVisible({ timeout: 10000 }).catch(() => false);
+    const hasGrid = await page.locator('[role="grid"], [role="treegrid"], table').first().isVisible({ timeout: 10000 }).catch(() => false);
     const hasEmpty = await page.getByText(/no.*record|no.*data|no rows|empty/i).isVisible({ timeout: 3000 }).catch(() => false);
     expect(hasGrid || hasEmpty).toBe(true);
     await shot(page, 'req-daily-05-running-tab.png');
@@ -197,7 +197,7 @@ test.describe.serial('Requests', () => {
   test('Completed tab is accessible and shows grid', async ({ page }) => {
     await goTo(page, URLS.requests);
     await clickTab(page, 'Completed');
-    const hasGrid  = await page.locator('[role="grid"], [role="treegrid"], table').first().isVisible({ timeout: 10000 }).catch(() => false);
+    const hasGrid = await page.locator('[role="grid"], [role="treegrid"], table').first().isVisible({ timeout: 10000 }).catch(() => false);
     const hasEmpty = await page.getByText(/no.*record|no.*data|no rows|empty/i).isVisible({ timeout: 3000 }).catch(() => false);
     expect(hasGrid || hasEmpty).toBe(true);
     await shot(page, 'req-daily-06-completed-tab.png');
@@ -206,7 +206,7 @@ test.describe.serial('Requests', () => {
   test('Waiting tab is accessible and shows grid', async ({ page }) => {
     await goTo(page, URLS.requests);
     await clickTab(page, 'Waiting');
-    const hasGrid  = await page.locator('[role="grid"], [role="treegrid"], table').first().isVisible({ timeout: 10000 }).catch(() => false);
+    const hasGrid = await page.locator('[role="grid"], [role="treegrid"], table').first().isVisible({ timeout: 10000 }).catch(() => false);
     const hasEmpty = await page.getByText(/no.*record|no.*data|no rows|empty/i).isVisible({ timeout: 3000 }).catch(() => false);
     expect(hasGrid || hasEmpty).toBe(true);
     await shot(page, 'req-daily-07-waiting-tab.png');
@@ -215,7 +215,7 @@ test.describe.serial('Requests', () => {
   test('Failed tab is accessible', async ({ page }) => {
     await goTo(page, URLS.requests);
     await clickTab(page, 'Failed');
-    const hasGrid  = await page.locator('[role="grid"], [role="treegrid"], table').first().isVisible({ timeout: 10000 }).catch(() => false);
+    const hasGrid = await page.locator('[role="grid"], [role="treegrid"], table').first().isVisible({ timeout: 10000 }).catch(() => false);
     const hasEmpty = await page.getByText(/no.*record|no.*data|no rows|empty/i).isVisible({ timeout: 3000 }).catch(() => false);
     expect(hasGrid || hasEmpty).toBe(true);
     await shot(page, 'req-daily-08-failed-tab.png');
@@ -262,7 +262,7 @@ test.describe.serial('Alerts', () => {
   test('Alerts grid renders rows or empty state', async ({ page }) => {
     await goTo(page, URLS.alerts);
     await page.waitForTimeout(500);
-    const hasGrid  = await page.locator('[role="grid"], table').first().isVisible({ timeout: 20000 }).catch(() => false);
+    const hasGrid = await page.locator('[role="grid"], table').first().isVisible({ timeout: 20000 }).catch(() => false);
     const hasEmpty = await page.getByText(/no.*record|no.*data|empty/i).isVisible({ timeout: 5000 }).catch(() => false);
     expect(hasGrid || hasEmpty).toBe(true);
     await shot(page, 'alerts-daily-03-grid.png');
@@ -271,7 +271,7 @@ test.describe.serial('Alerts', () => {
   test('Create Alert button is visible', async ({ page }) => {
     await goTo(page, URLS.alerts);
     const createBtn = page.getByRole('button', { name: /create/i }).first();
-    const visible   = await createBtn.isVisible({ timeout: 10000 }).catch(() => false);
+    const visible = await createBtn.isVisible({ timeout: 10000 }).catch(() => false);
     console.log(`Create Alert button visible: ${visible}`);
     await shot(page, 'alerts-daily-04-create-btn.png');
   });
@@ -305,7 +305,7 @@ test.describe.serial('Alerts', () => {
     const found = await rightClickFirstRow(page);
     if (!found) { console.log('No rows — skipping'); return; }
     const editItem = page.getByText('Edit', { exact: false }).first();
-    const visible  = await editItem.isVisible({ timeout: 3000 }).catch(() => false);
+    const visible = await editItem.isVisible({ timeout: 3000 }).catch(() => false);
     console.log(`Alert Edit option visible: ${visible}`);
     await page.keyboard.press('Escape');
     await shot(page, 'alerts-daily-07-ctx-edit.png');
@@ -330,7 +330,7 @@ test.describe.serial('Alert Reports', () => {
   test('Alert Reports grid or table is visible', async ({ page }) => {
     await goTo(page, URLS.alertReports);
     await page.waitForTimeout(500);
-    const hasGrid  = await page.locator('[role="grid"], table').first().isVisible({ timeout: 20000 }).catch(() => false);
+    const hasGrid = await page.locator('[role="grid"], table').first().isVisible({ timeout: 20000 }).catch(() => false);
     const hasEmpty = await page.getByText(/no.*record|no.*data|empty/i).isVisible({ timeout: 5000 }).catch(() => false);
     expect(hasGrid || hasEmpty).toBe(true);
     await shot(page, 'alertrep-daily-02-grid.png');
@@ -346,7 +346,7 @@ test.describe.serial('Alert Reports', () => {
   test('Alert Reports stats toolbar is visible', async ({ page }) => {
     await goTo(page, URLS.alertReports);
     const toolbar = page.getByRole('toolbar', { name: /folder quick filters/i });
-    const visible  = await toolbar.isVisible({ timeout: 5000 }).catch(() => false);
+    const visible = await toolbar.isVisible({ timeout: 5000 }).catch(() => false);
     console.log(`Alert Reports stats toolbar visible: ${visible}`);
     await shot(page, 'alertrep-daily-04-stats.png');
   });
@@ -368,7 +368,7 @@ test.describe.serial('Alert Reports', () => {
   test('Search box is functional', async ({ page }) => {
     await goTo(page, URLS.alertReports);
     const searchBox = page.getByPlaceholder('Search files and folders');
-    const visible   = await searchBox.isVisible({ timeout: 5000 }).catch(() => false);
+    const visible = await searchBox.isVisible({ timeout: 5000 }).catch(() => false);
     if (visible) {
       await searchBox.fill('test');
       await page.waitForTimeout(800);
