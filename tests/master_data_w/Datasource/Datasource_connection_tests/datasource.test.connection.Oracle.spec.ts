@@ -662,17 +662,7 @@ test.describe('Datasource Creation Flow', () => {
             console.log('✗ Dataset not found in search results');
             await waitAndScreenshot(page, '17d-dataset-not-found');
           }
-        }xt = page.locator('text=masterdata_test_parth_Oracle');
-            const isFound = await datasetNameText.isVisible({ timeout: 3000 }).catch(() => false);
-            
-            if (isFound) {
-              console.log('✓✓✓ DATASET SAVED SUCCESSFULLY - Found masterdata_test_parth_Oracle in search results');
-              await waitAndScreenshot(page, '17d-dataset-verified-saved');
-            } else {
-              console.log('✗ Dataset not found in search results - but search was executed');
-              await waitAndScreenshot(page, '17d-dataset-not-found-in-results');
-            }
-          } else {
+        } else {
             console.log('✗ Could not find search bar in top area');
             await waitAndScreenshot(page, '17c-search-bar-not-found-in-top');
           }
