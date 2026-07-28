@@ -1,0 +1,14 @@
+Write a Playwright test script for AIV Annotation - Create Group Workflow. Follow these steps:
+
+1. Log in to AIV and navigate to the dashboard.
+2. Click the Hamburger menu icon on the top left.
+3. Locate 'Annotations' in the menu sidebar and capture screenshot ('01-hamburger-menu-annotations.png').
+4. Click 'Annotations' and wait 2 seconds for the Annotation screen to load.
+5. On the top left bar of the Annotation screen, locate the cube icon ('Create Group'). Hover/focus over it and capture screenshot ('02-create-group-icon.png').
+6. Click the 'Create Group' icon. Verify that the 'Create Group' dialog appears and capture screenshot ('03-create-group-dialog.png').
+7. Enter Group Name as 'Annotation AutoTest' and capture screenshot ('04-group-name-entered.png').
+8. In Start Date select the current/now time, and in End Date select tomorrow's date. Capture screenshot ('05-dates-selected.png').
+9. Enter Short Description as 'AutoTest' and change Visibility dropdown from 'Private' to 'Public'. Capture screenshot ('06-short-desc-visibility.png').
+10. In Description rich text editor, type 'This is Automation Test' and capture screenshot ('07-description-entered.png').
+11. Click the 'Submit' button to create the group. Wait 2 seconds for the dialog to close.
+12. On the left side list, scroll to the bottom to reveal 'Annotation AutoTest'. Capture screenshot ('08-annotation-autotest-created.png').

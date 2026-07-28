@@ -1,0 +1,11 @@
+Write a Playwright test script for AIV Annotation - Create Item Workflow (Part 1). Follow these steps:
+
+1. Log in to AIV and navigate to the Annotation screen (/Annotation).
+2. On the left side list, scroll down to locate 'Annotation AutoTest' and click on it (capture screenshot: 'create_item_01-select-group.png').
+3. Verify that 'Annotation AutoTest' is selected and highlighted in blue (capture screenshot: 'create_item_02-group-highlighted.png').
+4. On the top toolbar, locate the single cube icon ('Create Item' on hover) and click it. Verify that the 'Create Item' dialog appears (capture screenshot: 'create_item_03-dialog-opened.png').
+5. In the 'Key' input field, type 'Item Key' (capture screenshot: 'create_item_04-key-entered.png').
+6. Select today's date for 'Start Date' and tomorrow's date for 'End Date' (capture screenshot: 'create_item_05-dates-selected.png').
+7. In the Description editor, append '. This is item test.' to the existing text 'This is Automation Test' (capture screenshot: 'create_item_06-description-added.png').
+8. Select the word 'Automation' in the Description text and click the Bold ('B') button in the editor toolbar so that 'Automation' becomes bold (capture screenshot: 'create_item_07-text-bolded.png').
+9. Click the 'Submit' button (capture screenshot: 'create_item_08-submitted.png').
