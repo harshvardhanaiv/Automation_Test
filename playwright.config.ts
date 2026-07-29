@@ -35,24 +35,22 @@ export default defineConfig({
     },
 
     // ── System Google Chrome ──────────────────────────────────────────────
-    // {
-    //   name: 'chrome',
-    //   use: {
-    //     ...devices['Desktop Chrome'],
-    //     channel: 'chrome',                                          // uses installed Chrome
-    //     executablePath: 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe',
-    //   },
-    // },
+    {
+      name: 'chrome',
+      use: {
+        ...devices['Desktop Chrome'],
+        channel: 'chrome',
+      },
+    },
 
     // ── Microsoft Edge ────────────────────────────────────────────────────
-    // {
-    //   name: 'edge',
-    //   use: {
-    //     ...devices['Desktop Edge'],
-    //     channel: 'msedge',                                          // uses installed Edge
-    //     executablePath: 'C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe',
-    //   },
-    // },
+    {
+      name: 'edge',
+      use: {
+        ...devices['Desktop Edge'],
+        channel: 'msedge',
+      },
+    },
 
     // ── Firefox (requires: npx playwright install firefox) ───────────────
     // Uncomment once Firefox is installed on this machine

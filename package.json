@@ -47,11 +47,13 @@
     "generate:explore": "node ai/generateFromCrawl.js",
     "explore": "node ai/explore-runner.js",
     "explore:skip-crawl": "node ai/explore-runner.js --skip-crawl",
-    "explore:skip-generate": "node ai/explore-runner.js --skip-generate"
+    "explore:skip-generate": "node ai/explore-runner.js --skip-generate",
+    "dashboard": "node server/dashboard-server.js"
   },
   "dependencies": {
     "@playwright/test": "^1.43.0",
     "axios": "^1.6.8",
+    "express": "^5.2.1",
     "turndown": "^7.2.4"
   },
   "devDependencies": {

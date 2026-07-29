@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AIV Test Automation Suite - Port 8282</title>
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="light-theme">
+
+  <!-- TOP HEADER -->
+  <header class="app-header">
+    <div class="header-container">
+      <div class="brand">
+        <div class="brand-icon">
+          <i class="fa-solid fa-flask-vial"></i>
+        </div>
+        <div class="brand-text">
+          <h1>AIV Test Suite Executive Dashboard</h1>
+        </div>
+      </div>
+
+      <div class="header-stats">
+        <div class="stat-card">
+          <span class="stat-label">Total Specs</span>
+          <span class="stat-value" id="stat-total">0</span>
+        </div>
+        <div class="stat-card stat-pass">
+          <span class="stat-label">Passed</span>
+          <span class="stat-value" id="stat-passed">0</span>
+        </div>
+        <div class="stat-card stat-fail">
+          <span class="stat-label">Failed</span>
+          <span class="stat-value" id="stat-failed">0</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-label">Status</span>
+          <span class="status-pill idle" id="status-pill">
+            <span class="pulse-dot"></span> <span id="status-text">Idle</span>
+          </span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN TOOLBAR -->
+  <section class="toolbar-section">
+    <div class="toolbar-container">
+      <div class="control-group">
+        <label for="browser-select"><i class="fa-brands fa-chrome"></i> Browser:</label>
+        <select id="browser-select" class="form-select">
+          <option value="chromium" selected>Chromium (Default)</option>
+          <option value="chrome">Google Chrome</option>
+          <option value="edge">Microsoft Edge</option>
+        </select>
+      </div>
+
+      <div class="control-group execution-mode-group">
+        <span class="mode-title"><i class="fa-solid fa-sliders"></i> Mode:</span>
+        <div class="toggle-mode-wrapper">
+          <span class="mode-option mode-off" id="mode-label-off"><i class="fa-solid fa-bolt"></i> Background Mode</span>
+          <label class="toggle-switch" title="Toggle between Background Mode (Headless) and Visible Window Mode (Headed)">
+            <input type="checkbox" id="headed-toggle" checked>
+            <span class="toggle-slider"></span>
+          </label>
+          <span class="mode-option mode-on" id="mode-label-on"><i class="fa-solid fa-desktop"></i> Visible Window</span>
+        </div>
+      </div>
+
+      <div class="action-buttons">
+        <button id="btn-run-all" class="btn btn-primary">
+          <i class="fa-solid fa-play"></i> Run All (Ordered)
+        </button>
+        <button id="btn-run-selected" class="btn btn-secondary">
+          <i class="fa-solid fa-list-check"></i> Run Selected
+        </button>
+        <button id="btn-save-order" class="btn btn-outline">
+          <i class="fa-solid fa-floppy-disk"></i> Save Order Config
+        </button>
+        <button id="btn-stop" class="btn btn-danger" disabled>
+          <i class="fa-solid fa-stop"></i> Stop Execution
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- LIVE PROGRESS BANNER -->
+  <section id="progress-banner" class="progress-banner hidden">
+    <div class="progress-banner-container">
+      <div class="progress-info">
+        <div class="progress-title">
+          <i class="fa-solid fa-spinner fa-spin"></i>
+          <span>Executing Test:</span>
+          <strong id="active-test-file">None</strong>
+        </div>
+        <div class="progress-metrics" id="progress-metrics-text">
+          0 / 0 Completed
+        </div>
+      </div>
+      <div class="progress-bar-wrapper">
+        <div id="progress-bar" class="progress-bar-fill" style="width: 0%;"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MAIN WORKSPACE LAYOUT -->
+  <main class="main-layout">
+    <div class="layout-container">
+      
+      <!-- LEFT COLUMN: TEST SECTIONS & ORDER MANAGER -->
+      <aside class="left-panel card">
+        <div class="panel-header tabs-header">
+          <button class="tab-btn active" data-target="tab-tree">
+            <i class="fa-solid fa-folder-tree"></i> Test Sections Tree
+          </button>
+          <button class="tab-btn" data-target="tab-order">
+            <i class="fa-solid fa-arrow-down-short-wide"></i> Execution Order
+          </button>
+        </div>
+
+        <div class="panel-body">
+          <!-- TAB 1: TREE VIEW -->
+          <div id="tab-tree" class="tab-content active">
+            <div class="tree-controls">
+              <label class="checkbox-container">
+                <input type="checkbox" id="select-all-checkbox">
+                <span class="checkmark"></span>
+                <strong>Select All Test Files</strong>
+              </label>
+              <button id="btn-collapse-all" class="btn-xs"><i class="fa-solid fa-compress"></i> Collapse All</button>
+            </div>
+
+            <div id="sections-container" class="sections-tree">
+              <!-- Dynamically populated -->
+            </div>
+          </div>
+
+          <!-- TAB 2: ORDER MANAGER -->
+          <div id="tab-order" class="tab-content">
+            <div class="order-info">
+              <p><i class="fa-solid fa-circle-info"></i> Drag or use position arrows to set the execution order across sections and test cases.</p>
+            </div>
+            <div id="order-manager-list" class="order-list">
+              <!-- Dynamically populated -->
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- RIGHT COLUMN: LIVE MONITOR & REPORTS -->
+      <section class="right-panel card">
+        <div class="panel-header tabs-header">
+          <button class="tab-btn active" data-target="tab-monitor">
+            <i class="fa-solid fa-terminal"></i> Live Execution Monitor
+          </button>
+          <button class="tab-btn" data-target="tab-reports">
+            <i class="fa-solid fa-chart-pie"></i> Report History
+          </button>
+        </div>
+
+        <div class="panel-body">
+          <!-- TAB 1: LIVE MONITOR -->
+          <div id="tab-monitor" class="tab-content active">
+            <div class="console-header">
+              <span><i class="fa-solid fa-code"></i> Execution Logs & Output</span>
+              <button id="btn-clear-logs" class="btn-xs"><i class="fa-solid fa-trash-can"></i> Clear Logs</button>
+            </div>
+            <div id="console-terminal" class="console-terminal">
+              <div class="log-line info">Waiting to start test execution...</div>
+            </div>
+          </div>
+
+          <!-- TAB 2: REPORT HISTORY -->
+          <div id="tab-reports" class="tab-content">
+            <div class="reports-header">
+              <h3><i class="fa-solid fa-clock-rotate-left"></i> Timestamped Report Archives</h3>
+              <div class="reports-header-actions" style="display: flex; gap: 8px;">
+                <button id="btn-delete-selected-reports" class="btn-danger-outline" style="display: none;">
+                  <i class="fa-solid fa-trash-can"></i> Delete Selected <span id="selected-reports-count">0</span>
+                </button>
+                <button id="btn-refresh-reports" class="btn-xs"><i class="fa-solid fa-rotate-right"></i> Refresh Reports</button>
+              </div>
+            </div>
+
+            <div class="table-responsive">
+              <table class="reports-table">
+                <thead>
+                  <tr>
+                    <th style="width: 36px; text-align: center;">
+                      <label class="checkbox-container">
+                        <input type="checkbox" id="select-all-reports">
+                        <span class="checkmark"></span>
+                      </label>
+                    </th>
+                    <th>Run Info & Timestamp</th>
+                    <th>Browser</th>
+                    <th>Status</th>
+                    <th>Passed</th>
+                    <th>Failed</th>
+                    <th>Duration</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="reports-table-body">
+                  <!-- Dynamically populated -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- REPORT MODAL -->
+  <div id="report-modal" class="modal hidden">
+    <div class="modal-overlay"></div>
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 id="modal-title"><i class="fa-solid fa-file-contract"></i> Playwright HTML Report</h3>
+        <button id="btn-close-modal" class="modal-close"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="modal-body">
+        <iframe id="report-iframe" src="about:blank"></iframe>
+      </div>
+    </div>
+  </div>
+
+  <!-- DELETE CONFIRMATION MODAL -->
+  <div id="delete-confirm-modal" class="modal hidden">
+    <div class="modal-overlay"></div>
+    <div class="modal-card modal-confirm">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-triangle-exclamation" style="color: var(--danger);"></i> Confirm Deletion</h3>
+        <button id="btn-close-delete-modal" class="modal-close"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="modal-body confirm-body" style="padding: 24px 20px;">
+        <p id="delete-confirm-text" style="font-size: 14px; color: var(--text-main);">Are you sure you want to delete the selected report archive(s)? This action cannot be undone.</p>
+      </div>
+      <div class="modal-footer" style="padding: 14px 20px; border-top: 1px solid var(--border-color); display: flex; justify-content: flex-end; gap: 10px; background: #f8fafc;">
+        <button id="btn-cancel-delete" class="btn btn-outline">Cancel</button>
+        <button id="btn-confirm-delete" class="btn btn-danger"><i class="fa-solid fa-trash-can"></i> Delete Permanently</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

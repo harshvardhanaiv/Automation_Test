@@ -24,9 +24,9 @@ export default async function globalSetup(_config: FullConfig) {
 
     console.log('\n🔐 Global setup: logging in once to save session...');
 
-    // Run headless:false so the full browser stack initialises (avoids SSL/CORS
-    // issues that sometimes block headless Chromium on self-signed certs).
-    const browser = await chromium.launch({ headless: false });
+    // Respect HEADLESS environment variable set by Executive Dashboard
+    const isHeadless = process.env.HEADLESS !== 'false';
+    const browser = await chromium.launch({ headless: isHeadless });
     const context = await browser.newContext({ ignoreHTTPSErrors: true });
     const page    = await context.newPage();
 
