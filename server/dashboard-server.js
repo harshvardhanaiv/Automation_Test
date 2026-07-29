@@ -5,7 +5,7 @@ const fs = require('fs');
 const { spawn } = require('child_process');
 
 const app = express();
-const PORT = process.env.PORT || 8282;
+const PORT = process.env.PORT || 8090;
 const WORKSPACE_DIR = path.join(__dirname, '..');
 const TESTS_DIR = path.join(WORKSPACE_DIR, 'tests');
 const CONFIG_FILE = path.join(WORKSPACE_DIR, 'test-execution-config.json');
@@ -242,10 +242,13 @@ app.post('/api/run', (req, res) => {
 
   sendSSE('state', currentExecutionState);
 
-  // Format test paths cleanly for Playwright CLI
-  const testArgs = targetTests.map(t => t.replace(/\\/g, '/'));
+  // Format test arguments for Playwright CLI.
+  // Passing spec filenames (e.g. sample_login.spec.ts) avoids Windows cmd.exe space splitting in folder paths!
+  const testArgs = targetTests.map(t => {
+    const clean = t.replace(/\\/g, '/');
+    return clean.split('/').pop();
+  });
 
-  // Build CLI args
   const args = ['playwright', 'test', ...testArgs, `--project=${browser}`];
   if (headed) {
     args.push('--headed');

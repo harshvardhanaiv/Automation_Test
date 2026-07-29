@@ -22,7 +22,9 @@ export default defineConfig({
     ignoreHTTPSErrors: true,
     storageState: AUTH_FILE,
     viewport: { width: 1600, height: 900 },
-    launchArgs: ['--start-maximized', '--disable-blink-features=AutomationControlled'],
+    launchOptions: {
+      args: ['--start-maximized', '--disable-blink-features=AutomationControlled'],
+    },
   },
   projects: [
     // ── Playwright-bundled Chromium (default, no install needed) ──────────

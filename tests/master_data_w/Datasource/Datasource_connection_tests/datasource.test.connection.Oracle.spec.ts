@@ -662,40 +662,8 @@ test.describe('Datasource Creation Flow', () => {
             console.log('✗ Dataset not found in search results');
             await waitAndScreenshot(page, '17d-dataset-not-found');
           }
-        }xt = page.locator('text=masterdata_test_parth_Oracle');
-            const isFound = await datasetNameText.isVisible({ timeout: 3000 }).catch(() => false);
-            
-            if (isFound) {
-              console.log('✓✓✓ DATASET SAVED SUCCESSFULLY - Found masterdata_test_parth_Oracle in search results');
-              await waitAndScreenshot(page, '17d-dataset-verified-saved');
-            } else {
-              console.log('✗ Dataset not found in search results - but search was executed');
-              await waitAndScreenshot(page, '17d-dataset-not-found-in-results');
-            }
-          } else {
-            console.log('✗ Could not find search bar in top area');
-            await waitAndScreenshot(page, '17c-search-bar-not-found-in-top');
-          }
         } else {
           console.log('✗ Search bar not found at top center');
-          console.log('Looking for any input fields on the page...');
-          
-          const allInputs = page.locator('input');
-          const inputCount = await allInputs.count();
-          console.log(`Total inputs on page: ${inputCount}`);
-          
-          for (let i = 0; i < Math.min(5, inputCount); i++) {
-            try {
-              const input = allInputs.nth(i);
-              const placeholder = await input.getAttribute('placeholder');
-              const value = await input.inputValue().catch(() => '');
-              console.log(`Input ${i}: placeholder="${placeholder}", value="${value}"`);
-            } catch (e) {
-              // continue
-            }
-          }
-          
-          await waitAndScreenshot(page, '17c-search-bar-investigation');
         }
         
       } catch (error) {
@@ -707,4 +675,3 @@ test.describe('Datasource Creation Flow', () => {
   });
 
 });
-

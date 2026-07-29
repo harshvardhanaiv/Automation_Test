@@ -138,6 +138,7 @@ body.light-theme {
 .status-pill.idle { color: var(--text-muted); background: #f1f5f9; }
 .status-pill.running { color: var(--warning); background: var(--warning-light); border-color: #fcd34d; }
 .status-pill.completed { color: var(--success); background: var(--success-light); border-color: #6ee7b7; }
+.status-pill.completed_with_failures,
 .status-pill.failed { color: var(--danger); background: var(--danger-light); border-color: #fca5a5; }
 
 .pulse-dot {
@@ -296,6 +297,32 @@ body.light-theme {
 
 .btn-outline { background: #fff; border-color: var(--border-color); color: var(--text-main); }
 .btn-outline:hover { background: var(--bg-main); }
+
+/* ── Save Order Button Highlight ─────────────────────────────────────── */
+#btn-save-order {
+  transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+#btn-save-order.has-unsaved-changes {
+  background: linear-gradient(135deg, #f59e0b, #d97706) !important;
+  color: #ffffff !important;
+  border-color: #d97706 !important;
+  font-weight: 700 !important;
+  box-shadow: 0 0 12px rgba(245, 158, 11, 0.5) !important;
+  animation: pulseAmberGlow 2s infinite ease-in-out;
+}
+
+@keyframes pulseAmberGlow {
+  0% {
+    box-shadow: 0 0 4px rgba(245, 158, 11, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 14px rgba(245, 158, 11, 0.85);
+  }
+  100% {
+    box-shadow: 0 0 4px rgba(245, 158, 11, 0.4);
+  }
+}
 
 .btn-danger { background: var(--danger); color: #fff; }
 .btn-danger:hover { background: #dc2626; }

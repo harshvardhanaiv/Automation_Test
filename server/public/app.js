@@ -240,7 +240,24 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // ── 4. Render Order Manager (With Sub-Test Ordering & Drag-and-Drop) ─────────
+  // ── 4. Order Modified Highlighting ──────────────────────────────────────────
+  let isOrderModified = false;
+
+  function markOrderModified() {
+    isOrderModified = true;
+    if (btnSaveOrder) {
+      btnSaveOrder.classList.add('has-unsaved-changes');
+    }
+  }
+
+  function clearOrderModified() {
+    isOrderModified = false;
+    if (btnSaveOrder) {
+      btnSaveOrder.classList.remove('has-unsaved-changes');
+    }
+  }
+
+  // ── 4b. Render Order Manager (With Sub-Test Ordering & Drag-and-Drop) ────────
   let draggedSecIdx = null;
   let draggedTestSecIdx = null;
   let draggedTestIdx = null;
@@ -347,6 +364,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const movedSec = sequence.splice(draggedSecIdx, 1)[0];
         sequence.splice(secIdx, 0, movedSec);
         draggedSecIdx = null;
+        markOrderModified();
         renderOrderManager();
       });
 
@@ -362,6 +380,7 @@ document.addEventListener('DOMContentLoaded', () => {
           const temp = sequence[idx];
           sequence[idx] = sequence[idx - 1];
           sequence[idx - 1] = temp;
+          markOrderModified();
           renderOrderManager();
         }
       });
@@ -375,6 +394,7 @@ document.addEventListener('DOMContentLoaded', () => {
           const temp = sequence[idx];
           sequence[idx] = sequence[idx + 1];
           sequence[idx + 1] = temp;
+          markOrderModified();
           renderOrderManager();
         }
       });
@@ -391,6 +411,7 @@ document.addEventListener('DOMContentLoaded', () => {
           const temp = tests[tIdx];
           tests[tIdx] = tests[tIdx - 1];
           tests[tIdx - 1] = temp;
+          markOrderModified();
           renderOrderManager();
         }
       });
@@ -406,6 +427,7 @@ document.addEventListener('DOMContentLoaded', () => {
           const temp = tests[tIdx];
           tests[tIdx] = tests[tIdx + 1];
           tests[tIdx + 1] = temp;
+          markOrderModified();
           renderOrderManager();
         }
       });
@@ -455,6 +477,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         draggedTestSecIdx = null;
         draggedTestIdx = null;
+        markOrderModified();
         renderOrderManager();
       });
     });
@@ -470,6 +493,7 @@ document.addEventListener('DOMContentLoaded', () => {
       });
       const data = await res.json();
       if (data.success || res.ok) {
+        clearOrderModified();
         showToast('Configuration saved successfully!', 'success');
         renderTree(); // Instantly update Test Sections Tree tab!
       } else {
@@ -558,8 +582,26 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  function formatStatusLabel(status) {
+    if (!status) return 'Idle';
+    switch (status) {
+      case 'completed_with_failures':
+        return 'Completed (With Failures)';
+      case 'completed':
+        return 'Completed';
+      case 'failed':
+        return 'Failed';
+      case 'running':
+        return 'Running...';
+      case 'idle':
+        return 'Idle';
+      default:
+        return status.charAt(0).toUpperCase() + status.slice(1).replace(/_/g, ' ');
+    }
+  }
+
   function updateExecutionUI(state) {
-    statusText.textContent = state.status;
+    statusText.textContent = formatStatusLabel(state.status);
     statusPill.className = `status-pill ${state.status}`;
 
     statPassed.textContent = state.passedCount || 0;
