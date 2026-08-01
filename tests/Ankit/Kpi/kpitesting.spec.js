@@ -251,8 +251,7 @@ test('KPI Card - configure, style and add Revenue with Trend card', async ({ pag
     .first();
 
   await fieldListDropZone.scrollIntoViewIfNeeded().catch(() => { });
-
-  await cdkDrag(page, netSalesCol, fieldListDropZone, 60);
+  await cdkDrag(page, netSalesCol, fieldListDropZone, 80);
 
   // ── 20. Set aggregation to SUM for Revenue card ───────────────────────────
   await page.locator('.flex > .fa-light.fa-cog').click();
