@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  aiv-dashboard:
+    build: .
+    container_name: aiv-executive-dashboard
+    restart: unless-stopped
+    ports:
+      - "8090:8090"
+    environment:
+      - PORT=8090
+      - HEADLESS=true
+    volumes:
+      # Mount codebase so live edits on host reflect immediately inside container
+      - .:/app
+      - /app/node_modules
+    # Ensure memory headroom for Playwright browser workers
+    shm_size: '2gb'

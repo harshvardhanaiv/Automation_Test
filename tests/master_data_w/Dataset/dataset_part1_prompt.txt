@@ -1,0 +1,14 @@
+Write a Playwright test script for AIV Master Data - Dataset Test (Part 1 & Part 2). Follow these steps:
+
+1. Log in to AIV and navigate to base URL.
+2. Click the Hamburger menu icon on the top left.
+3. Expand Master Data menu and capture screenshot ('01-expand-datasource-menu.png').
+4. Locate the 3rd option 'Datasets' under Master Data and capture screenshot ('02-dataset-menu-option.png').
+5. Click 'Datasets' and wait 3 seconds for the Datasets landing page to load. Capture screenshot ('03-datasets-page.png').
+6. In the header search bar, search for 'AutoTest' folder and capture screenshot ('04-search-autotest-folder.png').
+7. Double click on the 'AutoTest' folder to open it (it will be empty). Capture screenshot ('05-autotest-folder-empty.png').
+8. Click the 'Create Dataset' button in the bottom toolbar. Verify Create Dataset dialog appears and capture screenshot ('06-create-dataset-screen.png').
+9. Click 'Excel Files' source card (showing 2 tabs) and capture screenshot ('07-excel-files-2-tabs.png').
+10. Click 'Select Existing Files' tab and wait for the Excel file configuration screen to appear. Capture screenshot ('08-select-existing-files-tab.png').
+11. In the left panel searchbar, type 'Ds_Test'. Verify the tree filters to show 'Ds_Test_Data.xlsx' inside the 'Neel' folder under Root. Capture screenshot ('09-search-ds-test-excel.png').
+12. Click on 'Ds_Test_Data.xlsx'. Verify the file configuration panel loads showing Sheet Name ('data'), Column Name ('A'), Row Number ('1'), and SQL Query options. Capture screenshot ('10-ds-test-data-configured.png').
