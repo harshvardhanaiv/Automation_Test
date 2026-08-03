@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { ensureLoggedIn, goToDashboard, createViz, uniqueName } from './helpers.js';
+import { ensureLoggedIn, goToDashboard, createViz, uniqueName } from '../../../ai/helpers.js';
 
 test.setTimeout(180000);
 
