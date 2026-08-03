@@ -144,6 +144,15 @@
       "tests": [
         "tests/master_data_w/QucikRun/QuickRun_Test.spec.ts"
       ]
+    },
+    {
+      "id": "section-master_data_w-Dataset",
+      "name": "master_data_w/Dataset",
+      "type": "folder",
+      "order": 12,
+      "tests": [
+        "tests/master_data_w/Dataset/dataset_part1.spec.ts"
+      ]
     }
   ]
 }

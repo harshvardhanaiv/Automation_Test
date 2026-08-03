@@ -137,7 +137,13 @@ export async function shot(page: Page, name: string) {
     // fallback if test.info() is not available (e.g. called outside of test context)
   }
 
-  const finalDir = path.join('screenshots', subDir);
+  let runFolder = process.env.SCREENSHOT_RUN_DIR;
+  if (!runFolder) {
+    const timestamp = new Date().toISOString().replace(/T/, '_').replace(/:/g, '-').replace(/\..+/, '');
+    runFolder = `run_${timestamp}`;
+  }
+
+  const finalDir = path.join('screenshots', runFolder, subDir);
   const finalPath = path.join(finalDir, name);
   
   // Ensure the directory exists so step logging can write step-log.json even if screenshot fails

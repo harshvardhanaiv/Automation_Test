@@ -32,7 +32,7 @@ async function shot(page: Page, name: string) {
         const testsDir = path.join(process.cwd(), 'tests');
         const relativePath = path.relative(testsDir, info.file);
         const dirPart = path.dirname(relativePath);
-        
+
         // Include DB_TYPE in the path
         subDir = path.join(dirPart, DB_TYPE);
       }
@@ -43,7 +43,7 @@ async function shot(page: Page, name: string) {
 
   const finalDir = path.join('screenshots', subDir);
   const finalPath = path.join(finalDir, name);
-  
+
   // Ensure the directory exists
   try {
     if (!fs.existsSync(finalDir)) {
@@ -149,7 +149,7 @@ test.describe('Datasource Creation Flow', () => {
           .filter({ hasText: labelText })
           .filter({ has: page.locator('input, textarea') })
           .last();
-        
+
         const input = wrapper.locator('input, textarea').first();
         await expect(input).toBeVisible({ timeout: 10000 });
         await input.fill(value);
@@ -233,15 +233,15 @@ test.describe('Datasource Creation Flow', () => {
     // Step 10: Check for "Datasource Already Exists" error and click Cancel if it appears
     await test.step('Check for existing datasource error and click Cancel', async () => {
       await page.waitForTimeout(1000);
-      
+
       // Check if "Datasource Already Exists" error message appears
       const existsError = page.locator('text=Datasource Already Exists').first();
       const errorExists = await existsError.isVisible({ timeout: 3000 }).catch(() => false);
-      
+
       if (errorExists) {
         console.log('Datasource already exists error detected - clicking Cancel');
         await waitAndScreenshot(page, '10-error-detected');
-        
+
         const cancelBtn = page.locator(
           'button:has-text("Cancel")'
         ).first();
@@ -273,7 +273,7 @@ test.describe('Datasource Creation Flow', () => {
         'button:has([class*="table"]), ' +
         'button svg[class*="grid"]'
       ).first();
-      
+
       await expect(gridViewBtn).toBeVisible({ timeout: 10000 });
       await gridViewBtn.click();
       await page.waitForTimeout(1500);
@@ -294,7 +294,7 @@ test.describe('Datasource Creation Flow', () => {
       // Find the datasource row with the name and select it
       const datasourceRow = page.locator('[role="row"], tr').filter({ hasText: 'Parth_Playwright_oracle' }).first();
       await expect(datasourceRow).toBeVisible({ timeout: 10000 });
-      
+
       // Click on the row to select it
       await datasourceRow.click();
       await page.waitForTimeout(1500);
@@ -315,18 +315,18 @@ test.describe('Datasource Creation Flow', () => {
     await test.step('Write SQL query and preview results', async () => {
       // Wait for the dataset wizard/editor to load
       await page.waitForTimeout(2000);
-      
+
       const sqlQuery = `SELECT * FROM ENTERPRISE360.CUSTOMER`;
-      
+
       // The SQL editor is likely a Monaco Editor or similar code editor
       // Find the editor container and click inside it to focus
       const editorContainer = page.locator('[class*="query-editor"], [class*="sql-editor"], [class*="editor"]').first();
-      
+
       if (await editorContainer.isVisible({ timeout: 5000 }).catch(() => false)) {
         // Click inside the editor to focus it
         await editorContainer.click();
         await page.waitForTimeout(1000);
-        
+
         // Try to find the actual textarea/input inside the editor
         const editorTextarea = editorContainer.locator('textarea').first();
         if (await editorTextarea.isVisible({ timeout: 3000 }).catch(() => false)) {
@@ -346,20 +346,20 @@ test.describe('Datasource Creation Flow', () => {
           }
         }
       }
-      
+
       await page.waitForTimeout(1000);  // Wait for the query to be processed
       await waitAndScreenshot(page, '15-sql-query-filled');
-      
+
       // Wait a bit more to ensure button becomes enabled
       await page.waitForTimeout(2000);
-      
+
       // Click Preview Result button - wait for it to be enabled
       const previewBtn = page.getByRole('button', { name: /preview result|preview/i }).first();
-      
+
       // Wait for button to be enabled
       await previewBtn.waitFor({ state: 'visible', timeout: 10000 });
       const isEnabled = await previewBtn.isEnabled({ timeout: 5000 }).catch(() => false);
-      
+
       if (!isEnabled) {
         console.log('Preview button is disabled, waiting for it to become enabled...');
         await page.waitForFunction(
@@ -370,9 +370,9 @@ test.describe('Datasource Creation Flow', () => {
           { timeout: 10000 }
         ).catch(() => null);
       }
-      
+
       await previewBtn.click({ force: true });
-      
+
       // Wait for results to load
       await page.waitForTimeout(5000);
       await waitAndScreenshot(page, '15a-preview-results-clicked');
@@ -381,11 +381,11 @@ test.describe('Datasource Creation Flow', () => {
     // Step 15b: Click the Save button in the lower right to trigger the Save Dataset dialog
     await test.step('Click Save button to open Save Dataset dialog', async () => {
       await page.waitForTimeout(1000);
-      
+
       // Look for the save button in the lower right corner of the page
       // It should be a button with "Save" text
       const saveBtn = page.getByRole('button', { name: /^Save$/i }).last();
-      
+
       if (await saveBtn.isVisible({ timeout: 10000 }).catch(() => false)) {
         await saveBtn.click();
         await page.waitForTimeout(2000);
@@ -401,20 +401,20 @@ test.describe('Datasource Creation Flow', () => {
       // Generate unique dataset name by adding timestamp
       const timestamp = Date.now();
       const datasetName = `masterdata_test_parth_Oracle_${timestamp}`;
-      
+
       console.log(`Generated unique dataset name: ${datasetName}`);
-      
+
       try {
         await page.waitForTimeout(2000);
         await waitAndScreenshot(page, '16-dialog-appeared');
-        
+
         console.log('Dialog appeared - looking for dataset name input');
-        
+
         // The dialog is a center popup - find ALL text inputs on the page
         const allInputs = page.locator('input[type="text"]');
         const inputCount = await allInputs.count();
         console.log(`Found ${inputCount} text inputs in the dialog`);
-        
+
         // Look for the input with Dataset_XXXXX value
         let nameChanged = false;
         for (let i = 0; i < inputCount; i++) {
@@ -422,21 +422,21 @@ test.describe('Datasource Creation Flow', () => {
             const input = allInputs.nth(i);
             const value = await input.inputValue().catch(() => '');
             console.log(`Input ${i}: "${value}"`);
-            
+
             // Check if this is the dataset name input
             if (value && value.match(/^Dataset_\d+$/)) {
               console.log(`✓ Found dataset name input at index ${i} with value: ${value}`);
-              
+
               // Click and select all
               await input.click({ force: true });
               await page.waitForTimeout(300);
               await page.keyboard.press('Control+A');
               await page.waitForTimeout(100);
-              
+
               // Type the new unique name
               await page.keyboard.type(datasetName, { delay: 20 });
               await page.waitForTimeout(500);
-              
+
               nameChanged = true;
               await waitAndScreenshot(page, '16a-name-changed');
               console.log(`✓ Dataset name changed to: ${datasetName}`);
@@ -446,34 +446,34 @@ test.describe('Datasource Creation Flow', () => {
             console.log(`Error with input ${i}:`, String(e));
           }
         }
-        
+
         if (!nameChanged) {
           console.log('✗ Could not find or change dataset name');
           await waitAndScreenshot(page, '16a-name-not-changed');
         }
-        
+
         // Step 16b: Select the Parth_Playwright_testing folder
         await page.waitForTimeout(1000);
         console.log('Looking for Parth_Playwright_testing folder...');
-        
+
         // The folder might be in a tree structure - look for any element with that text
         const folderElements = page.locator('text=Parth_Playwright_testing');
         const folderCount = await folderElements.count();
         console.log(`Found ${folderCount} elements with "Parth_Playwright_testing"`);
-        
+
         if (folderCount > 0) {
           console.log('✓ Found Parth_Playwright_testing folder - clicking it');
           const folderElement = folderElements.first();
-          
+
           // First click to select
           await folderElement.click({ force: true });
           await page.waitForTimeout(800);
-          
+
           // Double-click or check if there's a checkbox/radio we need to click
           const parent = folderElement.locator('..');
           const checkbox = parent.locator('input[type="checkbox"]');
           const radio = parent.locator('input[type="radio"]');
-          
+
           // Check if there's a checkbox we need to check
           if (await checkbox.isVisible({ timeout: 1000 }).catch(() => false)) {
             console.log('✓ Found checkbox - clicking it');
@@ -484,7 +484,7 @@ test.describe('Datasource Creation Flow', () => {
             await radio.click({ force: true });
             await page.waitForTimeout(500);
           }
-          
+
           await page.waitForTimeout(500);
           await waitAndScreenshot(page, '16b-folder-selected');
           console.log('✓ Folder selected/confirmed');
@@ -492,44 +492,44 @@ test.describe('Datasource Creation Flow', () => {
           console.log('✗ Parth_Playwright_testing folder not found');
           await waitAndScreenshot(page, '16b-folder-not-found');
         }
-        
+
         // Step 16c: Click the SAVE DATASET button at the lower right of the popup
         await page.waitForTimeout(1000);
         console.log('Looking for Save Dataset button at lower right of popup...');
-        
+
         // The Save Dataset button should be at the lower right of the dialog/popup
         // Look for a button with "Save Dataset" text specifically
         const saveDatasetButtons = page.locator('button:has-text("Save Dataset")');
         const sdButtonCount = await saveDatasetButtons.count();
         console.log(`Found ${sdButtonCount} "Save Dataset" buttons`);
-        
+
         if (sdButtonCount > 0) {
           // The "Save Dataset" button should be the one we want
           const saveDatasetBtn = saveDatasetButtons.first();
           const text = await saveDatasetBtn.textContent();
           console.log(`✓✓ Found "Save Dataset" button: "${text}"`);
-          
+
           // Click it with force
           await saveDatasetBtn.click({ force: true });
           console.log('✓ Clicked Save Dataset button');
-          
+
           // Wait for the save operation to complete
           await page.waitForTimeout(4000);
           await waitAndScreenshot(page, '16c-after-save-dataset-clicked');
-          
+
           // Wait a bit more
           await page.waitForTimeout(2000);
           await waitAndScreenshot(page, '16c-dataset-saved');
-          
+
           console.log(`✓✓ Save Dataset button clicked - dataset "${datasetName}" should be saved now`);
         } else {
           console.log('✗ "Save Dataset" button not found');
           console.log('Looking for any button with "Save" text at lower right...');
-          
+
           // Fallback: look for any button with Save text
           const allButtons = page.getByRole('button');
           const allCount = await allButtons.count();
-          
+
           for (let i = allCount - 5; i < allCount; i++) {
             if (i >= 0) {
               try {
@@ -544,10 +544,10 @@ test.describe('Datasource Creation Flow', () => {
               }
             }
           }
-          
+
           await waitAndScreenshot(page, '16c-save-dataset-not-found');
         }
-        
+
       } catch (error) {
         console.error('Error in Step 16:', String(error));
         await waitAndScreenshot(page, '16-error');
@@ -557,19 +557,19 @@ test.describe('Datasource Creation Flow', () => {
     // Step 17: Verify the dataset was saved by going to Datasets and searching
     await test.step('Verify dataset was saved', async () => {
       console.log('Verifying if dataset was saved...');
-      
+
       try {
         // Wait for the dialog to close
         await page.waitForTimeout(3000);
         await waitAndScreenshot(page, '17-after-save');
-        
+
         // Step 17a: Click hamburger menu
         console.log('Clicking hamburger menu...');
         const hamburger = page.locator(
           'button[aria-label*="menu" i], .fa-bars, [class*="hamburger"], [class*="menu-icon"], ' +
           'button[class*="toggle"], span.navbar-toggler-icon, [data-icon="bars"]'
         ).first();
-        
+
         if (await hamburger.isVisible({ timeout: 5000 }).catch(() => false)) {
           await hamburger.click();
           await page.waitForTimeout(1000);
@@ -580,11 +580,11 @@ test.describe('Datasource Creation Flow', () => {
           await waitAndScreenshot(page, '17a-hamburger-not-found');
           return;
         }
-        
+
         // Step 17b: Click Datasets button
         console.log('Looking for Datasets button...');
         const datasetsBtn = page.locator('a, span, div, button').filter({ hasText: /^Datasets$/i }).first();
-        
+
         if (await datasetsBtn.isVisible({ timeout: 5000 }).catch(() => false)) {
           await datasetsBtn.click();
           await page.waitForTimeout(2000);
@@ -595,15 +595,15 @@ test.describe('Datasource Creation Flow', () => {
           await waitAndScreenshot(page, '17b-datasets-not-found');
           return;
         }
-        
+
         // Step 17c: Search for the dataset
         console.log('Searching for the Oracle dataset...');
         await page.waitForTimeout(1000);
-        
+
         const allSearchInputs = page.locator('input[type="text"]');
         const count = await allSearchInputs.count();
         console.log(`Total text inputs: ${count}`);
-        
+
         // Find the search bar in the top area (y < 100)
         let searchBarIndex = -1;
         for (let i = 0; i < count; i++) {
@@ -622,18 +622,18 @@ test.describe('Datasource Creation Flow', () => {
             // continue
           }
         }
-        
+
         if (searchBarIndex >= 0) {
           const topSearchBar = allSearchInputs.nth(searchBarIndex);
-          
+
           // Wait for the input to be ready and interactable
           await topSearchBar.waitFor({ state: 'visible', timeout: 5000 });
           await page.waitForTimeout(500);
-          
+
           // Scroll into view if needed
           await topSearchBar.scrollIntoViewIfNeeded();
           await page.waitForTimeout(300);
-          
+
           // Now click and fill
           try {
             await topSearchBar.click({ timeout: 5000 });
@@ -643,16 +643,16 @@ test.describe('Datasource Creation Flow', () => {
             await topSearchBar.focus();
             await page.waitForTimeout(300);
           }
-          
+
           // Clear any existing text
           await topSearchBar.fill('');
           await page.waitForTimeout(200);
-          
+
           // Type the dataset name - search for just the partial name
           await topSearchBar.type('masterdata_test_parth_Oracle', { delay: 50 });
           await page.waitForTimeout(2000);
           await waitAndScreenshot(page, '17c-search-executed');
-          
+
           // Check if dataset appears in results
           const datasetElement = page.locator('text=masterdata_test_parth_Oracle').first();
           if (await datasetElement.isVisible({ timeout: 5000 }).catch(() => false)) {
@@ -665,7 +665,7 @@ test.describe('Datasource Creation Flow', () => {
         } else {
           console.log('✗ Search bar not found at top center');
         }
-        
+
       } catch (error) {
         console.error('Error verifying dataset:', String(error));
         await waitAndScreenshot(page, '17-verify-error');

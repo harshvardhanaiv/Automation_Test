@@ -847,6 +847,339 @@ document.addEventListener('DOMContentLoaded', () => {
 
   btnRefreshReports.addEventListener('click', loadReports);
 
+  // ── 9. Screenshots Gallery Handler ──────────────────────────────────────────
+  const btnRefreshScreenshots = document.getElementById('btn-refresh-screenshots');
+  const btnCollapseScreenshots = document.getElementById('btn-collapse-screenshots');
+  const screenshotSearchInput = document.getElementById('screenshot-search-input');
+  const screenshotsTreeContainer = document.getElementById('screenshots-tree-container');
+
+  // Lightbox Elements
+  const screenshotLightbox = document.getElementById('screenshot-lightbox');
+  const lightboxOverlay = screenshotLightbox ? screenshotLightbox.querySelector('.lightbox-overlay') : null;
+  const lightboxClose = document.getElementById('lightbox-close');
+  const lightboxImg = document.getElementById('lightbox-img');
+  const lightboxTitle = document.getElementById('lightbox-title');
+  const lightboxFilename = document.getElementById('lightbox-filename');
+  const lightboxSize = document.getElementById('lightbox-size');
+  const lightboxDate = document.getElementById('lightbox-date');
+  const lightboxDownload = document.getElementById('lightbox-download');
+  const lightboxPrev = document.getElementById('lightbox-prev');
+  const lightboxNext = document.getElementById('lightbox-next');
+
+  let rawScreenshotRuns = [];
+  let flatImageList = [];
+  let currentLightboxIndex = -1;
+  const collapsedScreenshotRuns = new Set();
+  const collapsedScreenshotSections = new Set();
+
+  async function loadScreenshots() {
+    if (!screenshotsTreeContainer) return;
+    screenshotsTreeContainer.innerHTML = '<div style="padding: 24px; text-align: center; color: var(--text-muted);"><i class="fa-solid fa-spinner fa-spin"></i> Loading Screenshots Gallery...</div>';
+    try {
+      const res = await fetch('/api/screenshots');
+      const data = await res.json();
+      if (data.success) {
+        rawScreenshotRuns = data.runs || [];
+        renderScreenshotsGallery();
+      } else {
+        screenshotsTreeContainer.innerHTML = '<div style="padding: 24px; text-align: center; color: var(--danger);">Failed to load screenshots gallery.</div>';
+      }
+    } catch (e) {
+      screenshotsTreeContainer.innerHTML = '<div style="padding: 24px; text-align: center; color: var(--danger);">Error loading screenshots gallery.</div>';
+    }
+  }
+
+  function formatBytes(bytes) {
+    if (!bytes || bytes === 0) return '0 B';
+    const k = 1024;
+    const sizes = ['B', 'KB', 'MB', 'GB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
+  }
+
+  function renderScreenshotsGallery() {
+    if (!screenshotsTreeContainer) return;
+    screenshotsTreeContainer.innerHTML = '';
+    flatImageList = [];
+
+    const searchQuery = (screenshotSearchInput ? screenshotSearchInput.value : '').trim().toLowerCase();
+
+    if (rawScreenshotRuns.length === 0) {
+      screenshotsTreeContainer.innerHTML = `
+        <div style="padding: 36px 20px; text-align: center; color: var(--text-muted); background: #f8fafc; border: 1px dashed var(--border-color); border-radius: 10px;">
+          <i class="fa-solid fa-images" style="font-size: 32px; color: var(--text-muted); margin-bottom: 12px;"></i>
+          <h4 style="font-size: 15px; margin-bottom: 6px; color: var(--text-main);">No Screenshots Captured Yet</h4>
+          <p style="font-size: 13px;">Screenshots captured during test runs will automatically appear here grouped by Date/Time execution run folders!</p>
+        </div>
+      `;
+      return;
+    }
+
+    const filteredRuns = rawScreenshotRuns.map(run => {
+      const filteredSections = (run.sections || []).map(sec => {
+        const filteredTests = (sec.tests || []).map(t => {
+          const filteredImgs = (t.images || []).filter(img => {
+            if (!searchQuery) return true;
+            return img.name.toLowerCase().includes(searchQuery) || 
+                   t.name.toLowerCase().includes(searchQuery) ||
+                   sec.name.toLowerCase().includes(searchQuery) ||
+                   run.title.toLowerCase().includes(searchQuery);
+          });
+          return { ...t, images: filteredImgs };
+        }).filter(t => t.images.length > 0);
+        return { ...sec, tests: filteredTests };
+      }).filter(sec => sec.tests.length > 0);
+
+      const totalCount = filteredSections.reduce((sum, sec) => {
+        return sum + sec.tests.reduce((tSum, t) => tSum + t.images.length, 0);
+      }, 0);
+
+      return { ...run, totalScreenshots: totalCount, sections: filteredSections };
+    }).filter(run => run.totalScreenshots > 0);
+
+    if (filteredRuns.length === 0) {
+      screenshotsTreeContainer.innerHTML = `
+        <div style="padding: 24px; text-align: center; color: var(--text-muted);">
+          No screenshots matching "<strong>${searchQuery}</strong>".
+        </div>
+      `;
+      return;
+    }
+
+    filteredRuns.forEach(run => {
+      if (run.runFolderName === 'run_archive' && rawScreenshotRuns.length > 1 && !collapsedScreenshotRuns.has('run_archive_init')) {
+        collapsedScreenshotRuns.add('run_archive');
+        collapsedScreenshotRuns.add('run_archive_init');
+      }
+
+      const runCard = document.createElement('div');
+      runCard.className = 'screenshot-run-card';
+      if (collapsedScreenshotRuns.has(run.runFolderName)) {
+        runCard.classList.add('collapsed');
+      }
+
+      const runTitleDisplay = run.runFolderName === 'run_archive' ? 'Archive / Legacy Screenshots' : `Execution Run: ${run.title}`;
+      const runIcon = run.runFolderName === 'run_archive' ? 'fa-box-archive' : 'fa-calendar-days';
+
+      runCard.innerHTML = `
+        <div class="screenshot-run-header">
+          <div class="run-title-group">
+            <i class="fa-solid ${runIcon} run-icon"></i>
+            <span class="run-title-text">${runTitleDisplay}</span>
+            <span class="count-badge" style="background: var(--primary-light); color: var(--primary); font-weight: 700;">
+              ${run.totalScreenshots} screenshot${run.totalScreenshots !== 1 ? 's' : ''}
+            </span>
+          </div>
+          <div class="run-meta-group">
+            ${run.runFolderName !== 'run_archive' ? `
+              <button class="btn-icon-danger-xs btn-delete-run" data-run="${run.runFolderName}" title="Delete screenshot run folder">
+                <i class="fa-solid fa-trash-can"></i>
+              </button>
+            ` : ''}
+            <i class="fa-solid fa-chevron-down run-toggle-icon" style="color: var(--text-muted);"></i>
+          </div>
+        </div>
+        <div class="screenshot-run-body"></div>
+      `;
+
+      const runHeader = runCard.querySelector('.screenshot-run-header');
+      const runBody = runCard.querySelector('.screenshot-run-body');
+      const btnDeleteRun = runCard.querySelector('.btn-delete-run');
+
+      if (btnDeleteRun) {
+        btnDeleteRun.addEventListener('click', (e) => {
+          e.stopPropagation();
+          deleteScreenshotRun(run.runFolderName);
+        });
+      }
+
+      runHeader.addEventListener('click', () => {
+        runCard.classList.toggle('collapsed');
+        if (runCard.classList.contains('collapsed')) {
+          collapsedScreenshotRuns.add(run.runFolderName);
+        } else {
+          collapsedScreenshotRuns.delete(run.runFolderName);
+        }
+      });
+
+      (run.sections || []).forEach(sec => {
+        const secCard = document.createElement('div');
+        secCard.className = 'screenshot-sec-card';
+        const secKey = `${run.runFolderName}/${sec.name}`;
+        if (collapsedScreenshotSections.has(secKey)) {
+          secCard.classList.add('collapsed');
+        }
+
+        const secImageCount = sec.tests.reduce((sum, t) => sum + t.images.length, 0);
+
+        secCard.innerHTML = `
+          <div class="screenshot-sec-header">
+            <div class="screenshot-sec-title">
+              <i class="fa-solid fa-folder-open" style="color: #f59e0b;"></i>
+              <strong>${sec.name}</strong>
+              <span class="count-badge">${secImageCount} item${secImageCount !== 1 ? 's' : ''}</span>
+            </div>
+            <i class="fa-solid fa-chevron-down sec-toggle-icon" style="color: var(--text-muted); font-size: 12px;"></i>
+          </div>
+          <div class="screenshot-sec-body"></div>
+        `;
+
+        const secHeader = secCard.querySelector('.screenshot-sec-header');
+        const secBody = secCard.querySelector('.screenshot-sec-body');
+
+        secHeader.addEventListener('click', (e) => {
+          e.stopPropagation();
+          secCard.classList.toggle('collapsed');
+          if (secCard.classList.contains('collapsed')) {
+            collapsedScreenshotSections.add(secKey);
+          } else {
+            collapsedScreenshotSections.delete(secKey);
+          }
+        });
+
+        (sec.tests || []).forEach(testObj => {
+          const testGroup = document.createElement('div');
+          testGroup.className = 'screenshot-test-group';
+          testGroup.innerHTML = `
+            <div class="screenshot-test-header">
+              <span><i class="fa-solid fa-vial" style="color: #6366f1; margin-right: 6px;"></i> ${testObj.name}</span>
+              <span class="count-badge">${testObj.images.length} screenshot${testObj.images.length !== 1 ? 's' : ''}</span>
+            </div>
+            <div class="screenshot-grid"></div>
+          `;
+
+          const grid = testGroup.querySelector('.screenshot-grid');
+
+          (testObj.images || []).forEach(imgObj => {
+            const imgIndex = flatImageList.length;
+            flatImageList.push(imgObj);
+
+            const formattedTime = imgObj.modifiedAt ? new Date(imgObj.modifiedAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '';
+            const sizeText = formatBytes(imgObj.sizeBytes);
+
+            const imgCard = document.createElement('div');
+            imgCard.className = 'screenshot-card';
+            imgCard.dataset.index = imgIndex;
+            imgCard.innerHTML = `
+              <div class="screenshot-thumb-wrapper">
+                <img src="${imgObj.url}" alt="${imgObj.name}" loading="lazy" />
+                <div class="screenshot-overlay">
+                  <i class="fa-solid fa-maximize"></i>
+                </div>
+              </div>
+              <div class="screenshot-card-footer">
+                <span class="screenshot-card-name" title="${imgObj.name}">${imgObj.name}</span>
+                <div class="screenshot-card-meta">
+                  <span>${sizeText}</span>
+                  <span>${formattedTime}</span>
+                </div>
+              </div>
+            `;
+
+            imgCard.addEventListener('click', () => openLightbox(imgIndex));
+            grid.appendChild(imgCard);
+          });
+
+          secBody.appendChild(testGroup);
+        });
+
+        runBody.appendChild(secCard);
+      });
+
+      screenshotsTreeContainer.appendChild(runCard);
+    });
+  }
+
+  async function deleteScreenshotRun(runFolderName) {
+    if (!confirm(`Are you sure you want to delete screenshot run folder "${runFolderName}"?`)) return;
+    try {
+      const res = await fetch('/api/screenshots/delete-run', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ runFolderName })
+      });
+      const data = await res.json();
+      if (data.success) {
+        showToast('Screenshot run folder deleted successfully.', 'success');
+        loadScreenshots();
+      } else {
+        showToast(data.message || 'Failed to delete run folder.', 'error');
+      }
+    } catch (e) {
+      showToast('Error deleting screenshot run folder.', 'error');
+    }
+  }
+
+  function openLightbox(index) {
+    if (!screenshotLightbox || flatImageList.length === 0) return;
+    currentLightboxIndex = index;
+    updateLightboxContent();
+    screenshotLightbox.classList.remove('hidden');
+  }
+
+  function closeLightbox() {
+    if (!screenshotLightbox) return;
+    screenshotLightbox.classList.add('hidden');
+    if (lightboxImg) lightboxImg.src = '';
+  }
+
+  function updateLightboxContent() {
+    if (currentLightboxIndex < 0 || currentLightboxIndex >= flatImageList.length) return;
+    const item = flatImageList[currentLightboxIndex];
+
+    if (lightboxImg) lightboxImg.src = item.url;
+    if (lightboxTitle) lightboxTitle.textContent = item.name;
+    if (lightboxFilename) lightboxFilename.innerHTML = `<i class="fa-solid fa-file-image"></i> ${item.name}`;
+    if (lightboxSize) lightboxSize.innerHTML = `<i class="fa-solid fa-hard-drive"></i> ${formatBytes(item.sizeBytes)}`;
+    if (lightboxDate) lightboxDate.innerHTML = `<i class="fa-regular fa-clock"></i> ${item.modifiedAt ? new Date(item.modifiedAt).toLocaleString() : ''}`;
+    if (lightboxDownload) lightboxDownload.href = item.url;
+  }
+
+  if (lightboxClose) lightboxClose.addEventListener('click', closeLightbox);
+  if (lightboxOverlay) lightboxOverlay.addEventListener('click', closeLightbox);
+
+  if (lightboxPrev) {
+    lightboxPrev.addEventListener('click', () => {
+      if (flatImageList.length === 0) return;
+      currentLightboxIndex = (currentLightboxIndex - 1 + flatImageList.length) % flatImageList.length;
+      updateLightboxContent();
+    });
+  }
+
+  if (lightboxNext) {
+    lightboxNext.addEventListener('click', () => {
+      if (flatImageList.length === 0) return;
+      currentLightboxIndex = (currentLightboxIndex + 1) % flatImageList.length;
+      updateLightboxContent();
+    });
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if (!screenshotLightbox || screenshotLightbox.classList.contains('hidden')) return;
+    if (e.key === 'Escape') closeLightbox();
+    else if (e.key === 'ArrowLeft') lightboxPrev && lightboxPrev.click();
+    else if (e.key === 'ArrowRight') lightboxNext && lightboxNext.click();
+  });
+
+  if (btnRefreshScreenshots) btnRefreshScreenshots.addEventListener('click', loadScreenshots);
+  if (screenshotSearchInput) screenshotSearchInput.addEventListener('input', renderScreenshotsGallery);
+
+  if (btnCollapseScreenshots) {
+    btnCollapseScreenshots.addEventListener('click', () => {
+      document.querySelectorAll('.screenshot-run-card, .screenshot-sec-card').forEach(sc => sc.classList.add('collapsed'));
+    });
+  }
+
+  // Load screenshots when tab is clicked
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      const target = e.currentTarget.dataset.target;
+      if (target === 'tab-screenshots') {
+        loadScreenshots();
+      }
+    });
+  });
+
   // Modal handlers
   function openReportModal(url, name) {
     modalTitle.innerHTML = `<i class="fa-solid fa-file-contract"></i> Playwright HTML Report - <strong>${name}</strong>`;

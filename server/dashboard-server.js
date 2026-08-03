@@ -10,15 +10,20 @@ const WORKSPACE_DIR = path.join(__dirname, '..');
 const TESTS_DIR = path.join(WORKSPACE_DIR, 'tests');
 const CONFIG_FILE = path.join(WORKSPACE_DIR, 'test-execution-config.json');
 const REPORTS_DIR = path.join(WORKSPACE_DIR, 'reports');
+const SCREENSHOTS_DIR = path.join(WORKSPACE_DIR, 'screenshots');
 
-// Ensure reports directory exists
+// Ensure reports and screenshots directories exist
 if (!fs.existsSync(REPORTS_DIR)) {
   fs.mkdirSync(REPORTS_DIR, { recursive: true });
+}
+if (!fs.existsSync(SCREENSHOTS_DIR)) {
+  fs.mkdirSync(SCREENSHOTS_DIR, { recursive: true });
 }
 
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/reports', express.static(REPORTS_DIR));
+app.use('/screenshots', express.static(SCREENSHOTS_DIR));
 
 // ── SSE (Server-Sent Events) Setup ──────────────────────────────────────────────
 let sseClients = [];
@@ -259,6 +264,7 @@ app.post('/api/run', (req, res) => {
     ...process.env,
     PLAYWRIGHT_HTML_REPORT_DIR: reportDirPath,
     PLAYWRIGHT_JSON_OUTPUT_NAME: jsonReportPath,
+    SCREENSHOT_RUN_DIR: `run_${timestamp}`,
     HEADLESS: headed ? 'false' : 'true'
   };
 
@@ -466,6 +472,155 @@ app.post('/api/reports/delete', (req, res) => {
   });
 
   res.json({ success: true, message: `Successfully deleted ${deletedCount} report folder(s).`, deletedCount });
+});
+
+// ── Screenshots API ──────────────────────────────────────────────────────────────
+function getScreenshotRuns(dir) {
+  if (!fs.existsSync(dir)) return [];
+
+  function getAllImages(currentDir, relativePrefix = '') {
+    let images = [];
+    if (!fs.existsSync(currentDir)) return images;
+
+    const entries = fs.readdirSync(currentDir, { withFileTypes: true });
+    for (const entry of entries) {
+      const fullPath = path.join(currentDir, entry.name);
+      const relPath = relativePrefix ? `${relativePrefix}/${entry.name}` : entry.name;
+
+      if (entry.isDirectory()) {
+        images = images.concat(getAllImages(fullPath, relPath));
+      } else if (entry.isFile() && /\.(png|jpe?g|webp|gif)$/i.test(entry.name)) {
+        try {
+          const stats = fs.statSync(fullPath);
+          images.push({
+            name: entry.name,
+            relPath: relPath.replace(/\\/g, '/'),
+            url: `/screenshots/${relPath.replace(/\\/g, '/')}`,
+            sizeBytes: stats.size,
+            mtimeMs: stats.mtimeMs,
+            modifiedAt: stats.mtime
+          });
+        } catch (e) {}
+      }
+    }
+    return images;
+  }
+
+  const allImages = getAllImages(dir);
+  if (allImages.length === 0) return [];
+
+  // Sort images descending by modification time (latest first)
+  allImages.sort((a, b) => b.mtimeMs - a.mtimeMs);
+
+  // Group images into run clusters based on file modification timestamp proximity (5 min window)
+  const runs = [];
+  const CLUSTER_WINDOW_MS = 5 * 60 * 1000;
+
+  allImages.forEach(img => {
+    let run = runs.find(r => Math.abs(r.maxTimeMs - img.mtimeMs) <= CLUSTER_WINDOW_MS || Math.abs(r.minTimeMs - img.mtimeMs) <= CLUSTER_WINDOW_MS);
+
+    if (!run) {
+      const dateObj = new Date(img.mtimeMs);
+      const formattedTitle = dateObj.toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' }) + ', ' + dateObj.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+      run = {
+        runFolderName: `run_${img.mtimeMs}`,
+        title: formattedTitle,
+        maxTimeMs: img.mtimeMs,
+        minTimeMs: img.mtimeMs,
+        images: []
+      };
+      runs.push(run);
+    } else {
+      run.maxTimeMs = Math.max(run.maxTimeMs, img.mtimeMs);
+      run.minTimeMs = Math.min(run.minTimeMs, img.mtimeMs);
+    }
+
+    run.images.push(img);
+  });
+
+  return runs.map(run => {
+    const sectionsMap = new Map();
+
+    run.images.forEach(img => {
+      let cleanRelPath = img.relPath;
+      if (cleanRelPath.startsWith('run_')) {
+        const firstSlashIndex = cleanRelPath.indexOf('/');
+        if (firstSlashIndex !== -1) {
+          cleanRelPath = cleanRelPath.substring(firstSlashIndex + 1);
+        }
+      }
+
+      let parts = cleanRelPath.split('/');
+      if (parts.length > 1 && parts[0] === 'testing_w_deepseek') {
+        parts = parts.slice(1);
+      }
+
+      let sectionName = 'General';
+      let testName = 'Test Cases';
+
+      if (parts.length === 2) {
+        sectionName = parts[0];
+        testName = parts[0];
+      } else if (parts.length > 2) {
+        sectionName = parts.slice(0, parts.length - 2).join('/');
+        testName = parts[parts.length - 2];
+      } else if (parts.length === 1) {
+        sectionName = 'General';
+        testName = 'Root Screenshots';
+      }
+
+      if (!sectionsMap.has(sectionName)) {
+        sectionsMap.set(sectionName, new Map());
+      }
+      const testsMap = sectionsMap.get(sectionName);
+      if (!testsMap.has(testName)) {
+        testsMap.set(testName, []);
+      }
+      testsMap.get(testName).push(img);
+    });
+
+    const sections = [];
+    sectionsMap.forEach((testsMap, secName) => {
+      const tests = [];
+      testsMap.forEach((imgList, tName) => {
+        tests.push({ name: tName, images: imgList });
+      });
+      sections.push({ name: secName, tests });
+    });
+
+    return {
+      runFolderName: run.runFolderName,
+      title: run.title,
+      totalScreenshots: run.images.length,
+      sections
+    };
+  });
+}
+
+// GET /api/screenshots - Returns runs list with nested section & test structure
+app.get('/api/screenshots', (req, res) => {
+  const runs = getScreenshotRuns(SCREENSHOTS_DIR);
+  res.json({ success: true, runs });
+});
+
+// POST /api/screenshots/delete-run - Deletes screenshot run folder
+app.post('/api/screenshots/delete-run', (req, res) => {
+  const { runFolderName } = req.body;
+  if (!runFolderName) {
+    return res.status(400).json({ success: false, message: 'Run folder name is required.' });
+  }
+
+  const safeName = path.basename(runFolderName);
+  const targetDir = path.join(SCREENSHOTS_DIR, safeName);
+  if (fs.existsSync(targetDir)) {
+    try {
+      fs.rmSync(targetDir, { recursive: true, force: true });
+      return res.json({ success: true, message: `Deleted screenshot run ${safeName}.` });
+    } catch (e) {
+      return res.status(500).json({ success: false, message: `Failed to delete screenshot run: ${e.message}` });
+    }
+  }
+  return res.status(404).json({ success: false, message: 'Screenshot run folder not found.' });
 });
 
 // Start Server

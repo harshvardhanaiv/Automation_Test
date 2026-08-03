@@ -162,6 +162,9 @@
           <button class="tab-btn" data-target="tab-reports">
             <i class="fa-solid fa-chart-pie"></i> Report History
           </button>
+          <button class="tab-btn" data-target="tab-screenshots">
+            <i class="fa-solid fa-images"></i> Screenshots Gallery
+          </button>
         </div>
 
         <div class="panel-body">
@@ -198,12 +201,12 @@
                         <span class="checkmark"></span>
                       </label>
                     </th>
-                    <th>Run Info & Timestamp</th>
-                    <th>Browser</th>
+                    <th>Report Folder</th>
+                    <th>Timestamp</th>
                     <th>Status</th>
+                    <th>Specs</th>
                     <th>Passed</th>
                     <th>Failed</th>
-                    <th>Duration</th>
                     <th>Actions</th>
                   </tr>
                 </thead>
@@ -213,22 +216,69 @@
               </table>
             </div>
           </div>
+
+          <!-- TAB 3: SCREENSHOTS GALLERY -->
+          <div id="tab-screenshots" class="tab-content">
+            <div class="screenshots-toolbar">
+              <div class="screenshot-search-wrapper">
+                <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                <input type="text" id="screenshot-search-input" placeholder="Search section, test folder, or screenshot name..." />
+              </div>
+              <div class="screenshots-actions">
+                <button id="btn-collapse-screenshots" class="btn-xs"><i class="fa-solid fa-compress"></i> Collapse All</button>
+                <button id="btn-refresh-screenshots" class="btn-xs"><i class="fa-solid fa-rotate-right"></i> Refresh Gallery</button>
+              </div>
+            </div>
+
+            <div id="screenshots-tree-container" class="screenshots-gallery-tree">
+              <!-- Dynamically populated screenshot section & test folders -->
+            </div>
+          </div>
         </div>
       </section>
 
     </div>
   </main>
 
-  <!-- REPORT MODAL -->
+  <!-- REPORT VIEWER MODAL -->
   <div id="report-modal" class="modal hidden">
     <div class="modal-overlay"></div>
     <div class="modal-card">
       <div class="modal-header">
-        <h3 id="modal-title"><i class="fa-solid fa-file-contract"></i> Playwright HTML Report</h3>
+        <h3 id="modal-title">HTML Test Execution Report</h3>
         <button id="btn-close-modal" class="modal-close"><i class="fa-solid fa-xmark"></i></button>
       </div>
       <div class="modal-body">
         <iframe id="report-iframe" src="about:blank"></iframe>
+      </div>
+    </div>
+  </div>
+
+  <!-- LIGHTBOX MODAL FOR SCREENSHOT FULL PREVIEW -->
+  <div id="screenshot-lightbox" class="lightbox-modal hidden">
+    <div class="lightbox-overlay"></div>
+    <div class="lightbox-card">
+      <div class="lightbox-header">
+        <div class="lightbox-title-info">
+          <i class="fa-solid fa-image"></i>
+          <span id="lightbox-title">Screenshot Preview</span>
+        </div>
+        <button id="lightbox-close" class="lightbox-close-btn">&times;</button>
+      </div>
+      <div class="lightbox-body">
+        <button id="lightbox-prev" class="lightbox-nav-btn prev" title="Previous Image"><i class="fa-solid fa-chevron-left"></i></button>
+        <img id="lightbox-img" src="" alt="Full Resolution Screenshot" />
+        <button id="lightbox-next" class="lightbox-nav-btn next" title="Next Image"><i class="fa-solid fa-chevron-right"></i></button>
+      </div>
+      <div class="lightbox-footer">
+        <div class="lightbox-meta">
+          <span id="lightbox-filename" class="meta-item"></span>
+          <span id="lightbox-size" class="meta-item"></span>
+          <span id="lightbox-date" class="meta-item"></span>
+        </div>
+        <a id="lightbox-download" href="" download class="btn-rerun" style="padding: 6px 14px; font-size: 13px;">
+          <i class="fa-solid fa-download"></i> Download Image
+        </a>
       </div>
     </div>
   </div>
