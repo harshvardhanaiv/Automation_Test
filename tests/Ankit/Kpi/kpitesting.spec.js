@@ -98,7 +98,6 @@ test('KPI Card - configure, style and add Revenue with Trend card', async ({ pag
   await page.locator('.flex > .fa-light.fa-cog').click();
   await page.locator('#sum').click();
 
-  // ── 8. Open Format (hammer-brush) panel ───────────────────────────────────
   await page.locator('.p-element.fa-light.fa-hammer-brush').click();
 
   // ── 9. Title tab ──────────────────────────────────────────────────────────
