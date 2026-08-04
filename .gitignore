@@ -4,3 +4,4 @@ playwright-report/
 reports/
 .auth/
 screenshots/
+test-execution-config.json
