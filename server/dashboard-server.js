@@ -268,10 +268,17 @@ app.post('/api/run', (req, res) => {
     HEADLESS: headed ? 'false' : 'true'
   };
 
-  console.log(`[Dashboard] Running command: npx ${args.join(' ')}`);
+  let execCmd = process.platform === 'win32' ? 'npx.cmd' : 'npx';
+  let execArgs = args;
 
-  const npxCmd = process.platform === 'win32' ? 'npx.cmd' : 'npx';
-  activeProcess = spawn(npxCmd, args, {
+  if (process.platform !== 'win32') {
+    execCmd = 'xvfb-run';
+    execArgs = ['--auto-servernum', '--server-args="-screen 0 1920x1080x24"', 'npx', ...args];
+  }
+
+  console.log(`[Dashboard] Running command: ${execCmd} ${execArgs.join(' ')}`);
+
+  activeProcess = spawn(execCmd, execArgs, {
     cwd: WORKSPACE_DIR,
     env: spawnEnv,
     shell: true
