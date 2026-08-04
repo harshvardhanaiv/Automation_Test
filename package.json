@@ -51,7 +51,7 @@
     "dashboard": "node server/dashboard-server.js"
   },
   "dependencies": {
-    "@playwright/test": "^1.43.0",
+    "@playwright/test": "1.43.0",
     "axios": "^1.6.8",
     "express": "^5.2.1",
     "turndown": "^7.2.4"
