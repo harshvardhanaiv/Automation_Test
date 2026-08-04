@@ -270,7 +270,8 @@ app.post('/api/run', (req, res) => {
 
   console.log(`[Dashboard] Running command: npx ${args.join(' ')}`);
 
-  activeProcess = spawn('npx.cmd', args, {
+  const npxCmd = process.platform === 'win32' ? 'npx.cmd' : 'npx';
+  activeProcess = spawn(npxCmd, args, {
     cwd: WORKSPACE_DIR,
     env: spawnEnv,
     shell: true
