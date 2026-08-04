@@ -20,4 +20,4 @@ ENV PORT=8090
 ENV HEADLESS=true
 
 # Command to launch the Executive Dashboard server
-CMD ["npm", "run", "dashboard"]
+CMD ["sh", "-c", "npx playwright install chromium && npm run dashboard"]

@@ -14,3 +14,5 @@ services:
       - /app/node_modules
     # Ensure memory headroom for Playwright browser workers
     shm_size: '2gb'
+    command: sh -c "npx playwright install chromium && npm run dashboard"
+
