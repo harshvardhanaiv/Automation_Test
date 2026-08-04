@@ -7,6 +7,7 @@ WORKDIR /app
 # Copy package manifests and install node dependencies
 COPY package*.json ./
 RUN npm install
+RUN npx playwright install chromium
 
 # Copy project source code
 COPY . .
